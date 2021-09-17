@@ -1,18 +1,10 @@
 package domain;
 
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@NonNull
-@Getter
+@Data
+@AllArgsConstructor
 public class Project {
-    private String name;
-
-    public Project(String name) {
-        this.name = name;
-    }
-
-    public String toString() {
-        return "Project(name=" + this.getName() + ")";
-    }
+     String name;
 }

@@ -1,17 +1,11 @@
 package domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class Task {
-    private String name;
+    String name;
 
-    public Task(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String toString() {
-        return "Task(name=" + this.getName() + ")";
-    }
 }
