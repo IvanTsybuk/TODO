@@ -8,8 +8,21 @@ import java.util.List;
 
 @NonNull
 public class TaskService {
-    public List<Task> taskList = new ArrayList<>();
+    private List<Task> taskList = new ArrayList<>();
 
+    public void addTask(Task task){
 
+        taskList.add(task);
+    }
+
+    public String getTaskList(){
+       return  taskList.toString();
+    }
+
+    public void removeSelectedTask(String str){
+
+        taskList.removeIf(task -> task.getName().equals(str));
+
+    }
 }
 

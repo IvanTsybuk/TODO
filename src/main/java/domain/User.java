@@ -7,8 +7,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class User {
 
-     String userName;
-     String userSurName;
+    private String userName;
+    private String userSurName;
+
 
 }
 

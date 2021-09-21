@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Task {
-    String name;
-
+    private String name;
+    private String description;
 }
