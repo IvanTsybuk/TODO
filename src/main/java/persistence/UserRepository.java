@@ -2,15 +2,15 @@ package persistence;
 
 import domain.User;
 
+import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.*;
 
 @Getter
-@Setter
 public class UserRepository {
 
+    @Getter
     private final Map<String, User> users = new HashMap<>();
 
 }

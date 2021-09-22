@@ -6,6 +6,9 @@ import application.UserService;
 import domain.Project;
 import domain.Task;
 import domain.User;
+import persistence.ProjectRepository;
+import persistence.TaskRepository;
+import persistence.UserRepository;
 
 
 import java.util.Scanner;
@@ -13,32 +16,31 @@ import java.util.Scanner;
 public class ConsoleAdapter {
 
 
-    TaskService taskService = new TaskService();
-    ProjectService projectService = new ProjectService();
-    UserService userService = new UserService();
+    TaskService taskService = new TaskService(new TaskRepository());
+    ProjectService projectService = new ProjectService(new ProjectRepository());
+    UserService userService = new UserService(new UserRepository());
     Scanner scanner = new Scanner(System.in);
+
     {
         System.out.println("Press to start");
     }
 
 
-    public void setCommand(Scanner scanner){
+    public void setScanner(Scanner scanner) {
 
-        { showCommands();}
+        showCommands();
 
         int commandNumber = scanner.nextInt();
 
-        while(commandNumber != 0) {
+        while (commandNumber != 0) {
             if (commandNumber == 1) {
-                fillUser(scanner, userService);
+                fillUser();
                 commandNumber = scanner.nextInt();
             }
 
             if (commandNumber == 2) {
                 System.out.println("==getAllUsers()===");
-                String listOfUsers = userService.showAllUsers();
-                System.out.println(listOfUsers);
-
+                System.out.println(userService.showAllUsers());
                 commandNumber = scanner.nextInt();
             }
 
@@ -58,22 +60,22 @@ public class ConsoleAdapter {
             }
 
             if (commandNumber == 5) {
-                fillInTask(scanner, taskService);
+                fillInTask();
                 System.out.println("To add new task, don't forget to insert 5");
                 commandNumber = scanner.nextInt();
             }
 
             if (commandNumber == 6) {
-                takeAwayTask(scanner, taskService);
+                takeAwayTask();
 
                 commandNumber = scanner.nextInt();
             }
 
-    }
+        }
 
 
         System.out.println("Finish:");
-}
+    }
 
     private void doProject() {
         System.out.println("Insert new Project's name:");
@@ -84,22 +86,22 @@ public class ConsoleAdapter {
         String projectStatus = scanner.next();
 
         projectService.createProject(new Project(insertedProjectName, insertedProjectDescription), projectStatus);
-        String listOfProjects =  projectService.showProjects();
-        System.out.println(listOfProjects);
+
+        System.out.println(projectService.showProjects());
     }
 
-    private static void takeAwayTask(Scanner scanner, TaskService taskService) {
+    private void takeAwayTask() {
         System.out.println("Delete task:");
 
         System.out.println(taskService.getTaskList());
         System.out.println("Task to be deleted:");
         String deleteTask = scanner.next();
         taskService.removeSelectedTask(deleteTask);
-        System.out.println("AFTER REMOVE:\n"+ taskService.getTaskList());
+        System.out.println("AFTER REMOVE:\n" + taskService.getTaskList());
 
     }
 
-    private static void fillInTask(Scanner scanner, TaskService taskService) {
+    private void fillInTask() {
         System.out.println("Task:");
         String taskName = scanner.next();
 
@@ -108,17 +110,17 @@ public class ConsoleAdapter {
         taskService.addTask(new Task(taskName, taskDescription));
 
 
-        System.out.println("Task List:\n"+ taskService.getTaskList());
+        System.out.println("Task List:\n" + taskService.getTaskList());
     }
 
-    private static void  fillUser(Scanner scanner, UserService userService) {
-        System.out.println("=====ENter Department====");
+    private void fillUser() {
+        System.out.println("=====Enter Department====");
         String departmentName = scanner.next();
         System.out.println("=====Create new USer =====\nEnter your name:");
         String name = scanner.next().trim();
         System.out.println("\n=====Enter your surname:====");
         String surname = scanner.next().trim();
-        userService.createNewUser(departmentName, new  User(name, surname));
+        userService.createNewUser(departmentName, new User(name, surname));
 
         System.out.println("Insert command's code");
     }

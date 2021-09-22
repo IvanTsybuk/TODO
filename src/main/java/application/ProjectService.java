@@ -1,30 +1,26 @@
 package application;
 
 import domain.Project;
-import domain.User;
+
 import lombok.Data;
 import persistence.ProjectRepository;
 
 @Data
 public class ProjectService {
+    private final ProjectRepository projectRepository;
 
-    User user;
-    Project project;
-    ProjectRepository projectRepository;
-
-
-    public ProjectService() {
-        projectRepository = new ProjectRepository();
+    public ProjectService(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;//????
     }
 
     public void createProject(Project project, String str) {
+        getProjectRepository().getProjects().put(project, str);
 
-        projectRepository.getProjects().put(project, str);
 
     }
 
     public String showProjects() {
 
-        return projectRepository.getProjects().toString();
+        return getProjectRepository().getProjects().toString();
     }
 }

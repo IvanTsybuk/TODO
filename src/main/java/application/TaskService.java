@@ -1,27 +1,31 @@
 package application;
 
 import domain.Task;
-import lombok.NonNull;
+import lombok.Data;
+import persistence.TaskRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 
-@NonNull
+@Data
 public class TaskService {
-    private List<Task> taskList = new ArrayList<>();
+
+    private final TaskRepository taskRepository;
+
+    public TaskService(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
 
     public void addTask(Task task){
 
-        taskList.add(task);
+      getTaskRepository().getTaskList().add(task);
     }
 
     public String getTaskList(){
-       return  taskList.toString();
+       return  getTaskRepository().getTaskList().toString();
     }
 
     public void removeSelectedTask(String str){
 
-        taskList.removeIf(task -> task.getName().equals(str));
+        getTaskRepository().getTaskList().removeIf(task -> task.getName().equals(str));
 
     }
 }

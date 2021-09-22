@@ -1,30 +1,32 @@
 package application;
 
 import domain.User;
+import lombok.Data;
 import persistence.UserRepository;
 
+@Data
 public class UserService {
 
-    UserRepository userRepository;
+   private final UserRepository userRepository;
 
-    public UserService() {
+    public UserService(UserRepository userRepository) {
 
-        userRepository = new UserRepository();
+       this.userRepository = userRepository;
     }
 
     public void createNewUser(String str, User user) {
 
-        userRepository.getUsers().put(str, user);
+        getUserRepository().getUsers().put(str, user);
     }
 
     public String showAllUsers() {
 
-        return userRepository.getUsers().toString();
+        return getUserRepository().getUsers().toString();
     }
 
     public User showUserByDepartment(String str) {
 
-        return userRepository.getUsers().get(str);
+        return getUserRepository().getUsers().get(str);
 
     }
 }

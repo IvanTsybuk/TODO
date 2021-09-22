@@ -10,7 +10,7 @@ public class Bootstrap {
 
       ConsoleAdapter consoleAdapter = new ConsoleAdapter();
 
-      consoleAdapter.setCommand( new Scanner(System.in));
+      consoleAdapter.setScanner( new Scanner(System.in));
 
 
 }}
