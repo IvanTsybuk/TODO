@@ -15,18 +15,18 @@ public class UserService {
     }
 
     public void createNewUser(String str, User user) {
+       userRepository.save(str, user);
 
-        getUserRepository().getUsers().put(str, user);
     }
 
     public String showAllUsers() {
 
-        return getUserRepository().getUsers().toString();
+        return userRepository.show();
     }
 
     public User showUserByDepartment(String str) {
 
-        return getUserRepository().getUsers().get(str);
+        return getUserRepository().showSelected(str);
 
     }
 }

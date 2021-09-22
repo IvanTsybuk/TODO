@@ -10,17 +10,17 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
 
     public ProjectService(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;//????
+        this.projectRepository = projectRepository;
     }
 
     public void createProject(Project project, String str) {
-        getProjectRepository().getProjects().put(project, str);
+        projectRepository.addProject(project, str);
 
 
     }
 
     public String showProjects() {
 
-        return getProjectRepository().getProjects().toString();
+        return projectRepository.showAllProjects();
     }
 }

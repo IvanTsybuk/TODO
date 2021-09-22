@@ -14,18 +14,17 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public void addTask(Task task){
-
-      getTaskRepository().getTaskList().add(task);
+    public void addTask(Task task) {
+        taskRepository.saveTask(task);
     }
 
-    public String getTaskList(){
-       return  getTaskRepository().getTaskList().toString();
+    public String getTaskList() {
+        return taskRepository.toStringTaskList();
     }
 
-    public void removeSelectedTask(String str){
+    public void removeSelectedTask(String str) {
 
-        getTaskRepository().getTaskList().removeIf(task -> task.getName().equals(str));
+        taskRepository.deleteTaskFromList(str);
 
     }
 }
