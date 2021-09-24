@@ -8,11 +8,13 @@ public class Bootstrap {
 
     public static void main(String[] args) {
 
-      ConsoleAdapter consoleAdapter = new ConsoleAdapter();
 
-      consoleAdapter.setScanner( new Scanner(System.in));
+        ConsoleAdapter consoleAdapter = new ConsoleAdapter(new Config(new Scanner(System.in)));
+
+        consoleAdapter.startApp();
 
 
-}}
+    }
+}
 
 

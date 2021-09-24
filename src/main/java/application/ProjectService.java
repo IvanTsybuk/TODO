@@ -5,6 +5,8 @@ import domain.Project;
 import lombok.Data;
 import persistence.ProjectRepository;
 
+import java.util.List;
+
 @Data
 public class ProjectService {
     private final ProjectRepository projectRepository;
@@ -19,7 +21,7 @@ public class ProjectService {
 
     }
 
-    public String showProjects() {
+    public List showProjects() {
 
         return projectRepository.showAllProjects();
     }

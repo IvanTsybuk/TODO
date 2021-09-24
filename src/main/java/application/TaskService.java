@@ -4,6 +4,8 @@ import domain.Task;
 import lombok.Data;
 import persistence.TaskRepository;
 
+import java.util.List;
+
 
 @Data
 public class TaskService {
@@ -14,11 +16,12 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
+
     public void addTask(Task task) {
         taskRepository.saveTask(task);
     }
 
-    public String getTaskList() {
+    public List<Task> getTaskList() {
         return taskRepository.toStringTaskList();
     }
 

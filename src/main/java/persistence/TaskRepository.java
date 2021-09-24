@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class TaskRepository {
@@ -15,9 +16,9 @@ public class TaskRepository {
         getTaskList().add(task);
     }
 
-    public String toStringTaskList() {
+    public List<Task> toStringTaskList() {
 
-        return getTaskList().toString();
+        return taskList.stream().collect(Collectors.toList());
     }
 
     public void deleteTaskFromList(String str){

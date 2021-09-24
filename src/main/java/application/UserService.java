@@ -26,7 +26,7 @@ public class UserService {
 
     public User showUserByDepartment(String str) {
 
-        return getUserRepository().showSelected(str);
+        return userRepository.showSelected(str);
 
     }
 }
