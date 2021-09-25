@@ -7,6 +7,7 @@ import persistence.ProjectRepository;
 
 import java.util.List;
 
+
 @Data
 public class ProjectService {
     private final ProjectRepository projectRepository;
@@ -15,13 +16,11 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public void createProject(Project project, String str) {
-        projectRepository.addProject(project, str);
-
-
+    public void createProject(Project project, String projectStatus) {
+        projectRepository.addProject(project, projectStatus);
     }
 
-    public List showProjects() {
+    public List<String > findAll() {
 
         return projectRepository.showAllProjects();
     }

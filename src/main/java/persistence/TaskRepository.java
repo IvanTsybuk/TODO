@@ -16,7 +16,7 @@ public class TaskRepository {
         getTaskList().add(task);
     }
 
-    public List<Task> toStringTaskList() {
+    public List<Task> showTaskList() {
 
         return taskList.stream().collect(Collectors.toList());
     }

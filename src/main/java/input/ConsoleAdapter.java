@@ -1,29 +1,44 @@
 package input;
 
+import application.ProjectService;
+import application.TaskService;
+import application.UserService;
 import domain.Project;
 import domain.Task;
 import domain.User;
 
+
+import java.util.Scanner;
+
 public class ConsoleAdapter {
 
-    final Config config;
+    private final TaskService taskService;
+    private final ProjectService projectService;
+    private final UserService userService;
+    private final Scanner scanner;
+
+
+    public ConsoleAdapter(TaskService taskService,ProjectService projectService, UserService userService,
+                          Scanner scanner) {
+        this.taskService = taskService;
+        this.projectService = projectService;
+        this.userService = userService;
+        this.scanner = scanner;
+
+    }
 
     {
         System.out.println("Press to start");
     }
 
-    public ConsoleAdapter(Config config) {
-        this.config = config;
-    }
-
+    String commandNumber = null;
 
     public void startApp() {
-
         showCommands();
-        String commandNumber = null;
 
         while (commandNumber != "0") {
-            commandNumber = config.getScanner().next();
+            commandNumber = scanner.next().trim();
+
             switch (commandNumber) {
 
                 case "1":
@@ -31,12 +46,12 @@ public class ConsoleAdapter {
                     break;
                 case "2":
                     System.out.println("==getAllUsers()===");
-                    System.out.println(config.getUserService().showAllUsers());
+                    System.out.println(userService.showAllUsers());
                     break;
                 case "3":
                     System.out.println("Insert your department:");
-                    String insertedDepartment = config.getScanner().next();
-                    User userByDepartment = config.getUserService().showUserByDepartment(insertedDepartment);
+                    String insertedDepartment = scanner.next();
+                    User userByDepartment = userService.showUserByDepartment(insertedDepartment);
                     System.out.println(userByDepartment.toString());
                     System.out.println("Press 4 to get project menu or 0 to exit");
                     break;
@@ -51,59 +66,56 @@ public class ConsoleAdapter {
                     takeAwayTask();
                     break;
                 case "0":
-                    System.out.println("Finish:");
-                    commandNumber = "0";
-                    break;
-            }
+                    return;
 
+            }
         }
     }
 
 
     private void doProject() {
         System.out.println("Insert new Project's name:");
-        String insertedProjectName = config.getScanner().next();
+        String insertedProjectName = scanner.next();
         System.out.println("Insert  Project's description:");
-        String insertedProjectDescription = config.getScanner().next();
+        String insertedProjectDescription = scanner.next();
         System.out.println("Insert  Project's status:");
-        String projectStatus = config.getScanner().next();
+        String projectStatus = scanner.next();
 
-        config.getProjectService().createProject(new Project(insertedProjectName, insertedProjectDescription), projectStatus);
+       projectService.createProject(new Project(insertedProjectName, insertedProjectDescription), projectStatus);
 
-        System.out.println(config.getProjectService().showProjects());
+        System.out.println(projectService.findAll());
     }
 
     private void takeAwayTask() {
         System.out.println("Delete task:");
 
-        System.out.println(config.getTaskService().getTaskList());
+        System.out.println(taskService.getTaskList());
         System.out.println("Task to be deleted:");
-        String deleteTask = config.getScanner().next();
-        config.getTaskService().removeSelectedTask(deleteTask);
-        System.out.println("AFTER REMOVE:\n" + config.getTaskService().getTaskList());
+        String deleteTask = scanner.next();
+        taskService.removeSelectedTask(deleteTask);
+        System.out.println("AFTER REMOVE:\n" + taskService.getTaskList());
 
     }
 
     private void fillInTask() {
         System.out.println("Task:");
-        String taskName = config.getScanner().next();
+        String taskName = scanner.next();
 
-        System.out.println("Task:");
-        String taskDescription = config.getScanner().next();
-        config.getTaskService().addTask(new Task(taskName, taskDescription));
+        System.out.println("Task Description:");
+        String taskDescription = scanner.next();
+       taskService.addTask(new Task(taskName, taskDescription));
 
-
-        System.out.println("Task List:\n" + config.getTaskService().getTaskList());
+        System.out.println("Task List:\n" + taskService.getTaskList());
     }
 
     private void fillUser() {
         System.out.println("=====Enter Department====");
-        String departmentName = config.getScanner().next();
+        String departmentName = scanner.next();
         System.out.println("=====Create new USer =====\nEnter your name:");
-        String name = config.getScanner().next().trim();
+        String name = scanner.next().trim();
         System.out.println("\n=====Enter your surname:====");
-        String surname = config.getScanner().next().trim();
-        config.getUserService().createNewUser(departmentName, new User(name, surname));
+        String surname = scanner.next().trim();
+       userService.createNewUser(departmentName, new User(name, surname));
 
         System.out.println("Insert command's code");
     }

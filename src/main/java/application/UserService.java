@@ -4,6 +4,8 @@ import domain.User;
 import lombok.Data;
 import persistence.UserRepository;
 
+import java.util.List;
+
 @Data
 public class UserService {
 
@@ -14,19 +16,19 @@ public class UserService {
        this.userRepository = userRepository;
     }
 
-    public void createNewUser(String str, User user) {
-       userRepository.save(str, user);
+    public void createNewUser(String department, User user) {
+       userRepository.save(department, user);
 
     }
 
-    public String showAllUsers() {
+    public List<User> showAllUsers() {
 
         return userRepository.show();
     }
 
-    public User showUserByDepartment(String str) {
+    public User showUserByDepartment(String userByDepartment) {
 
-        return userRepository.showSelected(str);
+        return userRepository.showSelected(userByDepartment);
 
     }
 }

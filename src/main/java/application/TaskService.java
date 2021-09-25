@@ -22,12 +22,12 @@ public class TaskService {
     }
 
     public List<Task> getTaskList() {
-        return taskRepository.toStringTaskList();
+        return taskRepository.showTaskList();
     }
 
-    public void removeSelectedTask(String str) {
+    public void removeSelectedTask(String taskToDelete) {
 
-        taskRepository.deleteTaskFromList(str);
+        taskRepository.deleteTaskFromList(taskToDelete);
 
     }
 }

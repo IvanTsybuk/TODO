@@ -5,6 +5,7 @@ import domain.User;
 import lombok.Getter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 public class UserRepository {
@@ -18,9 +19,10 @@ public class UserRepository {
         getUsers().put(str, user);
     }
 
-    public String show() {
+    public List<User> show() {
 
-        return getUsers().toString();
+
+        return users.values().stream().collect(Collectors.toList());
     }
 
     public User showSelected (String str){
