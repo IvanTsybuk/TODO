@@ -1,13 +1,9 @@
 package application;
 
 import domain.Task;
-import lombok.Data;
 import persistence.TaskRepository;
-
 import java.util.List;
 
-
-@Data
 public class TaskService {
 
     private final TaskRepository taskRepository;
@@ -17,17 +13,17 @@ public class TaskService {
     }
 
 
-    public void addTask(Task task) {
-        taskRepository.saveTask(task);
+    public void addTask(String taskStatus, Task task) {
+        taskRepository.save(taskStatus, task);
     }
 
     public List<Task> getTaskList() {
-        return taskRepository.showTaskList();
+        return taskRepository.findAll();
     }
 
-    public void removeSelectedTask(String taskToDelete) {
+    public void removeSelectedTask(String taskName) {
 
-        taskRepository.deleteTaskFromList(taskToDelete);
+        taskRepository.delete(taskName);
 
     }
 }

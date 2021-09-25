@@ -1,28 +1,27 @@
 package persistence;
 
 import domain.Task;
-import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
-@Getter
 public class TaskRepository {
 
-    private final List<Task> taskList = new ArrayList<>();
+    private final Map<String, Task> taskList = new HashMap<>();
 
-    public void saveTask(Task task) {
-        getTaskList().add(task);
+    public void save(String taskStatus, Task task) {
+       taskList.put(taskStatus, task);
     }
 
-    public List<Task> showTaskList() {
+    public List<Task> findAll() {
 
-        return taskList.stream().collect(Collectors.toList());
+        return new ArrayList<>(taskList.values());
     }
 
-    public void deleteTaskFromList(String str){
-        getTaskList().removeIf(task -> task.getName().equals(str));
+    public void delete(String name){
+        taskList.values().removeIf(task -> task.getName().equals(name));
     }
 
 }

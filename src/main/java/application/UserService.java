@@ -1,34 +1,31 @@
 package application;
 
 import domain.User;
-import lombok.Data;
 import persistence.UserRepository;
-
 import java.util.List;
 
-@Data
 public class UserService {
 
-   private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
 
-       this.userRepository = userRepository;
+        this.userRepository = userRepository;
     }
 
     public void createNewUser(String department, User user) {
-       userRepository.save(department, user);
+        userRepository.save(department, user);
 
     }
 
-    public List<User> showAllUsers() {
+    public List<User> getUsers() {
 
-        return userRepository.show();
+        return userRepository.findAll();
     }
 
-    public User showUserByDepartment(String userByDepartment) {
+    public User findUserByDepartment(String userByDepartment) {
 
-        return userRepository.showSelected(userByDepartment);
+        return userRepository.findByName(userByDepartment);
 
     }
 }

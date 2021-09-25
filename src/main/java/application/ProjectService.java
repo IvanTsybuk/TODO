@@ -1,14 +1,9 @@
 package application;
 
 import domain.Project;
-
-import lombok.Data;
 import persistence.ProjectRepository;
-
 import java.util.List;
 
-
-@Data
 public class ProjectService {
     private final ProjectRepository projectRepository;
 
@@ -16,12 +11,12 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public void createProject(Project project, String projectStatus) {
-        projectRepository.addProject(project, projectStatus);
+    public void createProject(String projectStatus, Project project) {
+        projectRepository.save(project, projectStatus);
     }
 
-    public List<String > findAll() {
+    public List<Project> getAllProjects() {
 
-        return projectRepository.showAllProjects();
+        return projectRepository.findAll();
     }
 }

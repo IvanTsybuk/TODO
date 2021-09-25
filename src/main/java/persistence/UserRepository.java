@@ -1,32 +1,24 @@
 package persistence;
 
 import domain.User;
-
-import lombok.Getter;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
-@Getter
 public class UserRepository {
 
-    @Getter
     private final Map<String, User> users = new HashMap<>();
-
 
     public void save(String str, User user) {
 
-        getUsers().put(str, user);
+      users.put(str, user);
     }
 
-    public List<User> show() {
+    public List<User> findAll() {
 
-
-        return users.values().stream().collect(Collectors.toList());
+        return new ArrayList<>(users.values());
     }
 
-    public User showSelected (String str){
-        return getUsers().get(str);
+    public User findByName(String name){
+        return users.get(name);
     }
 
 }

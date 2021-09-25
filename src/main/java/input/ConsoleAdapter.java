@@ -46,12 +46,12 @@ public class ConsoleAdapter {
                     break;
                 case "2":
                     System.out.println("==getAllUsers()===");
-                    System.out.println(userService.showAllUsers());
+                    System.out.println(userService.getUsers());
                     break;
                 case "3":
                     System.out.println("Insert your department:");
                     String insertedDepartment = scanner.next();
-                    User userByDepartment = userService.showUserByDepartment(insertedDepartment);
+                    User userByDepartment = userService.findUserByDepartment(insertedDepartment);
                     System.out.println(userByDepartment.toString());
                     System.out.println("Press 4 to get project menu or 0 to exit");
                     break;
@@ -74,16 +74,16 @@ public class ConsoleAdapter {
 
 
     private void doProject() {
+        System.out.println("Insert  Project's status:");
+        String projectStatus = scanner.next();
         System.out.println("Insert new Project's name:");
         String insertedProjectName = scanner.next();
         System.out.println("Insert  Project's description:");
-        String insertedProjectDescription = scanner.next();
-        System.out.println("Insert  Project's status:");
-        String projectStatus = scanner.next();
+        String projectDescription = scanner.next();
 
-       projectService.createProject(new Project(insertedProjectName, insertedProjectDescription), projectStatus);
+       projectService.createProject(projectStatus, new Project(insertedProjectName, projectDescription));
 
-        System.out.println(projectService.findAll());
+        System.out.println(projectService.getAllProjects());
     }
 
     private void takeAwayTask() {
@@ -98,12 +98,14 @@ public class ConsoleAdapter {
     }
 
     private void fillInTask() {
+        System.out.println("Task status:");
+        String taskStatus = scanner.next();
         System.out.println("Task:");
         String taskName = scanner.next();
 
         System.out.println("Task Description:");
         String taskDescription = scanner.next();
-       taskService.addTask(new Task(taskName, taskDescription));
+       taskService.addTask(taskStatus, new Task(taskName, taskDescription));
 
         System.out.println("Task List:\n" + taskService.getTaskList());
     }
@@ -128,7 +130,8 @@ public class ConsoleAdapter {
                 "3. Select User\n" +
                 "4. Create new project\n" +
                 "5. Fill in Task list\n" +
-                "6. Remove task from task list\n");
+                "6. Remove task from task list\n" +
+                "0. Exit");
     }
 
 }

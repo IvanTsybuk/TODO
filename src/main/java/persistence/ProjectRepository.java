@@ -1,25 +1,20 @@
 package persistence;
 
 import domain.Project;
-import lombok.Data;
-import lombok.Getter;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-@Getter
-@Data
 public class ProjectRepository {
 
-    private final Map<Project,String> projects= new HashMap();
+    private final Map<String,Project> projects= new HashMap();
 
-    public void addProject(Project project, String projectStatus){
-        getProjects().put(project, projectStatus);
+    public void save(Project project, String projectStatus){
+       projects.put(projectStatus, project);
     }
 
-    public List<String> showAllProjects(){
+    public List<Project> findAll(){
 
-        return projects.values().stream().collect(Collectors.toList());
+        return new ArrayList<>(projects.values());
     }
 }
 
