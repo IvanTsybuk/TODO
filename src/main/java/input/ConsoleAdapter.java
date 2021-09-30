@@ -6,8 +6,10 @@ import application.UserService;
 import domain.Project;
 import domain.Task;
 import domain.User;
+import savelogic.JsonWriter;
 
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class ConsoleAdapter {
@@ -16,13 +18,15 @@ public class ConsoleAdapter {
     private final ProjectService projectService;
     private final UserService userService;
     private final Scanner scanner;
+    private final JsonWriter jsonWriter;
 
 
-    public ConsoleAdapter(TaskService taskService,ProjectService projectService, UserService userService,
-                          Scanner scanner) {
+    public ConsoleAdapter(TaskService taskService, ProjectService projectService, UserService userService, JsonWriter jsonWriter
+                          , Scanner scanner) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.userService = userService;
+        this.jsonWriter = jsonWriter;
         this.scanner = scanner;
 
     }
@@ -33,7 +37,7 @@ public class ConsoleAdapter {
 
     String commandNumber = null;
 
-    public void startApp() {
+    public void startApp() throws IOException {
         showCommands();
 
         while (commandNumber != "0") {
@@ -50,7 +54,7 @@ public class ConsoleAdapter {
                     break;
                 case "3":
                     System.out.println("Insert your department:");
-                    String insertedDepartment = scanner.next();
+                    Integer insertedDepartment = scanner.nextInt();
                     User userByDepartment = userService.findUserByDepartment(insertedDepartment);
                     System.out.println(userByDepartment.toString());
                     System.out.println("Press 4 to get project menu or 0 to exit");
@@ -65,6 +69,8 @@ public class ConsoleAdapter {
                 case "6":
                     takeAwayTask();
                     break;
+                case "7":
+
                 case "0":
                     return;
 
@@ -73,52 +79,50 @@ public class ConsoleAdapter {
     }
 
 
-    private void doProject() {
-        System.out.println("Insert  Project's status:");
-        String projectStatus = scanner.next();
+    private void doProject() throws IOException {
+
+        System.out.println("Insert  Project's number:");
+        Integer projectKey = scanner.nextInt();
         System.out.println("Insert new Project's name:");
         String insertedProjectName = scanner.next();
         System.out.println("Insert  Project's description:");
         String projectDescription = scanner.next();
-
-       projectService.createProject(projectStatus, new Project(insertedProjectName, projectDescription));
-
+        projectService.createProject(projectKey, new Project(insertedProjectName, projectDescription));
+        jsonWriter.writeProject();
         System.out.println(projectService.getAllProjects());
     }
 
-    private void takeAwayTask() {
+    private void takeAwayTask() throws IOException {
         System.out.println("Delete task:");
-
         System.out.println(taskService.getTaskList());
         System.out.println("Task to be deleted:");
         String deleteTask = scanner.next();
         taskService.removeSelectedTask(deleteTask);
+        jsonWriter.writeTask();
         System.out.println("AFTER REMOVE:\n" + taskService.getTaskList());
-
     }
 
-    private void fillInTask() {
-        System.out.println("Task status:");
-        String taskStatus = scanner.next();
+    private void fillInTask() throws IOException {
+        System.out.println("Task key:");
+        Integer taskKey = scanner.nextInt();
         System.out.println("Task:");
         String taskName = scanner.next();
-
         System.out.println("Task Description:");
         String taskDescription = scanner.next();
-       taskService.addTask(taskStatus, new Task(taskName, taskDescription));
-
+        taskService.addTask(taskKey, new Task(taskName, taskDescription));
+        jsonWriter.writeTask();
         System.out.println("Task List:\n" + taskService.getTaskList());
     }
 
-    private void fillUser() {
-        System.out.println("=====Enter Department====");
-        String departmentName = scanner.next();
+    private void fillUser() throws IOException {
+        System.out.println("=====Enter Department id====");
+        Integer userKey = scanner.nextInt();
         System.out.println("=====Create new USer =====\nEnter your name:");
         String name = scanner.next().trim();
         System.out.println("\n=====Enter your surname:====");
         String surname = scanner.next().trim();
-       userService.createNewUser(departmentName, new User(name, surname));
-
+        userService.createNewUser(userKey, new User(name, surname));
+        jsonWriter.writeUser();
         System.out.println("Insert command's code");
     }
 

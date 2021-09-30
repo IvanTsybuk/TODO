@@ -13,8 +13,8 @@ public class TaskService {
     }
 
 
-    public void addTask(String taskStatus, Task task) {
-        taskRepository.save(taskStatus, task);
+    public void addTask(Integer taskKey, Task task) {
+        taskRepository.save(taskKey, task);
     }
 
     public List<Task> getTaskList() {

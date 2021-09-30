@@ -1,23 +1,20 @@
 package persistence;
-
 import domain.User;
 import java.util.*;
 
 public class UserRepository {
 
-    private final Map<String, User> users = new HashMap<>();
+    private final Map<Integer, User> users = new HashMap<>();
 
-    public void save(String str, User user) {
-
-      users.put(str, user);
+    public void save(Integer userKey, User user) {
+      users.put(userKey, user);
     }
 
     public List<User> findAll() {
-
         return new ArrayList<>(users.values());
     }
 
-    public User findByName(String name){
+    public User findByName(Integer name){
         return users.get(name);
     }
 
