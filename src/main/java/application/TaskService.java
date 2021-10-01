@@ -12,9 +12,8 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-
-    public void addTask(Integer taskKey, Task task) {
-        taskRepository.save(taskKey, task);
+    public void addTask(Task task) {
+        taskRepository.save(task);
     }
 
     public List<Task> getTaskList() {
@@ -22,9 +21,7 @@ public class TaskService {
     }
 
     public void removeSelectedTask(String taskName) {
-
         taskRepository.delete(taskName);
-
     }
 }
 

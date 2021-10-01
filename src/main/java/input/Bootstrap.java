@@ -22,10 +22,7 @@ public class Bootstrap {
 
         ConsoleAdapter consoleAdapter = new ConsoleAdapter(taskService, projectService, userService, scanner);
 
-
            consoleAdapter.startApp();
-
-
     }
 }
 

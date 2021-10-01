@@ -11,15 +11,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void createNewUser(Integer userKey, User user) {
-        userRepository.save(userKey, user);
+    public void createNewUser(User user) {
+        userRepository.save(user);
     }
 
     public List<User> getUsers() {
         return userRepository.findAll();
     }
 
-    public User findUserByDepartment(Integer userByDepartment) {
-        return userRepository.findByName(userByDepartment);
+    public User findUserBySurName(String userSurname) {
+        return userRepository.findByName(userSurname);
     }
 }
