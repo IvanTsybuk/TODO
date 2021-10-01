@@ -6,7 +6,6 @@ import application.UserService;
 import domain.Project;
 import domain.Task;
 import domain.User;
-import savelogic.JsonWriter;
 
 
 import java.io.IOException;
@@ -18,15 +17,13 @@ public class ConsoleAdapter {
     private final ProjectService projectService;
     private final UserService userService;
     private final Scanner scanner;
-    private final JsonWriter jsonWriter;
 
 
-    public ConsoleAdapter(TaskService taskService, ProjectService projectService, UserService userService, JsonWriter jsonWriter
-                          , Scanner scanner) {
+    public ConsoleAdapter(TaskService taskService, ProjectService projectService, UserService userService,
+                          Scanner scanner) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.userService = userService;
-        this.jsonWriter = jsonWriter;
         this.scanner = scanner;
 
     }
@@ -37,7 +34,7 @@ public class ConsoleAdapter {
 
     String commandNumber = null;
 
-    public void startApp() throws IOException {
+    public void startApp()  {
         showCommands();
 
         while (commandNumber != "0") {
@@ -79,7 +76,7 @@ public class ConsoleAdapter {
     }
 
 
-    private void doProject() throws IOException {
+    private void doProject()  {
 
         System.out.println("Insert  Project's number:");
         Integer projectKey = scanner.nextInt();
@@ -88,21 +85,19 @@ public class ConsoleAdapter {
         System.out.println("Insert  Project's description:");
         String projectDescription = scanner.next();
         projectService.createProject(projectKey, new Project(insertedProjectName, projectDescription));
-        jsonWriter.writeProject();
         System.out.println(projectService.getAllProjects());
     }
 
-    private void takeAwayTask() throws IOException {
+    private void takeAwayTask() {
         System.out.println("Delete task:");
         System.out.println(taskService.getTaskList());
         System.out.println("Task to be deleted:");
         String deleteTask = scanner.next();
         taskService.removeSelectedTask(deleteTask);
-        jsonWriter.writeTask();
         System.out.println("AFTER REMOVE:\n" + taskService.getTaskList());
     }
 
-    private void fillInTask() throws IOException {
+    private void fillInTask() {
         System.out.println("Task key:");
         Integer taskKey = scanner.nextInt();
         System.out.println("Task:");
@@ -110,11 +105,10 @@ public class ConsoleAdapter {
         System.out.println("Task Description:");
         String taskDescription = scanner.next();
         taskService.addTask(taskKey, new Task(taskName, taskDescription));
-        jsonWriter.writeTask();
         System.out.println("Task List:\n" + taskService.getTaskList());
     }
 
-    private void fillUser() throws IOException {
+    private void fillUser() {
         System.out.println("=====Enter Department id====");
         Integer userKey = scanner.nextInt();
         System.out.println("=====Create new USer =====\nEnter your name:");
@@ -122,7 +116,6 @@ public class ConsoleAdapter {
         System.out.println("\n=====Enter your surname:====");
         String surname = scanner.next().trim();
         userService.createNewUser(userKey, new User(name, surname));
-        jsonWriter.writeUser();
         System.out.println("Insert command's code");
     }
 
