@@ -55,8 +55,6 @@ public class ConsoleAdapter {
                 case "6":
                     takeAwayTask();
                     break;
-                case "7":
-
                 case "0":
                     return;
             }
