@@ -1,7 +1,7 @@
-package application;
+package org.based.application;
 
-import domain.Task;
-import persistence.TaskRepository;
+import org.based.domain.Task;
+import org.based.persistence.TaskRepository;
 import java.util.List;
 
 public class TaskService {
@@ -12,9 +12,8 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-
-    public void addTask(Integer taskKey, Task task) {
-        taskRepository.save(taskKey, task);
+    public void addTask(Task task) {
+        taskRepository.save(task);
     }
 
     public List<Task> getTaskList() {
@@ -22,9 +21,6 @@ public class TaskService {
     }
 
     public void removeSelectedTask(String taskName) {
-
         taskRepository.delete(taskName);
-
     }
 }
-

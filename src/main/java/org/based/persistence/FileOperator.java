@@ -1,4 +1,4 @@
-package savelogic;
+package org.based.persistence;
 
 import lombok.Getter;
 
@@ -7,10 +7,9 @@ import java.io.IOException;
 
 @Getter
 public class FileOperator {
-   private final File fileProjects = new File("target/projects.json");
+    private final File fileProjects = new File("target/projects.json");
     private final File fileTasks = new File("target/tasks.json");
     private final File fileUsers = new File("target/users.json");
-
 
     public FileOperator() {
     }

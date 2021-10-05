@@ -1,4 +1,4 @@
-package domain;
+package org.based.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,9 +8,4 @@ import lombok.Data;
 public class User {
     private String userName;
     private String userSurName;
-
 }
-
-
-
-

@@ -1,7 +1,7 @@
-package application;
+package org.based.application;
 
-import domain.Project;
-import persistence.ProjectRepository;
+import org.based.domain.Project;
+import org.based.persistence.ProjectRepository;
 
 import java.util.List;
 
@@ -12,13 +12,11 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public void createProject(Integer projectKey, Project project) {
-        projectRepository.save(project, projectKey);
+    public void createProject(Project project) {
+        projectRepository.save(project);
     }
 
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
-
-
 }
