@@ -18,4 +18,3 @@ public class UserRepository {
         return users.get(surName);
     }
 }
-
