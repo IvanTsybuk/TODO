@@ -24,7 +24,7 @@ public class FileOperator {
         return fileTasks;
     }
 
-    public File getFilUsers() throws IOException {
+    public File getFileUsers() throws IOException {
         if (!fileUsers.exists()){fileUsers.createNewFile();}
         return fileUsers;
     }
