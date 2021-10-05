@@ -1,6 +1,6 @@
-package application;
-import domain.User;
-import persistence.UserRepository;
+package org.based.application;
+import org.based.domain.User;
+import org.based.persistence.UserRepository;
 import java.util.List;
 
 public class UserService {

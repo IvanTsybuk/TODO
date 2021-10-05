@@ -1,5 +1,5 @@
-package persistence;
-import domain.User;
+package org.based.persistence;
+import org.based.domain.User;
 import java.util.*;
 
 public class UserRepository {

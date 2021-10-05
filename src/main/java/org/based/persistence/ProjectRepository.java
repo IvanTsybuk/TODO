@@ -1,5 +1,5 @@
-package persistence;
-import domain.Project;
+package org.based.persistence;
+import org.based.domain.Project;
 import java.util.*;
 
 public class ProjectRepository {

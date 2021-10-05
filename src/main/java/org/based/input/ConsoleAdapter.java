@@ -1,12 +1,11 @@
-package input;
+package org.based.input;
 
-import application.ProjectService;
-import application.TaskService;
-import application.UserService;
-import domain.Project;
-import domain.Task;
-import domain.User;
-
+import org.based.application.ProjectService;
+import org.based.application.TaskService;
+import org.based.application.UserService;
+import org.based.domain.Project;
+import org.based.domain.Task;
+import org.based.domain.User;
 
 import java.util.Scanner;
 
@@ -17,29 +16,21 @@ public class ConsoleAdapter {
     private final UserService userService;
     private final Scanner scanner;
 
-
     public ConsoleAdapter(TaskService taskService, ProjectService projectService, UserService userService,
                           Scanner scanner) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.userService = userService;
         this.scanner = scanner;
-    }
-
-    {
         System.out.println("Press to start");
     }
 
-    String commandNumber = null;
-
-    public void startApp()  {
+        public void startApp() {
         showCommands();
-
-        while (commandNumber != "0") {
+        while (true) {
+            String commandNumber;
             commandNumber = scanner.next().trim();
-
             switch (commandNumber) {
-
                 case "1":
                     fillUser();
                     break;
@@ -68,13 +59,11 @@ public class ConsoleAdapter {
 
                 case "0":
                     return;
-
             }
         }
     }
 
-
-    private void doProject()  {
+    private void doProject() {
         System.out.println("Insert new Project's name:");
         String insertedProjectName = scanner.next();
         System.out.println("Insert  Project's description:");
@@ -121,5 +110,4 @@ public class ConsoleAdapter {
                 "6. Remove task from task list\n" +
                 "0. Exit");
     }
-
 }

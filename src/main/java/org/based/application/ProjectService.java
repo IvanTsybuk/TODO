@@ -1,7 +1,7 @@
-package application;
+package org.based.application;
 
-import domain.Project;
-import persistence.ProjectRepository;
+import org.based.domain.Project;
+import org.based.persistence.ProjectRepository;
 
 import java.util.List;
 

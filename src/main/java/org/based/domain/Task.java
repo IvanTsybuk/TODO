@@ -1,11 +1,10 @@
-package domain;
-
+package org.based.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Project {
+public class Task {
     private String name;
     private String description;
 }

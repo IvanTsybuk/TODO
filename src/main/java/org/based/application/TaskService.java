@@ -1,7 +1,7 @@
-package application;
+package org.based.application;
 
-import domain.Task;
-import persistence.TaskRepository;
+import org.based.domain.Task;
+import org.based.persistence.TaskRepository;
 import java.util.List;
 
 public class TaskService {
@@ -24,4 +24,3 @@ public class TaskService {
         taskRepository.delete(taskName);
     }
 }
-
