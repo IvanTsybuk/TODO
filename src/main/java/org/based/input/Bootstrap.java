@@ -6,12 +6,9 @@ import org.based.application.UserService;
 import org.based.persistence.ProjectRepository;
 import org.based.persistence.TaskRepository;
 import org.based.persistence.UserRepository;
-
 import java.util.Scanner;
 
-
 public class Bootstrap {
-
 
     public static void main(String[] args) {
 
