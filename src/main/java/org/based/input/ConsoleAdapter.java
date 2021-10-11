@@ -6,6 +6,7 @@ import org.based.application.UserService;
 import org.based.domain.Project;
 import org.based.domain.Task;
 import org.based.domain.User;
+import org.based.application.JsonWriter;
 
 import java.util.Scanner;
 
@@ -14,13 +15,15 @@ public class ConsoleAdapter {
     private final TaskService taskService;
     private final ProjectService projectService;
     private final UserService userService;
+    private final JsonWriter jsonWriter;
     private final Scanner scanner;
 
     public ConsoleAdapter(TaskService taskService, ProjectService projectService, UserService userService,
-                          Scanner scanner) {
+                          JsonWriter jsonWriter, Scanner scanner) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.userService = userService;
+        this.jsonWriter = jsonWriter;
         this.scanner = scanner;
         System.out.println("Press to start");
     }
@@ -67,6 +70,7 @@ public class ConsoleAdapter {
         System.out.println("Insert  Project's description:");
         String projectDescription = scanner.next();
         projectService.createProject(new Project(insertedProjectName, projectDescription));
+        jsonWriter.writeProject(projectService.getProjectRepository());
         System.out.println(projectService.getAllProjects());
     }
 

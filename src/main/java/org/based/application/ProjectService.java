@@ -1,11 +1,13 @@
 package org.based.application;
 
+import lombok.Getter;
 import org.based.domain.Project;
 import org.based.persistence.ProjectRepository;
 
 import java.util.List;
 
 public class ProjectService {
+    @Getter
     private final ProjectRepository projectRepository;
 
     public ProjectService(ProjectRepository projectRepository) {
