@@ -4,7 +4,7 @@ import java.util.*;
 
 public class ProjectRepository {
 
-    private final Map<String, Project> projects = new HashMap();
+    private final Map<String, Project> projects = new HashMap<>();
 
     public void save(Project project) {
         projects.put(project.getName(), project);

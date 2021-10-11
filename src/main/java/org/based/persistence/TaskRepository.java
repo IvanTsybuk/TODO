@@ -12,11 +12,9 @@ public class TaskRepository {
     public void save(Task task) {
        taskList.put(task.getName(), task);
     }
-
     public List<Task> findAll() {
         return new ArrayList<>(taskList.values());
     }
-
     public void delete(String name){
         taskList.values().removeIf(task -> task.getName().equals(name));
     }
