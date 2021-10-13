@@ -22,9 +22,4 @@ public class ProjectService {
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
-
-    public Map<String, Project> getProjectsMap(){
-        return projectRepository.getProjects();
-    }
-
 }

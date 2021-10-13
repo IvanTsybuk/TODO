@@ -7,11 +7,7 @@ public class ProjectRepository {
 
     @Getter
     private final Map<String, Project> projects = new HashMap<>();
-    JsonWriter jsonWriter;
-
-    public ProjectRepository(JsonWriter jsonWriter) {
-        this.jsonWriter = jsonWriter;
-    }
+    JsonWriter jsonWriter = new JsonWriter();
 
     public void save(Project project) {
         projects.put(project.getName(), project);

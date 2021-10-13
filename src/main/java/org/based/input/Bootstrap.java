@@ -16,7 +16,7 @@ public class Bootstrap {
 
     public static void main(String[] args) {
 
-        ProjectRepository projectRepository = new ProjectRepository(new JsonWriter());
+        ProjectRepository projectRepository = new ProjectRepository();
         ProjectService projectService = new ProjectService(projectRepository);
         TaskService taskService = new TaskService(new TaskRepository());
         UserService userService = new UserService(new UserRepository());
@@ -25,6 +25,6 @@ public class Bootstrap {
                 userService, scanner);
 
         consoleAdapter.startApp();
-        projectRepository.writeInfo(projectService.getProjectsMap());
+        projectRepository.writeInfo(projectRepository.getProjects());
     }
 }
