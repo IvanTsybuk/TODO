@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.based.domain.Project;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class JsonWriter {
@@ -14,7 +15,12 @@ public class JsonWriter {
 
     @SneakyThrows
     @NonNull
-    public void writeProject(Map<String, Project>map){
-        objectMapper.writeValue(fileOperator.getFileProjects(), map);
+    public void writeProjectJson(Map<String, Project>projectMapJson){
+        objectMapper.writeValue(fileOperator.getFileProjects(), projectMapJson);
+    }
+
+    @SneakyThrows
+    public Map<String,Project> readJsonProject() {
+        return  new ObjectMapper().readValue(fileOperator.getFileProjects(), HashMap.class);
     }
 }

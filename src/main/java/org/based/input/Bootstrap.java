@@ -25,6 +25,6 @@ public class Bootstrap {
                 userService, scanner);
 
         consoleAdapter.startApp();
-        projectRepository.writeInfo(projectRepository.getProjects());
+        projectRepository.writeProjectsMapJson(projectRepository.getProjects());
     }
 }
