@@ -7,7 +7,13 @@ import java.util.Map;
 
 public class TaskRepository {
 
-    private final Map<String, Task> taskList = new HashMap<>();
+    private final Map<String, Task> taskList;
+    private final JsonOperator jsonOperator = new JsonOperator();
+    private final XmlOperator xmlOperator= new XmlOperator();
+
+    public TaskRepository() {
+        taskList = readTaskFromJson();
+    }
 
     public void save(Task task) {
        taskList.put(task.getName(), task);
@@ -17,5 +23,20 @@ public class TaskRepository {
     }
     public void delete(String name){
         taskList.values().removeIf(task -> task.getName().equals(name));
+    }
+    public void writeTaskMapToJson(){
+       jsonOperator.writeToFile(taskList);
+    }
+    public void writeTaskListToXml(){
+        xmlOperator.writeToFile(taskList);
+    }
+
+    public Map <String, Task>readTaskFromJson(){
+
+
+        return new HashMap <String, Task>(jsonOperator.readFile());
+    }
+    public Map <String, Task>readTaskFromXml(){
+        return new HashMap <String, Task>(xmlOperator.readFile());
     }
 }
