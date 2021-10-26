@@ -3,6 +3,7 @@ package org.based.persistence;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.SneakyThrows;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,13 +12,13 @@ public class XmlOperator extends AbstractWriter {
 
     @Override
     @SneakyThrows
-    void writeToFile(Map <?,?> mapToFile) {
-        xmlMapper.writeValue(getXmlProjectFile(), mapToFile);
+    void writeToFile(File file, Map <?, ?> mapToFile) {
+        xmlMapper.writeValue(file, mapToFile);
     }
 
     @Override
     @SneakyThrows
-    Map readFile() {
-        return xmlMapper.readValue(getXmlProjectFile(), HashMap.class);
+    Map<?, ?> readFile(File file) {
+        return xmlMapper.readValue(file, HashMap.class);
     }
 }

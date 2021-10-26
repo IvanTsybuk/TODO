@@ -18,9 +18,8 @@ public class Bootstrap {
         UserRepository userRepository = new UserRepository();
 
         ProjectService projectService = new ProjectService(projectRepository);
-
         TaskService taskService = new TaskService(taskRepository);
-        UserService userService = new UserService(new UserRepository());
+        UserService userService = new UserService(userRepository);
         Scanner scanner = new Scanner(System.in);
         ConsoleAdapter consoleAdapter = new ConsoleAdapter(taskService, projectService,
                 userService, scanner);

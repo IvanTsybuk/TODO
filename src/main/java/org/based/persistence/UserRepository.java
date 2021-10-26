@@ -1,4 +1,5 @@
 package org.based.persistence;
+
 import org.based.domain.User;
 import java.util.*;
 
@@ -7,6 +8,7 @@ public class UserRepository {
     private final Map<String, User> users;
     private final JsonOperator jsonOperator = new JsonOperator();
     private final XmlOperator xmlOperator = new XmlOperator();
+    private final FileOperator fileOperator = new FileOperator();
 
     public UserRepository() {
         users = readUsersFromJson();
@@ -23,16 +25,15 @@ public class UserRepository {
     }
 
     public void writeUserMapToJson(){
-        jsonOperator.writeToFile(users);
+        jsonOperator.writeToFile(fileOperator.getFileUserJSon(), users);
     }
     public void writeUsersToXml(){
-        xmlOperator.writeToFile(users);
+        xmlOperator.writeToFile(fileOperator.getFileUserXml(), users);
     }
-    public Map readUsersFromJson(){
-        return new HashMap(jsonOperator.readFile());
+    public Map<String, User> readUsersFromJson(){
+                return new HashMap(jsonOperator.readFile(fileOperator.getFileUserJSon()));
     }
-    public Map readUsersFromXml(){
-        return new HashMap(xmlOperator.readFile());
+    public Map<String, User> readUsersFromXml(){
+        return new HashMap(xmlOperator.readFile(fileOperator.getFileUserXml()));
     }
-
 }

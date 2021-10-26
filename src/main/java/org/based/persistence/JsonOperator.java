@@ -3,6 +3,7 @@ package org.based.persistence;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,13 +12,12 @@ public class JsonOperator extends AbstractWriter {
 
     @Override
     @SneakyThrows
-    void writeToFile(Map<?, ?> mapToFile) {
-        objectMapper.writeValue(getJsonProjectFile(), mapToFile);
+    void writeToFile(File file, Map<?, ?> mapToFile) {
+        objectMapper.writeValue(file, mapToFile);
     }
-
     @Override
     @SneakyThrows
-    Map readFile() {
-        return new ObjectMapper().readValue(getJsonProjectFile(), HashMap.class);
+    Map readFile(File file) {
+        return objectMapper.readValue(file, HashMap.class);
     }
 }

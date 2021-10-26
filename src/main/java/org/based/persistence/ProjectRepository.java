@@ -7,8 +7,9 @@ import java.util.*;
 public class ProjectRepository {
     @Getter
     private final Map<String, Project> projects;
-    private final JsonOperator jsonOperator = new JsonOperator();
     private final XmlOperator xmlOperator = new XmlOperator();
+    private final FileOperator fileOperator = new FileOperator();
+    private final JsonOperator jsonOperator = new JsonOperator();
 
     public ProjectRepository() {
         projects = setProjectsMapJson();
@@ -22,17 +23,19 @@ public class ProjectRepository {
         return new ArrayList<>(projects.values());
     }
 
-    public void writeProjectsMapJson(){
-        jsonOperator.writeToFile(projects);
-    }
-    public void writeProjectsMapXml(){
-        xmlOperator.writeToFile(projects);
+    public void writeProjectsMapJson() {
+        jsonOperator.writeToFile(fileOperator.getFileProjectsJson(), projects);
     }
 
-    public Map<String, Project> setProjectsMapJson(){
-        return  new HashMap<String, Project>(jsonOperator.readFile());
+    public void writeProjectsMapXml() {
+        xmlOperator.writeToFile(fileOperator.getFileProjectsXml(), projects);
     }
-    public  Map<String, Project> setProjectMapXml(){
-        return  new  HashMap<String, Project>(xmlOperator.readFile());
+
+    public Map<String, Project> setProjectsMapJson() {
+        return new HashMap<String, Project>(jsonOperator.readFile(fileOperator.getFileProjectsJson()));
+    }
+
+    public Map<String, Project> setProjectMapXml() {
+        return new HashMap(xmlOperator.readFile(fileOperator.getFileProjectsXml()));
     }
 }
