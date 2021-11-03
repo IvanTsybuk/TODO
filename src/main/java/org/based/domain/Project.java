@@ -1,11 +1,17 @@
 package org.based.domain;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-@Data
-@AllArgsConstructor
+    @Data
 public class Project {
     private String name;
     private String description;
-}
+
+    @JsonCreator
+        public Project(@JsonProperty("name") String name,@JsonProperty("description") String description) {
+            this.name = name;
+            this.description = description;
+        }
+    }

@@ -1,18 +1,23 @@
 package org.based.persistence;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import org.based.domain.Project;
 import java.util.*;
 
 public class ProjectRepository {
     @Getter
+    @JsonDeserialize(using = BodyDeserializer.class)
     private final Map<String, Project> projects;
     private final XmlOperator xmlOperator = new XmlOperator();
     private final FileOperator fileOperator = new FileOperator();
     private final JsonOperator jsonOperator = new JsonOperator();
+    private final TypeReference <HashMap<String, Project>> typeReference = new TypeReference<>() {};
 
     public ProjectRepository() {
-        projects = setProjectsMapJson();
+//        projects = setProjectsMapJson();
+        projects = setProjectMapXml();
     }
 
     public void save(Project project) {
@@ -31,11 +36,11 @@ public class ProjectRepository {
         xmlOperator.writeToFile(fileOperator.getFileProjectsXml(), projects);
     }
 
-    public Map<String, Project> setProjectsMapJson() {
-        return new HashMap<String, Project>(jsonOperator.readFile(fileOperator.getFileProjectsJson()));
+    public Map<String,Project> setProjectsMapJson() {
+        return jsonOperator.readFile(fileOperator.getFileProjectsJson(), typeReference);
     }
 
-    public Map<String, Project> setProjectMapXml() {
-        return new HashMap(xmlOperator.readFile(fileOperator.getFileProjectsXml()));
+    public Map setProjectMapXml() {
+        return xmlOperator.readFile(fileOperator.getFileProjectsXml(), typeReference);
     }
 }
