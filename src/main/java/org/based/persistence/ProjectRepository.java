@@ -1,46 +1,71 @@
 package org.based.persistence;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
 import org.based.domain.Project;
+
+import java.io.File;
 import java.util.*;
 
 public class ProjectRepository {
-    @Getter
-    @JsonDeserialize(using = BodyDeserializer.class)
+
     private final Map<String, Project> projects;
     private final XmlOperator xmlOperator = new XmlOperator();
-    private final FileOperator fileOperator = new FileOperator();
+    private final FileOperator fileOperator;
     private final JsonOperator jsonOperator = new JsonOperator();
-    private final TypeReference <HashMap<String, Project>> typeReference = new TypeReference<>() {};
+    private final TypeReference<HashMap<String, Project>> typeReference = new TypeReference<>() {
+    };
 
-    public ProjectRepository() {
-//        projects = setProjectsMapJson();
-        projects = setProjectMapXml();
+    public ProjectRepository(FileOperator fileOperator) {
+        this.fileOperator = fileOperator;
+        projects = setProjectRep();
     }
 
     public void save(Project project) {
         projects.put(project.getName(), project);
     }
-
     public List<Project> findAll() {
         return new ArrayList<>(projects.values());
     }
-
-    public void writeProjectsMapJson() {
-        jsonOperator.writeToFile(fileOperator.getFileProjectsJson(), projects);
+    public Map<String, Project> setProjectRep() {
+       final File projectRepositoryFile =
+               fileOperator.setRepositoryFile(fileOperator.getProjectDefaultFileXml());
+        if (!fileOperator.verifyConfig()) {
+            switch (fileOperator.getExtensionByGuava(projectRepositoryFile)) {
+                case "json":
+                    return readJsonMap(projectRepositoryFile);
+                case "xml":
+                    return readXmlMap(projectRepositoryFile);
+            }
+        }
+        return new HashMap<>();
     }
-
-    public void writeProjectsMapXml() {
-        xmlOperator.writeToFile(fileOperator.getFileProjectsXml(), projects);
+    private Map readJsonMap(File repositoryFile) {
+        return jsonOperator.readFile(repositoryFile, typeReference);
     }
-
-    public Map<String,Project> setProjectsMapJson() {
-        return jsonOperator.readFile(fileOperator.getFileProjectsJson(), typeReference);
+    private Map readXmlMap(File repositoryFile) {
+        return xmlOperator.readFile(repositoryFile, typeReference);
     }
-
-    public Map setProjectMapXml() {
-        return xmlOperator.readFile(fileOperator.getFileProjectsXml(), typeReference);
+    public void writeProject() {
+        final File projectRepositoryFile =
+                fileOperator.setRepositoryFile(fileOperator.getProjectDefaultFileXml());
+        if (!fileOperator.verifyConfig()) {
+            switch (fileOperator.getExtensionByGuava(projectRepositoryFile)) {
+                case "json":
+                    writeProjectsMapJson(projectRepositoryFile);
+                    break;
+                case "xml":
+                    writeProjectsMapXml(projectRepositoryFile);
+                    break;
+            }
+            if (fileOperator.verifyConfig()) {
+                writeProjectsMapJson(projectRepositoryFile);
+            }
+        }
+    }
+    private void writeProjectsMapXml(File projectRepositoryFile) {
+        xmlOperator.writeToFile(projectRepositoryFile, projects);
+    }
+    private void writeProjectsMapJson(File projectRepositoryFile) {
+        jsonOperator.writeToFile(projectRepositoryFile, projects);
     }
 }

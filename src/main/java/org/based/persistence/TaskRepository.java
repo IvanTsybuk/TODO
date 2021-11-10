@@ -1,35 +1,26 @@
 package org.based.persistence;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.based.domain.Project;
 import org.based.domain.Task;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@JacksonXmlRootElement(namespace = "taskList")
 public class TaskRepository {
 
-    @JsonDeserialize(using = BodyDeserializer.class)
     private final Map<String, Task> taskList;
     private final JsonOperator jsonOperator = new JsonOperator();
     private final XmlOperator xmlOperator= new XmlOperator();
-    private final FileOperator fileOperator = new FileOperator();
-    XmlMapper xmlMapper = new XmlMapper();
+    private final FileOperator fileOperator;
     private final TypeReference<HashMap<String, Task>>typeReference=
             new TypeReference<>() {};
 
-    public TaskRepository() {
-//        taskList = readTaskFromJson();
-        taskList = readTaskFromXml();
+    public TaskRepository(FileOperator fileOperator) {
+        this.fileOperator = fileOperator;
+        taskList = setTaskRep();
     }
 
     public void save(Task task) {
@@ -42,18 +33,46 @@ public class TaskRepository {
     public void delete(String name){
         taskList.values().removeIf(task -> task.getName().equals(name));
     }
-    public void writeTaskMapToJson(){
-       jsonOperator.writeToFile(fileOperator.getFileTasksJSon(), taskList);
+    public Map<String, Task> setTaskRep() {
+        final File taskRepositoryFile =
+                fileOperator.setRepositoryFile(fileOperator.getTaskDefaultFileJson());
+        if (!fileOperator.verifyConfig()) {
+            switch (fileOperator.getExtensionByGuava(taskRepositoryFile)) {
+                case "json":
+                    return readJsonMap(taskRepositoryFile);
+                case "xml":
+                    return readXmlMap(taskRepositoryFile);
+            }
+        }
+        return new HashMap<>();
     }
-    public void writeTaskListToXml(){
-        xmlOperator.writeToFile(fileOperator.getFileTasksXml(), taskList);
+    private Map readJsonMap(File repositoryFile) {
+        return jsonOperator.readFile(repositoryFile, typeReference);
     }
-
-    public Map<String, Task> readTaskFromJson()  {
-        return  jsonOperator.readFile(fileOperator.getFileTasksJSon(), typeReference);
+    private Map readXmlMap(File repositoryFile) {
+        return xmlOperator.readFile(repositoryFile, typeReference);
     }
-    @JacksonXmlProperty(namespace = "VXC", localName = "taskList")
-    public Map<String, Task> readTaskFromXml(){
-        return xmlOperator.readFile(fileOperator.getFileTasksXml(), typeReference);
+    public void writeTask() {
+        final File taskRepositoryFile =
+                fileOperator.setRepositoryFile(fileOperator.getTaskDefaultFileJson());
+        if (!fileOperator.verifyConfig()) {
+            switch (fileOperator.getExtensionByGuava(taskRepositoryFile)) {
+                case "json":
+                    writeTaskJson(taskRepositoryFile);
+                    break;
+                case "xml":
+                    writeTaskMapXml(taskRepositoryFile);
+                    break;
+            }
+            if (fileOperator.verifyConfig()) {
+                writeTaskJson(taskRepositoryFile);
+            }
+        }
+    }
+    private void writeTaskMapXml(File taskRepositoryFile) {
+        xmlOperator.writeToFile(taskRepositoryFile, taskList);
+    }
+    private void writeTaskJson(File taskRepositoryFile) {
+        jsonOperator.writeToFile(taskRepositoryFile, taskList);
     }
 }

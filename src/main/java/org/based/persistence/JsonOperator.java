@@ -11,7 +11,6 @@ import java.util.Map;
 public class JsonOperator extends AbstractWriter {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-
     @Override
     @SneakyThrows
     void writeToFile(File file, Map<?, ?> mapToFile) {
@@ -21,21 +20,6 @@ public class JsonOperator extends AbstractWriter {
     @SneakyThrows
     Map readFile(File file, TypeReference <?> typeReference) {
         JsonNode jsonNode = objectMapper.readTree(file);
-
         return (Map) objectMapper.convertValue(jsonNode, typeReference);
     }
 }
-
-// Works
-//@Override
-//@SneakyThrows
-//void writeToFile(File file, Map<?, ?> mapToFile) {
-//    objectMapper.writeValue(file, mapToFile);
-//}
-//    @Override
-//    @SneakyThrows
-//    Map readFile(File file, TypeReference <?> typeReference) {
-//        JsonNode jsonNode = objectMapper.readTree(file);
-//        return (Map) objectMapper.convertValue(jsonNode, typeReference);
-//    }
-//}

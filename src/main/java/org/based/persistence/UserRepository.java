@@ -1,25 +1,23 @@
 package org.based.persistence;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.based.domain.User;
 
+import java.io.File;
 import java.util.*;
 
 public class UserRepository {
 
-    @JsonDeserialize( using = BodyDeserializer.class)
     private final Map<String, User> users;
     private final JsonOperator jsonOperator = new JsonOperator();
     private final XmlOperator xmlOperator = new XmlOperator();
-    private final FileOperator fileOperator = new FileOperator();
+    private final FileOperator fileOperator;
     private final TypeReference<HashMap<String, User>> typeReference=new TypeReference<>() {};
 
-    public UserRepository() {
-        users = readUsersFromJson();
-//        users = readUsersFromXml();
+    public UserRepository(FileOperator fileOperator) {
+        this.fileOperator = fileOperator;
+        users = setTaskRep();
     }
-
     public void save(User user) {
       users.put(user.getUserSurName(), user);
     }
@@ -30,16 +28,46 @@ public class UserRepository {
         return users.get(surName);
     }
 
-    public void writeUserMapToJson(){
-        jsonOperator.writeToFile(fileOperator.getFileUserJSon(), users);
+    public Map<String, User> setTaskRep() {
+        final File userRepositoryFile =
+                fileOperator.setRepositoryFile(fileOperator.getUserDefaultFileJson());
+        if (!fileOperator.verifyConfig()) {
+            switch (fileOperator.getExtensionByGuava(userRepositoryFile)) {
+                case "json":
+                    return readJsonMap(userRepositoryFile);
+                case "xml":
+                    return readXmlMap(userRepositoryFile);
+            }
+        }
+        return new HashMap<>();
     }
-    public void writeUsersToXml(){
-        xmlOperator.writeToFile(fileOperator.getFileUserXml(), users);
+    private Map readJsonMap(File repositoryFile) {
+        return jsonOperator.readFile(repositoryFile, typeReference);
     }
-    public Map<String, User> readUsersFromJson() {
-        return jsonOperator.readFile(fileOperator.getFileUserJSon(), typeReference);
+    private Map readXmlMap(File repositoryFile) {
+        return xmlOperator.readFile(repositoryFile, typeReference);
     }
-    public Map readUsersFromXml(){
-        return xmlOperator.readFile(fileOperator.getFileUserXml(), typeReference);
+    public void writeUser() {
+        final File userRepositoryFile =
+                fileOperator.setRepositoryFile(fileOperator.getUserDefaultFileJson());
+        if (!fileOperator.verifyConfig()) {
+            switch (fileOperator.getExtensionByGuava(userRepositoryFile)) {
+                case "json":
+                    writeUserMapJson(userRepositoryFile);
+                    break;
+                case "xml":
+                    writeUserMapXml(userRepositoryFile);
+                    break;
+            }
+            if (fileOperator.verifyConfig()) {
+                writeUserMapJson(userRepositoryFile);
+            }
+        }
+    }
+    private void writeUserMapXml(File userRepositoryFile) {
+        xmlOperator.writeToFile(userRepositoryFile, users);
+    }
+    private void writeUserMapJson(File userRepositoryFile) {
+        jsonOperator.writeToFile(userRepositoryFile, users);
     }
 }

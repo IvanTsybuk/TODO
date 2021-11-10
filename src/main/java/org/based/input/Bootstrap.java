@@ -3,25 +3,32 @@ package org.based.input;
 import org.based.application.ProjectService;
 import org.based.application.TaskService;
 import org.based.application.UserService;
-import org.based.persistence.ProjectRepository;
-import org.based.persistence.TaskRepository;
-import org.based.persistence.UserRepository;
+import org.based.persistence.*;
 
-import javax.annotation.processing.Filer;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Bootstrap {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
+        System.out.println("initialize project variable");
+        Scanner initProject = new Scanner(System.in);
+        final String projectPath = initProject.next();
+        FileOperator projectFileOperator = new FileOperator(projectPath);
+        System.out.println(projectFileOperator.showConfigPath());
+        System.out.println("initialize task variable");
+        Scanner initTask = new Scanner(System.in);
+        final String taskPath = initTask.next();
+        FileOperator taskFileOperator = new FileOperator(taskPath);
+        System.out.println(taskFileOperator.showConfigPath());
+        System.out.println("initialize user variable");
+        Scanner initUser = new Scanner(System.in);
+        final String userPath = initUser.next();
+        FileOperator userFileOperator = new FileOperator(userPath);
+        userFileOperator.showConfigPath();
 
-        ProjectRepository projectRepository = new ProjectRepository();
-        TaskRepository taskRepository = new TaskRepository();
-        UserRepository userRepository = new UserRepository();
+        ProjectRepository projectRepository = new ProjectRepository(projectFileOperator);
+        TaskRepository taskRepository = new TaskRepository(taskFileOperator);
+        UserRepository userRepository = new UserRepository(userFileOperator);
 
         ProjectService projectService = new ProjectService(projectRepository);
         TaskService taskService = new TaskService(taskRepository);
@@ -31,11 +38,8 @@ public class Bootstrap {
                 userService, scanner);
 
         consoleAdapter.startApp();
-//        projectRepository.writeProjectsMapJson();
-//        projectRepository.writeProjectsMapXml();
-        taskRepository.writeTaskMapToJson();
-        taskRepository.writeTaskListToXml();
-        userRepository.writeUserMapToJson();
-
+        projectRepository.writeProject();
+        taskRepository.writeTask();
+        userRepository.writeUser();
     }
 }
