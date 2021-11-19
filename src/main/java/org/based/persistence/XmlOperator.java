@@ -19,7 +19,7 @@ public class XmlOperator extends AbstractWriter {
 
     @Override
     @SneakyThrows
-    Map readFile(File file, TypeReference<?>typeReference) {
+    Map<?,?> readFile(File file, TypeReference<?>typeReference) {
         JsonNode jsonNodeXML = xmlMapper.readTree(file);
         return (Map) xmlMapper.convertValue(jsonNodeXML, typeReference);
     }

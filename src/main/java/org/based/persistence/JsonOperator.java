@@ -18,7 +18,7 @@ public class JsonOperator extends AbstractWriter {
     }
     @Override
     @SneakyThrows
-    Map readFile(File file, TypeReference <?> typeReference) {
+    Map<?,?> readFile(File file, TypeReference <?> typeReference) {
         JsonNode jsonNode = objectMapper.readTree(file);
         return (Map) objectMapper.convertValue(jsonNode, typeReference);
     }

@@ -8,23 +8,19 @@ import org.based.persistence.*;
 import java.util.Scanner;
 
 public class Bootstrap {
+    public static final String DEFAULT_CONFIGURATION_PATH_SET = "DEFAULT";
+    public static final String PROJECT_PATH = "PXI";
+    public static final String TASK_PATH = "TXI";
+    public static final String USER_PATH = "UXI";
 
-    public static void main(String[] args){
-        System.out.println("initialize project variable");
-        Scanner initProject = new Scanner(System.in);
-        final String projectPath = initProject.next();
-        FileOperator projectFileOperator = new FileOperator(projectPath);
-        System.out.println(projectFileOperator.showConfigPath());
+    public static void main(String[] args) {
+
+        System.out.println("project variable initialization");
+        FileOperator projectFileOperator = new FileOperator(setFileOperatorConfiguration(PROJECT_PATH));
         System.out.println("initialize task variable");
-        Scanner initTask = new Scanner(System.in);
-        final String taskPath = initTask.next();
-        FileOperator taskFileOperator = new FileOperator(taskPath);
-        System.out.println(taskFileOperator.showConfigPath());
+        FileOperator taskFileOperator = new FileOperator(setFileOperatorConfiguration(TASK_PATH));
         System.out.println("initialize user variable");
-        Scanner initUser = new Scanner(System.in);
-        final String userPath = initUser.next();
-        FileOperator userFileOperator = new FileOperator(userPath);
-        userFileOperator.showConfigPath();
+        FileOperator userFileOperator = new FileOperator(setFileOperatorConfiguration(USER_PATH));
 
         ProjectRepository projectRepository = new ProjectRepository(projectFileOperator);
         TaskRepository taskRepository = new TaskRepository(taskFileOperator);
@@ -36,10 +32,21 @@ public class Bootstrap {
         Scanner scanner = new Scanner(System.in);
         ConsoleAdapter consoleAdapter = new ConsoleAdapter(taskService, projectService,
                 userService, scanner);
+        taskRepository.show();
 
         consoleAdapter.startApp();
-        projectRepository.writeProject();
-        taskRepository.writeTask();
-        userRepository.writeUser();
+        projectRepository.write();
+        taskRepository.write();
+        userRepository.write();
+    }
+    private static String setFileOperatorConfiguration(String environmentVariable) {
+        String configuration = DEFAULT_CONFIGURATION_PATH_SET;
+        if (System.getenv(environmentVariable) != null) {
+            configuration = System.getenv(environmentVariable);
+            System.out.println(configuration);
+            return configuration;
+        }
+        System.out.println(configuration + " was set");
+        return configuration;
     }
 }
