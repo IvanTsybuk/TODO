@@ -19,9 +19,7 @@ public class Repository<T> {
         this.typeReference = typeReference;
         repositoryMap = setRep();
     }
-    public void show() {
-        System.out.println(typeReference.getType().toString());
-    }
+
     public Map<String, T> setRep() {
         final File taskRepositoryFile =
                 fileOperator.setRepositoryFile(getDefaultFileRepositoryPath());
@@ -36,7 +34,7 @@ public class Repository<T> {
         return new HashMap<>();
     }
     protected String getDefaultFileRepositoryPath() {
-        return fileOperator.showConfigPath();
+        return fileOperator.getConfigPath();
     }
     protected Map readJsonMap(File repositoryFile) {
         return jsonOperator.readFile(repositoryFile, typeReference);

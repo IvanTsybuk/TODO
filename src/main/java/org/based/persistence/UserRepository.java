@@ -8,7 +8,7 @@ import java.util.*;
 public class UserRepository extends Repository<User> {
 
     public UserRepository(FileOperator fileOperator) {
-        super(fileOperator, new TypeReference<HashMap<String, User>>() {});
+        super(fileOperator, new TypeReference<>() {});
     }
 
     @Override

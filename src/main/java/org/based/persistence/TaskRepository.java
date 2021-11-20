@@ -4,13 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.based.domain.Task;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class TaskRepository extends Repository<Task> {
 
     public TaskRepository(FileOperator fileOperator) {
-        super(fileOperator, new TypeReference<HashMap<String, Task>>() {});
+        super(fileOperator, new TypeReference<>() {});
     }
     @Override
     protected String getDefaultFileRepositoryPath() {

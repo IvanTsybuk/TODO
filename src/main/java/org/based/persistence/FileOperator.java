@@ -4,12 +4,14 @@ import com.google.common.io.Files;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.based.input.Bootstrap;
 
 import java.io.File;
 
 @Getter
 @Setter
 public class FileOperator {
+    public static final String DEFAULT = Bootstrap.DEFAULT_CONFIGURATION_PATH_SET;
     private final String fileConfig;
     private final String PROJECT_DEFAULT_FILE_JSON = "target/projectsII.json";
     private final String PROJECT_DEFAULT_FILE_XML = "target/projects.xml";
@@ -17,21 +19,17 @@ public class FileOperator {
     private final String TASK_DEFAULT_FILE_XML = "target/tasks.xml";
     private final String USER_DEFAULT_FILE_JSON = "target/users.json";
     private final String USER_DEFAULT_FILE_XML = "target/users.xml";
+    private final String COMMON_DEFAULT_FILE_JSON = "target/data_log.json";
 
     public FileOperator(String fileConfig) {
         this.fileConfig = fileConfig;
     }
-    public String showConfigPath() {
-        String projectConfig = System.getenv(fileConfig);
-        if (System.getenv(fileConfig) == null || projectConfig.isEmpty()) {
-            return "Default File was set";
-        }
-        return projectConfig;
+    public String getConfigPath() {
+        return COMMON_DEFAULT_FILE_JSON;
     }
-
     public File setRepositoryFile(String defaultFilePath) {
         final String fileConfig = getFileConfig();
-        if (fileConfig.equals("DEFAULT")) {
+        if (fileConfig.equals(DEFAULT)||fileConfig.isEmpty()) {
             return createDefaultRepositoryFile(defaultFilePath);
         }
         return new File(fileConfig);
@@ -44,7 +42,6 @@ public class FileOperator {
         }
         return defaultFile;
     }
-    //ByGuava
     public String getExtension(File file) {
         return Files.getFileExtension(file.getName());
     }

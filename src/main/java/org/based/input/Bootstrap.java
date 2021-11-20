@@ -32,7 +32,6 @@ public class Bootstrap {
         Scanner scanner = new Scanner(System.in);
         ConsoleAdapter consoleAdapter = new ConsoleAdapter(taskService, projectService,
                 userService, scanner);
-        taskRepository.show();
 
         consoleAdapter.startApp();
         projectRepository.write();
