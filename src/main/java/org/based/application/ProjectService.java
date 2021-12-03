@@ -2,23 +2,23 @@ package org.based.application;
 
 import lombok.Getter;
 import org.based.domain.Project;
-import org.based.persistence.ProjectRepository;
+import org.based.persistence.Repository;
 
 import java.util.List;
 
 public class ProjectService {
     @Getter
-    private final ProjectRepository projectRepository;
+    private final Repository<Project>repository;
 
-    public ProjectService(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
+    public ProjectService(Repository<Project>repository) {
+        this.repository = repository;
     }
 
     public void createProject(Project project) {
-        projectRepository.save(project);
+        repository.save(project);
     }
 
     public List<Project> getAllProjects() {
-        return projectRepository.findAll();
+        return repository.findAll();
     }
 }

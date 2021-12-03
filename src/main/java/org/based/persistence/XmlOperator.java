@@ -8,19 +8,22 @@ import lombok.SneakyThrows;
 import java.io.File;
 import java.util.Map;
 
-public class XmlOperator extends AbstractWriter {
+public class XmlOperator extends AbstractOperator {
     private final XmlMapper xmlMapper = new XmlMapper();
 
-    @Override
-    @SneakyThrows
-    void writeToFile(File file, Map <?, ?> mapToFile) {
-        xmlMapper.writeValue(file, mapToFile);
+    public XmlOperator(File fileConfigPath) {
+        super(fileConfigPath);
     }
 
     @Override
     @SneakyThrows
-    Map<?,?> readFile(File file, TypeReference<?>typeReference) {
-        JsonNode jsonNodeXML = xmlMapper.readTree(file);
+    public void writeToFile(Map<?, ?> mapToFile) {
+        xmlMapper.writeValue(getFileConfigPath(), mapToFile);
+    }
+    @Override
+    @SneakyThrows
+    public Map<?,?> readFile(TypeReference<?>typeReference) {
+        JsonNode jsonNodeXML = xmlMapper.readTree(getFileConfigPath());
         return (Map) xmlMapper.convertValue(jsonNodeXML, typeReference);
     }
 }

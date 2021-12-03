@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-    @Data
-public class Project {
+@Data
+public class Project  {
     private String name;
     private String description;
 
@@ -14,4 +14,4 @@ public class Project {
             this.name = name;
             this.description = description;
         }
-    }
+}

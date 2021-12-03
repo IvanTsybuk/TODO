@@ -6,12 +6,12 @@ import lombok.Data;
 
 @Data
 public class User {
-    private String userName;
+    private String name;
     private String userSurName;
 
     @JsonCreator
-    public User(@JsonProperty("userName") String userName,@JsonProperty("userSurName") String userSurName) {
-        this.userName = userName;
+    public User(@JsonProperty("name") String name, @JsonProperty("userSurName") String userSurName) {
+        this.name = name;
         this.userSurName = userSurName;
     }
 }

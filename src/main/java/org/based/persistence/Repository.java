@@ -1,68 +1,59 @@
 package org.based.persistence;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.Data;
+import org.based.domain.Project;
+import org.based.domain.Task;
+import org.based.domain.User;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class Repository<T> {
+@Data
+public class Repository<T> implements Entity {
 
-    protected final Map<String, T> repositoryMap;
-    protected final FileOperator fileOperator;
-    protected final XmlOperator xmlOperator = new XmlOperator();
-    protected final JsonOperator jsonOperator = new JsonOperator();
-    protected TypeReference<HashMap<String, T>> typeReference;
+    private final Map<String, T> repositoryMap;
+    private final AbstractOperator abstractOperator;
+    private final TypeReference<HashMap<String, T>> typeReference;
 
-    public Repository(FileOperator fileOperator, TypeReference<HashMap<String, T>> typeReference) {
-        this.fileOperator = fileOperator;
+    public Repository(AbstractOperator abstractOperator, TypeReference<HashMap<String, T>> typeReference) {
+        this.abstractOperator = abstractOperator;
         this.typeReference = typeReference;
-        repositoryMap = setRep();
+        repositoryMap = getMap();
     }
 
-    public Map<String, T> setRep() {
-        final File taskRepositoryFile =
-                fileOperator.setRepositoryFile(getDefaultFileRepositoryPath());
-        if (!fileOperator.verifyConfig()) {
-            switch (fileOperator.getExtension(taskRepositoryFile)) {
-                case "json":
-                    return readJsonMap(taskRepositoryFile);
-                case "xml":
-                    return readXmlMap(taskRepositoryFile);
-            }
-        }
-        return new HashMap<>();
+    @Override
+    public void save(Task task) {
+        repositoryMap.put(task.getName(), (T) task);
     }
-    protected String getDefaultFileRepositoryPath() {
-        return fileOperator.getConfigPath();
+    @Override
+    public void save(User user) {
+        repositoryMap.put(user.getUserSurName(), (T) user);
     }
-    protected Map readJsonMap(File repositoryFile) {
-        return jsonOperator.readFile(repositoryFile, typeReference);
+
+    @Override
+    public void save(Project project) {
+        repositoryMap.put(project.getName(), (T) project);
     }
-    protected Map readXmlMap(File repositoryFile) {
-        return xmlOperator.readFile(repositoryFile, typeReference);
+
+    @Override
+    public List<T> findAll() {
+        return new ArrayList<>(repositoryMap.values());
     }
-    public void write() {
-        final File taskRepositoryFile =
-                fileOperator.setRepositoryFile(getDefaultFileRepositoryPath());
-        if (!fileOperator.verifyConfig()) {
-            switch (fileOperator.getExtension(taskRepositoryFile)) {
-                case "json":
-                    writeMapJson(taskRepositoryFile);
-                    break;
-                case "xml":
-                    writeMapXml(taskRepositoryFile);
-                    break;
-            }
-            if (fileOperator.verifyConfig()) {
-                writeMapJson(taskRepositoryFile);
-            }
-        }
+
+    @Override
+    public void delete(String name) {
+        repositoryMap.remove(name);
     }
-    protected void writeMapXml(File taskRepositoryFile) {
-        xmlOperator.writeToFile(taskRepositoryFile, repositoryMap);
+
+    @Override
+    public User findByName(String surName) {
+        return (User) repositoryMap.get(surName);
     }
-    protected void writeMapJson(File taskRepositoryFile) {
-        jsonOperator.writeToFile(taskRepositoryFile, repositoryMap);
+
+    public Map getMap() {
+       return abstractOperator.readFile(typeReference);
+    }
+    public void sendRepository(){
+        abstractOperator.writeToFile(repositoryMap);
     }
 }

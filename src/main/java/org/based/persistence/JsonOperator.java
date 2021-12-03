@@ -8,18 +8,23 @@ import lombok.SneakyThrows;
 import java.io.File;
 import java.util.Map;
 
-public class JsonOperator extends AbstractWriter {
+public class JsonOperator extends AbstractOperator {
+
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public JsonOperator(File fileConfigPath) {
+        super(fileConfigPath);
+    }
 
     @Override
     @SneakyThrows
-    void writeToFile(File file, Map<?, ?> mapToFile) {
-        objectMapper.writeValue(file, mapToFile);
+    public void writeToFile(Map<?, ?> mapToFile) {
+        objectMapper.writeValue(getFileConfigPath(), mapToFile);
     }
     @Override
     @SneakyThrows
-    Map<?,?> readFile(File file, TypeReference <?> typeReference) {
-        JsonNode jsonNode = objectMapper.readTree(file);
+    public Map<?,?> readFile(TypeReference <?> typeReference) {
+        JsonNode jsonNode = objectMapper.readTree(getFileConfigPath());
         return (Map) objectMapper.convertValue(jsonNode, typeReference);
     }
 }
