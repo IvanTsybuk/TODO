@@ -5,14 +5,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.SneakyThrows;
 
-import java.io.File;
 import java.util.Map;
 
-public class XmlOperator extends AbstractOperator {
+public class XmlWriter extends AbstractWriter {
+
     private final XmlMapper xmlMapper = new XmlMapper();
 
-    public XmlOperator(File fileConfigPath) {
-        super(fileConfigPath);
+        public XmlWriter(String environmentVariable, Class clazz) {
+        super(environmentVariable, clazz);
     }
 
     @Override

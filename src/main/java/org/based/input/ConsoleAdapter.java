@@ -41,7 +41,7 @@ public class ConsoleAdapter {
                 case "3":
                     System.out.println("Insert your SurName:");
                     String insertedSurname = scanner.next().trim();
-                    User userByDepartment = userService.findUserBySurName(insertedSurname);
+                    User userByDepartment = userService.findUserByName(insertedSurname);
                     System.out.println(userByDepartment.toString());
                     System.out.println("Press 4 to get project menu or 0 to exit");
                     break;
@@ -67,16 +67,16 @@ public class ConsoleAdapter {
         System.out.println("Insert  Project's description:");
         String projectDescription = scanner.next();
         projectService.createProject(new Project(insertedProjectName, projectDescription));
-               System.out.println(projectService.getAllProjects());
+               System.out.println(projectService.getProjects());
     }
 
     private void takeAwayTask() {
         System.out.println("Delete task:");
-        System.out.println(taskService.getTaskList());
+        System.out.println(taskService.getTasks());
         System.out.println("Task to be deleted:");
         String deleteTask = scanner.next();
-        taskService.removeSelectedTask(deleteTask);
-        System.out.println("AFTER REMOVE:\n" + taskService.getTaskList());
+        taskService.removeByName(deleteTask);
+        System.out.println("AFTER REMOVE:\n" + taskService.getTasks());
     }
 
     private void fillInTask() {
@@ -84,8 +84,8 @@ public class ConsoleAdapter {
         String taskName = scanner.next();
         System.out.println("Task Description:");
         String taskDescription = scanner.next();
-        taskService.addTask(new Task(taskName, taskDescription));
-        System.out.println("Task List:\n" + taskService.getTaskList());
+        taskService.createTask(new Task(taskName, taskDescription));
+        System.out.println("Task List:\n" + taskService.getTasks());
     }
 
     private void fillUser() {
@@ -93,7 +93,7 @@ public class ConsoleAdapter {
         String name = scanner.next().trim();
         System.out.println("\n=====Enter your surname:====");
         String surname = scanner.next().trim();
-        userService.createNewUser(new User(name, surname));
+        userService.createUser(new User(name, surname));
         System.out.println("Insert command's code");
     }
 

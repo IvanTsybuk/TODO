@@ -1,13 +1,12 @@
 package org.based.application;
 
-import lombok.Getter;
 import org.based.domain.Project;
 import org.based.persistence.Repository;
 
 import java.util.List;
 
 public class ProjectService {
-    @Getter
+
     private final Repository<Project>repository;
 
     public ProjectService(Repository<Project>repository) {
@@ -17,8 +16,7 @@ public class ProjectService {
     public void createProject(Project project) {
         repository.save(project);
     }
-
-    public List<Project> getAllProjects() {
+    public List<Project> getProjects() {
         return repository.findAll();
     }
 }

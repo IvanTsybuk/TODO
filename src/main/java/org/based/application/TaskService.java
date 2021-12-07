@@ -10,18 +10,15 @@ public class TaskService {
 
     public TaskService(Repository<Task>repository) {
         this.repository = repository;
-
     }
 
-    public void addTask(Task task) {
+    public void createTask(Task task) {
         repository.save(task);
     }
-
-    public List<Task> getTaskList() {
+    public List<Task> getTasks() {
         return repository.findAll();
     }
-
-    public void removeSelectedTask(String taskName) {
+    public void removeByName(String taskName) {
         repository.delete(taskName);
     }
 }

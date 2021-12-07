@@ -1,4 +1,5 @@
 package org.based.application;
+
 import org.based.domain.User;
 import org.based.persistence.Repository;
 import java.util.List;
@@ -11,15 +12,13 @@ public class UserService {
         this.repository = repository;
     }
 
-    public void createNewUser(User user) {
+    public void createUser(User user) {
         repository.save(user);
     }
-
     public List<User> getUsers() {
         return repository.findAll();
     }
-
-    public User findUserBySurName(String userSurname) {
-        return repository.findByName(userSurname);
+    public User findUserByName(String username) {
+        return repository.findByName(username);
     }
 }

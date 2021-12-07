@@ -1,59 +1,37 @@
 package org.based.persistence;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.Data;
-import org.based.domain.Project;
-import org.based.domain.Task;
-import org.based.domain.User;
 
 import java.util.*;
 
-@Data
-public class Repository<T> implements Entity {
+public class Repository<T extends Entity> {
 
     private final Map<String, T> repositoryMap;
-    private final AbstractOperator abstractOperator;
+    private final AbstractWriter abstractWriter;
     private final TypeReference<HashMap<String, T>> typeReference;
 
-    public Repository(AbstractOperator abstractOperator, TypeReference<HashMap<String, T>> typeReference) {
-        this.abstractOperator = abstractOperator;
+    public Repository(AbstractWriter abstractWriter, TypeReference<HashMap<String, T>> typeReference) {
+        this.abstractWriter = abstractWriter;
         this.typeReference = typeReference;
         repositoryMap = getMap();
     }
 
-    @Override
-    public void save(Task task) {
-        repositoryMap.put(task.getName(), (T) task);
+    public void save(T entity){
+        repositoryMap.put(entity.getName(), entity);
     }
-    @Override
-    public void save(User user) {
-        repositoryMap.put(user.getUserSurName(), (T) user);
-    }
-
-    @Override
-    public void save(Project project) {
-        repositoryMap.put(project.getName(), (T) project);
-    }
-
-    @Override
     public List<T> findAll() {
         return new ArrayList<>(repositoryMap.values());
     }
-
-    @Override
     public void delete(String name) {
         repositoryMap.remove(name);
     }
-
-    @Override
-    public User findByName(String surName) {
-        return (User) repositoryMap.get(surName);
+    public T findByName(String name) {
+        return (T) repositoryMap.get(name);
     }
-
     public Map getMap() {
-       return abstractOperator.readFile(typeReference);
+        return abstractWriter.readFile(typeReference);
     }
     public void sendRepository(){
-        abstractOperator.writeToFile(repositoryMap);
+        abstractWriter.writeToFile(repositoryMap);
     }
 }

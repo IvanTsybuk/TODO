@@ -8,13 +8,13 @@ import lombok.SneakyThrows;
 import java.io.File;
 import java.util.Map;
 
-public class JsonOperator extends AbstractOperator {
+public class JsonWriter extends AbstractWriter {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public JsonOperator(File fileConfigPath) {
-        super(fileConfigPath);
-    }
+        public JsonWriter(String environmentVariable, Class clazz) {
+        super(environmentVariable, clazz);
+        }
 
     @Override
     @SneakyThrows
