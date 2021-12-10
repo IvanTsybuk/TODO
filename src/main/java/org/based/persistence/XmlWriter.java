@@ -5,25 +5,37 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.SneakyThrows;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Map;
 
 public class XmlWriter extends AbstractWriter {
-
     private final XmlMapper xmlMapper = new XmlMapper();
-
-        public XmlWriter(String environmentVariable, Class clazz) {
-        super(environmentVariable, clazz);
+    private final File configFile;
+    public XmlWriter(String environmentVariable) {
+        super(environmentVariable);
+        configFile = getFile(environmentVariable);
     }
-
+    @Override
+    @SneakyThrows
+    void setFileStructure(File defaultFile) {
+                FileWriter writer = new FileWriter(defaultFile);
+                writer.append("<HashMap></HashMap>");
+                writer.flush();
+                writer.close();
+            }
     @Override
     @SneakyThrows
     public void writeToFile(Map<?, ?> mapToFile) {
-        xmlMapper.writeValue(getFileConfigPath(), mapToFile);
+        xmlMapper.writeValue(configFile, mapToFile);
     }
     @Override
     @SneakyThrows
     public Map<?,?> readFile(TypeReference<?>typeReference) {
-        JsonNode jsonNodeXML = xmlMapper.readTree(getFileConfigPath());
+        if (configFile.length() == 0) {
+            setFileStructure(configFile);
+        }
+            JsonNode jsonNodeXML = xmlMapper.readTree(configFile);
         return (Map) xmlMapper.convertValue(jsonNodeXML, typeReference);
     }
 }

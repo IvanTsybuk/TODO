@@ -7,10 +7,8 @@ import org.based.persistence.Entity;
 
 @Data
 public class Task implements Entity {
-
     private String name;
     private String description;
-
     @JsonCreator
     public Task(@JsonProperty("name") String name, @JsonProperty("description") String description) {
         this.name = name;

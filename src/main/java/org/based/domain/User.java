@@ -9,7 +9,6 @@ import org.based.persistence.Entity;
 public class User implements Entity {
     private String name;
     private String userSurName;
-
     @JsonCreator
     public User(@JsonProperty("name") String name, @JsonProperty("userSurName") String userSurName) {
         this.name = name;

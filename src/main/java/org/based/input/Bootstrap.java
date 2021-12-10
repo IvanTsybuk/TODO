@@ -12,34 +12,26 @@ import org.based.persistence.*;
 import java.util.Scanner;
 
 public class Bootstrap {
-    public static final String PROJECT_PATH = "PX";
-    public static final String TASK_PATH = "TXII";
-    public static final String USER_PATH = "UX";
+    public static final String PROJECT_PATH = "Project_JSON";
+    public static final String TASK_PATH = "Task_JSON";
+    public static final String USER_PATH = "User_JSON";
 
     public static void main(String[] args) {
-
-        AbstractWriter abstractProjectWriter = new AbstractWriter(PROJECT_PATH, Project.class);
-        final AbstractWriter projectWriter = abstractProjectWriter.getOperator();
-
-        AbstractWriter abstractTaskWriter = new AbstractWriter(TASK_PATH, Task.class);
-        final AbstractWriter taskWriter = abstractTaskWriter.getOperator();
-
-        AbstractWriter abstractUserWriter = new AbstractWriter(USER_PATH, User.class);
-        final AbstractWriter userWriter = abstractUserWriter.getOperator();
-
-        Repository<Project> projectRepository = new Repository<>(projectWriter, new TypeReference<>() {
+        Writer projectWriter = new Writer(PROJECT_PATH, Project.class.getSimpleName());
+        Repository<Project> projectRepository = new Repository<>(projectWriter.getAbstractWriter(), new TypeReference<>() {
         });
         ProjectService projectService = new ProjectService(projectRepository);
-        Repository<Task> taskRepository = new Repository<>(taskWriter, new TypeReference<>() {
+        Writer taskWriter = new Writer(TASK_PATH, Task.class.getSimpleName());
+        Repository<Task> taskRepository = new Repository<>(taskWriter.getAbstractWriter(), new TypeReference<>() {
         });
         TaskService taskService = new TaskService(taskRepository);
-        Repository<User> userRepository = new Repository<>(userWriter, new TypeReference<>() {
+        Writer userWriter = new Writer(USER_PATH, User.class.getSimpleName());
+        Repository<User> userRepository = new Repository<>(userWriter.getAbstractWriter(), new TypeReference<>() {
         });
         UserService userService = new UserService(userRepository);
         Scanner scanner = new Scanner(System.in);
         ConsoleAdapter consoleAdapter = new ConsoleAdapter(taskService, projectService,
                 userService, scanner);
-
         consoleAdapter.startApp();
         projectRepository.sendRepository();
         taskRepository.sendRepository();

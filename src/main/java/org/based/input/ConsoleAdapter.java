@@ -10,12 +10,10 @@ import org.based.domain.User;
 import java.util.Scanner;
 
 public class ConsoleAdapter {
-
     private final TaskService taskService;
     private final ProjectService projectService;
     private final UserService userService;
     private final Scanner scanner;
-
     public ConsoleAdapter(TaskService taskService, ProjectService projectService, UserService userService,
                          Scanner scanner) {
         this.taskService = taskService;
@@ -24,7 +22,6 @@ public class ConsoleAdapter {
         this.scanner = scanner;
         System.out.println("Press to start");
     }
-
         public void startApp() {
         showCommands();
         while (true) {
@@ -60,7 +57,6 @@ public class ConsoleAdapter {
             }
         }
     }
-
     private void doProject() {
         System.out.println("Insert new Project's name:");
         String insertedProjectName = scanner.next();
@@ -69,7 +65,6 @@ public class ConsoleAdapter {
         projectService.createProject(new Project(insertedProjectName, projectDescription));
                System.out.println(projectService.getProjects());
     }
-
     private void takeAwayTask() {
         System.out.println("Delete task:");
         System.out.println(taskService.getTasks());
@@ -78,7 +73,6 @@ public class ConsoleAdapter {
         taskService.removeByName(deleteTask);
         System.out.println("AFTER REMOVE:\n" + taskService.getTasks());
     }
-
     private void fillInTask() {
         System.out.println("Task:");
         String taskName = scanner.next();
@@ -87,7 +81,6 @@ public class ConsoleAdapter {
         taskService.createTask(new Task(taskName, taskDescription));
         System.out.println("Task List:\n" + taskService.getTasks());
     }
-
     private void fillUser() {
         System.out.println("=====Create new USer =====\nEnter your name:");
         String name = scanner.next().trim();
@@ -96,7 +89,6 @@ public class ConsoleAdapter {
         userService.createUser(new User(name, surname));
         System.out.println("Insert command's code");
     }
-
     private void showCommands() {
         System.out.println("===Select an option:===\n" +
                 "0. Finish programme\n" +
