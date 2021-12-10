@@ -27,7 +27,7 @@ public abstract class AbstractWriter {
         }
         return file;
     }
-    abstract void setFileStructure(File defaultFile);
+    protected abstract void setFileStructure(File defaultFile);
     @SneakyThrows
     protected void writeToFile (Map < ?, ?>mapToFile){
     }

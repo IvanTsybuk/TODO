@@ -15,14 +15,14 @@ public class ConsoleAdapter {
     private final UserService userService;
     private final Scanner scanner;
     public ConsoleAdapter(TaskService taskService, ProjectService projectService, UserService userService,
-                         Scanner scanner) {
+                          Scanner scanner) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.userService = userService;
         this.scanner = scanner;
         System.out.println("Press to start");
     }
-        public void startApp() {
+    public void startApp() {
         showCommands();
         while (true) {
             String commandNumber;
@@ -63,7 +63,7 @@ public class ConsoleAdapter {
         System.out.println("Insert  Project's description:");
         String projectDescription = scanner.next();
         projectService.createProject(new Project(insertedProjectName, projectDescription));
-               System.out.println(projectService.getProjects());
+        System.out.println(projectService.getProjects());
     }
     private void takeAwayTask() {
         System.out.println("Delete task:");

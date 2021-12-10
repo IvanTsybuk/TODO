@@ -18,7 +18,7 @@ public class XmlWriter extends AbstractWriter {
     }
     @Override
     @SneakyThrows
-    void setFileStructure(File defaultFile) {
+    protected void setFileStructure(File defaultFile) {
                 FileWriter writer = new FileWriter(defaultFile);
                 writer.append("<HashMap></HashMap>");
                 writer.flush();

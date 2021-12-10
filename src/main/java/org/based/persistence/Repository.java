@@ -12,9 +12,6 @@ public class Repository<T extends Entity> {
         this.typeReference = typeReference;
         repositoryMap = (Map<String, T>) abstractWriter.readFile(typeReference);
     }
-    private Map getMap() {
-        return abstractWriter.readFile(typeReference);
-    }
     public void save(T entity){
         repositoryMap.put(entity.getName(), entity);
     }

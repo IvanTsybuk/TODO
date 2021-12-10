@@ -22,7 +22,7 @@ public class JsonWriter extends AbstractWriter {
     }
     @Override
     @SneakyThrows
-    void setFileStructure(File defaultFile) {
+    protected void setFileStructure(File defaultFile) {
                 FileWriter writer = new FileWriter(defaultFile);
                 writer.append("{}");
                 writer.flush();

@@ -5,7 +5,7 @@ import org.based.persistence.Repository;
 import java.util.List;
 
 public class UserService {
-    private final Repository<User>repository;
+    private final Repository<User> repository;
     public UserService(Repository repository) {
         this.repository = repository;
     }

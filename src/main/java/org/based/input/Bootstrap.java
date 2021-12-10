@@ -17,16 +17,14 @@ public class Bootstrap {
     public static final String USER_PATH = "User_JSON";
 
     public static void main(String[] args) {
-        Writer projectWriter = new Writer(PROJECT_PATH, Project.class.getSimpleName());
-        Repository<Project> projectRepository = new Repository<>(projectWriter.getAbstractWriter(), new TypeReference<>() {
+        WriterBuilder writerBuilder = new WriterBuilder();
+        Repository<Project> projectRepository = new Repository<>(writerBuilder.getAbstractWriter(PROJECT_PATH, Project.class.getSimpleName()), new TypeReference<>() {
         });
         ProjectService projectService = new ProjectService(projectRepository);
-        Writer taskWriter = new Writer(TASK_PATH, Task.class.getSimpleName());
-        Repository<Task> taskRepository = new Repository<>(taskWriter.getAbstractWriter(), new TypeReference<>() {
+        Repository<Task> taskRepository = new Repository<>(writerBuilder.getAbstractWriter(TASK_PATH, Task.class.getSimpleName()), new TypeReference<>() {
         });
         TaskService taskService = new TaskService(taskRepository);
-        Writer userWriter = new Writer(USER_PATH, User.class.getSimpleName());
-        Repository<User> userRepository = new Repository<>(userWriter.getAbstractWriter(), new TypeReference<>() {
+        Repository<User> userRepository = new Repository<>(writerBuilder.getAbstractWriter(USER_PATH, User.class.getSimpleName()), new TypeReference<>() {
         });
         UserService userService = new UserService(userRepository);
         Scanner scanner = new Scanner(System.in);

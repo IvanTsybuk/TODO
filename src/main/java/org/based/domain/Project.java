@@ -10,8 +10,8 @@ public class Project implements Entity {
     private String name;
     private String description;
     @JsonCreator
-        public Project(@JsonProperty("name") String name,@JsonProperty("description") String description) {
-            this.name = name;
-            this.description = description;
-        }
+    public Project(@JsonProperty("name") String name, @JsonProperty("description") String description) {
+        this.name = name;
+        this.description = description;
+    }
 }
