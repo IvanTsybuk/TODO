@@ -1,19 +1,17 @@
 package org.based.persistence;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.util.HashMap;
 import java.util.Map;
 
-public class JsonWriter extends AbstractWriter {
-    private final ObjectMapper objectMapper = new ObjectMapper();
+public class JsonWriter<T> extends AbstractWriter<T> {
     private final File configFile;
-    public JsonWriter(String configurationFilePath) {
-        super(configurationFilePath);
+    public JsonWriter(String configurationFilePath, ObjectMapper objectMapper) {
+        super(configurationFilePath, objectMapper);
         configFile = getFile(configurationFilePath);
     }
     @Override
@@ -22,24 +20,14 @@ public class JsonWriter extends AbstractWriter {
     }
     @Override
     @SneakyThrows
-    protected void setFileStructure(File defaultFile) {
-                FileWriter writer = new FileWriter(defaultFile);
-                writer.append("{}");
-                writer.flush();
-                writer.close();
-        }
-    @Override
-    @SneakyThrows
-    public void writeToFile(Map<?, ?> mapToFile) {
+    public void writeToFile(Map<String,T> mapToFile) {
         objectMapper.writeValue(configFile, mapToFile);
     }
-    @Override
     @SneakyThrows
-    public Map<?,?> readFile(TypeReference <?> typeReference) {
+    public Map<String,T> readFile(TypeReference<HashMap<String,T>> typeReference) {
         if(configFile.length()==0){
-            setFileStructure(configFile);
+            setFileStructure(configFile, FileAppend.JSON.getAppendType());
         }
-        JsonNode jsonNode = objectMapper.readTree(configFile);
-        return (Map) objectMapper.convertValue(jsonNode, typeReference);
+        return   objectMapper.convertValue(readTree(configFile),typeReference);
     }
 }

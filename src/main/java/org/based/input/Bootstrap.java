@@ -12,9 +12,9 @@ import org.based.persistence.*;
 import java.util.Scanner;
 
 public class Bootstrap {
-    public static final String PROJECT_PATH = "Project_JSON";
-    public static final String TASK_PATH = "Task_JSON";
-    public static final String USER_PATH = "User_JSON";
+    public static final String PROJECT_PATH = "Project_XML";
+    public static final String TASK_PATH = "Task_XML";
+    public static final String USER_PATH = "User_XML";
 
     public static void main(String[] args) {
         WriterBuilder writerBuilder = new WriterBuilder();

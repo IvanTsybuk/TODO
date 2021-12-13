@@ -6,11 +6,9 @@ import java.util.*;
 public class Repository<T extends Entity> {
     private final Map<String, T> repositoryMap;
     private final AbstractWriter abstractWriter;
-    private final TypeReference<HashMap<String, T>> typeReference;
-    public Repository(AbstractWriter abstractWriter, TypeReference<HashMap<String, T>> typeReference) {
+    public Repository(AbstractWriter abstractWriter, TypeReference<HashMap<String, T>>typeReference) {
         this.abstractWriter = abstractWriter;
-        this.typeReference = typeReference;
-        repositoryMap = (Map<String, T>) abstractWriter.readFile(typeReference);
+        repositoryMap = abstractWriter.readFile(typeReference);
     }
     public void save(T entity){
         repositoryMap.put(entity.getName(), entity);

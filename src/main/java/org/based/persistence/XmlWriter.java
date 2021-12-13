@@ -1,41 +1,30 @@
 package org.based.persistence;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.util.HashMap;
 import java.util.Map;
 
-public class XmlWriter extends AbstractWriter {
-    private final XmlMapper xmlMapper = new XmlMapper();
+public class XmlWriter<T>  extends AbstractWriter<T> {
     private final File configFile;
-    public XmlWriter(String environmentVariable) {
-        super(environmentVariable);
+    public XmlWriter(String environmentVariable, ObjectMapper objectMapper) {
+        super(environmentVariable, objectMapper);
         configFile = getFile(environmentVariable);
     }
     @Override
     @SneakyThrows
-    protected void setFileStructure(File defaultFile) {
-                FileWriter writer = new FileWriter(defaultFile);
-                writer.append("<HashMap></HashMap>");
-                writer.flush();
-                writer.close();
-            }
-    @Override
-    @SneakyThrows
-    public void writeToFile(Map<?, ?> mapToFile) {
-        xmlMapper.writeValue(configFile, mapToFile);
+    public void writeToFile(Map<String, T> mapToFile) {
+        objectMapper.writeValue(configFile, mapToFile);
     }
     @Override
     @SneakyThrows
-    public Map<?,?> readFile(TypeReference<?>typeReference) {
-        if (configFile.length() == 0) {
-            setFileStructure(configFile);
+    public Map<String,T> readFile(TypeReference<HashMap<String,T>> typeReference) {
+        if(configFile.length()==0){
+            setFileStructure(configFile, FileAppend.XML.getAppendType());
         }
-            JsonNode jsonNodeXML = xmlMapper.readTree(configFile);
-        return (Map) xmlMapper.convertValue(jsonNodeXML, typeReference);
+        return  objectMapper.convertValue(readTree(configFile), typeReference);
     }
 }

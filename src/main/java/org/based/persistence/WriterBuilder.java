@@ -1,5 +1,7 @@
 package org.based.persistence;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.io.Files;
 
 public class WriterBuilder {
@@ -7,11 +9,11 @@ public class WriterBuilder {
         String configurationFilePath = getFileConfigurationPath(environmentVariable, className);
         switch (extension(configurationFilePath)) {
             case "json":
-                return new JsonWriter(configurationFilePath);
+                return new JsonWriter<>(configurationFilePath, new ObjectMapper());
             case "xml":
-                return new XmlWriter(configurationFilePath);
+                return new XmlWriter<>(configurationFilePath, new XmlMapper());
         }
-        return new JsonWriter("NULL_CASEs.json");
+        return new JsonWriter<>("NULL_CASEs.json", new ObjectMapper());
     }
     private String getFileConfigurationPath(String environmentVariable, String className) {
         String configuration = createDefaultFileName(className);
