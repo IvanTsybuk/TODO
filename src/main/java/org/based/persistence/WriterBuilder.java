@@ -5,7 +5,13 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.io.Files;
 
 public class WriterBuilder {
-    public AbstractWriter getAbstractWriter(String environmentVariable, String className) {
+    private final String environmentVariable;
+    private final String className;
+    public WriterBuilder(String environmentVariable, String className) {
+        this.environmentVariable = environmentVariable;
+        this.className = className;
+    }
+    public AbstractWriter build() {
         String configurationFilePath = getFileConfigurationPath(environmentVariable, className);
         switch (extension(configurationFilePath)) {
             case "json":
