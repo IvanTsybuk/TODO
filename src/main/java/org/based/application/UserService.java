@@ -6,7 +6,7 @@ import java.util.List;
 
 public class UserService {
     private final Repository<User> repository;
-    public UserService(Repository repository) {
+    public UserService(Repository<User> repository) {
         this.repository = repository;
     }
     public void createUser(User user){

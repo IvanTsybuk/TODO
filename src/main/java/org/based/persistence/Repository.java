@@ -1,14 +1,13 @@
 package org.based.persistence;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.*;
 
 public class Repository<T extends Entity> {
     private final Map<String, T> repositoryMap;
-    private final AbstractWriter abstractWriter;
-    public Repository(AbstractWriter abstractWriter, TypeReference<HashMap<String, T>>typeReference) {
-        this.abstractWriter = abstractWriter;
-        repositoryMap = abstractWriter.readFile(typeReference);
+    private final Writer<T> writer;
+    public Repository(Writer<T> writer) {
+        this.writer = writer;
+        repositoryMap = writer.readFile();
     }
     public void save(T entity){
         repositoryMap.put(entity.getName(), entity);
@@ -20,9 +19,9 @@ public class Repository<T extends Entity> {
         repositoryMap.remove(name);
     }
     public T findByName(String name) {
-        return (T) repositoryMap.get(name);
+        return repositoryMap.get(name);
     }
-    public void sendRepository(){
-        abstractWriter.writeToFile(repositoryMap);
+    public void saveToFile(){
+        writer.writeToFile(repositoryMap);
     }
 }
