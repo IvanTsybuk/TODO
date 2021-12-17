@@ -3,44 +3,39 @@ package org.based.persistence;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.io.Files;
-import lombok.Data;
 import lombok.SneakyThrows;
 
 import java.io.File;
 import java.io.FileWriter;
 
-@Data
 public class WriterBuilder<T> {
-    private  String environmentVariable;
-    private  String className;
-    private T type;
+    private String environmentVariable;
+    private String className;
+    private Class<T> type;
     public WriterBuilder() {
     }
-    public WriterBuilder<T> environmentVariable(String environmentVariable){
+    public WriterBuilder<T> environmentVariable(String environmentVariable) {
         this.environmentVariable = environmentVariable;
         return this;
     }
-    public WriterBuilder<T> className(String className){
-        this.className = className;
+    public WriterBuilder<T> className(Class<T> clazz) {
+        className = clazz.getSimpleName();
+        type = clazz;
         return this;
     }
-    public WriterBuilder<T> typeClass(T type){
-        this.type = type;
-        return  this;
-    }
-    public <T> Writer<T> buildWriter(){
-        return new JacksonWriter<T>(getWriter(), getFile(), (T) type);
+    public <T> Writer<T> build() {
+        return new JacksonWriter<T>(getWriter(), getFile(), type);
     }
     private String getFileConfigurationPath() {
-        String configuration = createDefaultFileName(getClassName());
-        if (System.getenv(getEnvironmentVariable()) != null) {
-            configuration = System.getenv(getEnvironmentVariable());
+        String configuration = createDefaultFileName(className);
+        if (System.getenv(environmentVariable) != null) {
+            configuration = System.getenv(environmentVariable);
             return configuration;
         }
         return configuration;
     }
     private ObjectMapper getWriter() {
-        switch (extension(getFileConfigurationPath())) {
+        switch (getFileExtension(getFileConfigurationPath())) {
             case "json":
                 return new ObjectMapper();
             case "xml":
@@ -52,8 +47,8 @@ public class WriterBuilder<T> {
         String nameTemple = "%s.json";
         return String.format(nameTemple, className);
     }
-    private String extension(String finalSetName) {
-        return Files.getFileExtension(finalSetName);
+    private String getFileExtension(String fileName) {
+        return Files.getFileExtension(fileName);
     }
     @SneakyThrows
     private File getFile() {
@@ -69,14 +64,14 @@ public class WriterBuilder<T> {
     }
     private void verifyFileStructure(File defaultFile) {
         if (defaultFile.length() == 0) {
-           switch (extension(getFileConfigurationPath())){
-               case "json":
-                   setFileStructure(defaultFile, FileAppend.JSON.getAppendType());
-                   break;
-               case "xml":
-                   setFileStructure(defaultFile, FileAppend.XML.getAppendType());
-                   break;
-           }
+            switch (getFileExtension(getFileConfigurationPath())) {
+                case "json":
+                    setFileStructure(defaultFile, FileAppend.JSON.getAppendType());
+                    break;
+                case "xml":
+                    setFileStructure(defaultFile, FileAppend.XML.getAppendType());
+                    break;
+            }
         }
     }
     @SneakyThrows

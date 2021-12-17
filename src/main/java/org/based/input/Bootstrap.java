@@ -18,19 +18,16 @@ public class Bootstrap {
     public static void main(String[] args) {
         final Writer<Project> projectWriter = Writer.builder()
                 .environmentVariable(PROJECT_PATH)
-                .className(Project.class.getSimpleName())
-                .typeClass(Project.class)
-                .buildWriter();
+                .className(Project.class)
+                .build();
         final Writer<Task> taskWriter = Writer.builder()
                 .environmentVariable(TASK_PATH)
-                .className(Task.class.getSimpleName())
-                .typeClass(Task.class)
-                .buildWriter();
+                .className(Task.class)
+                .build();
         final Writer<User> userWriter = Writer.builder()
                 .environmentVariable(USER_PATH)
-                .className(User.class.getSimpleName())
-                .typeClass(User.class)
-                .buildWriter();
+                .className(User.class)
+                .build();
         Repository<Project> projectRepository = new Repository<>(projectWriter);
         ProjectService projectService = new ProjectService(projectRepository);
         Repository<Task> taskRepository = new Repository<>(taskWriter);

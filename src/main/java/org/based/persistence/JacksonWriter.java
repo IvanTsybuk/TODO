@@ -10,11 +10,11 @@ import java.util.*;
 public class JacksonWriter<T> implements Writer<T> {
     private final ObjectMapper jacksonMapper;
     private final File configuredFile;
-    private final T typeClass;
-    public JacksonWriter(ObjectMapper jacksonMapper, File configuredFile, T typeClass) {
+    private final Class<T> typeClass;
+    public JacksonWriter(ObjectMapper jacksonMapper, File configuredFile, Class<T> type) {
         this.jacksonMapper = jacksonMapper;
         this.configuredFile = configuredFile;
-        this.typeClass = typeClass;
+        this.typeClass = type;
     }
     @Override
     @SneakyThrows
@@ -24,7 +24,7 @@ public class JacksonWriter<T> implements Writer<T> {
     @Override
     @SneakyThrows
     public Map<String, T> readFile() {
-        final MapType mapType = jacksonMapper.getTypeFactory().constructMapType(Map.class, String.class, (Class<?>) typeClass);
+        final MapType mapType = jacksonMapper.getTypeFactory().constructMapType(Map.class, String.class, typeClass);
         return jacksonMapper.readValue(configuredFile, mapType);
     }
 }
