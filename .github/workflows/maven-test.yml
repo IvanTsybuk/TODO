@@ -35,7 +35,7 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
         
-    - name: Test with Maven
+    - name: Check style
       run: "mvn -B checkstyle:check"
 
     - name: Test with Maven
