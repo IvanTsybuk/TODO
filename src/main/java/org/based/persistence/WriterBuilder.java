@@ -8,23 +8,23 @@ import lombok.SneakyThrows;
 import java.io.File;
 import java.io.FileWriter;
 
-public class WriterBuilder<T> {
+public class WriterBuilder {
     private String environmentVariable;
     private String className;
-    private Class<T> type;
+    private Class clazz;
     public WriterBuilder() {
     }
-    public WriterBuilder<T> environmentVariable(String environmentVariable) {
+    public WriterBuilder environmentVariable(String environmentVariable) {
         this.environmentVariable = environmentVariable;
         return this;
     }
-    public WriterBuilder<T> className(Class<T> clazz) {
+    public WriterBuilder useClass(Class clazz) {
         className = clazz.getSimpleName();
-        type = clazz;
+        this.clazz = clazz;
         return this;
     }
-    public <T> Writer<T> build() {
-        return new JacksonWriter<T>(getWriter(), getFile(), type);
+    public Writer build() {
+        return new JacksonWriter(getWriter(), getFile(), clazz);
     }
     private String getFileConfigurationPath() {
         String configuration = createDefaultFileName(className);
