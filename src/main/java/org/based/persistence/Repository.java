@@ -15,7 +15,7 @@ public class Repository<T extends Entity> {
         repositoryMap.put(entity.getName(), entity);
     }
     public List<T> findAll() {
-        return new ArrayList<T>(repositoryMap.values());
+        return new ArrayList<>(repositoryMap.values());
     }
     public void delete(String name) {
         repositoryMap.remove(name);

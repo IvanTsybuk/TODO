@@ -23,7 +23,7 @@ public class WriterBuilder<T> {
         return this;
     }
     public Writer<T> build() {
-        return new JacksonWriter<T>(getWriter(), getFile(), clazz);
+        return new JacksonWriter<>(getWriter(), getFile(), clazz);
     }
     private String getFileConfigurationPath() {
         String configuration = createDefaultFileName(className);
