@@ -2,10 +2,9 @@ package org.based.persistence;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
-import lombok.SneakyThrows;
-
 import java.io.File;
-import java.util.*;
+import java.util.Map;
+import lombok.SneakyThrows;
 
 public class JacksonWriter<T> implements Writer<T> {
     private final ObjectMapper jacksonMapper;

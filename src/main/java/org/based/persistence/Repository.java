@@ -1,6 +1,8 @@
 package org.based.persistence;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Repository<T extends Entity> {
     private final Map<String, T> repositoryMap;
@@ -9,11 +11,11 @@ public class Repository<T extends Entity> {
         this.writer = writer;
         repositoryMap = writer.readFile();
     }
-    public void save(T entity){
+    public void save(T entity) {
         repositoryMap.put(entity.getName(), entity);
     }
     public List<T> findAll() {
-        return new ArrayList<>(repositoryMap.values());
+        return new ArrayList<T>(repositoryMap.values());
     }
     public void delete(String name) {
         repositoryMap.remove(name);
@@ -21,7 +23,7 @@ public class Repository<T extends Entity> {
     public T findByName(String name) {
         return repositoryMap.get(name);
     }
-    public void saveToFile(){
+    public void saveToFile() {
         writer.writeToFile(repositoryMap);
     }
 }

@@ -6,25 +6,24 @@ import org.based.application.UserService;
 import org.based.domain.Project;
 import org.based.domain.Task;
 import org.based.domain.User;
-import org.based.persistence.*;
-
+import org.based.persistence.Repository;
+import org.based.persistence.Writer;
 import java.util.Scanner;
 
 public class Bootstrap {
     public static final String PROJECT_PATH = "Project_JSON";
     public static final String TASK_PATH = "Task_JSON";
     public static final String USER_PATH = "User_XM";
-//    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
-        final Writer<Project> projectWriter = Writer.builder()
+        final Writer<Project> projectWriter = Writer.<Project>builder()
                 .environmentVariable(PROJECT_PATH)
                 .useClass(Project.class)
                 .build();
-        final Writer<Task> taskWriter = Writer.builder()
+        final Writer<Task> taskWriter = Writer.<Task>builder()
                 .environmentVariable(TASK_PATH)
                 .useClass(Task.class)
                 .build();
-        final Writer<User> userWriter = Writer.builder()
+        final Writer<User> userWriter = Writer.<User>builder()
                 .environmentVariable(USER_PATH)
                 .useClass(User.class)
                 .build();

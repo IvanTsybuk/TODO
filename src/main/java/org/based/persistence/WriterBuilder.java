@@ -3,28 +3,27 @@ package org.based.persistence;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.io.Files;
-import lombok.SneakyThrows;
-
 import java.io.File;
 import java.io.FileWriter;
+import lombok.SneakyThrows;
 
-public class WriterBuilder {
+public class WriterBuilder<T> {
     private String environmentVariable;
     private String className;
-    private Class clazz;
+    private Class<T> clazz;
     public WriterBuilder() {
     }
-    public WriterBuilder environmentVariable(String environmentVariable) {
+    public WriterBuilder<T> environmentVariable(String environmentVariable) {
         this.environmentVariable = environmentVariable;
         return this;
     }
-    public WriterBuilder useClass(Class clazz) {
+    public WriterBuilder<T> useClass(Class<T> clazz) {
         className = clazz.getSimpleName();
         this.clazz = clazz;
         return this;
     }
-    public Writer build() {
-        return new JacksonWriter(getWriter(), getFile(), clazz);
+    public Writer<T> build() {
+        return new JacksonWriter<T>(getWriter(), getFile(), clazz);
     }
     private String getFileConfigurationPath() {
         String configuration = createDefaultFileName(className);
