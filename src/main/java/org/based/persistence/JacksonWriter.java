@@ -23,7 +23,8 @@ public class JacksonWriter<T> implements Writer<T> {
     @Override
     @SneakyThrows
     public Map<String, T> readFile() {
-        final MapType mapType = jacksonMapper.getTypeFactory().constructMapType(Map.class, String.class, typeClass);
+        final MapType mapType = jacksonMapper.getTypeFactory().constructMapType(Map.class,
+                String.class, typeClass);
         return jacksonMapper.readValue(configuredFile, mapType);
     }
 }

@@ -1,5 +1,6 @@
 package org.based.input;
 
+import java.util.Scanner;
 import org.based.application.ProjectService;
 import org.based.application.TaskService;
 import org.based.application.UserService;
@@ -8,12 +9,11 @@ import org.based.domain.Task;
 import org.based.domain.User;
 import org.based.persistence.Repository;
 import org.based.persistence.Writer;
-import java.util.Scanner;
 
 public class Bootstrap {
     public static final String PROJECT_PATH = "Project_JSON";
     public static final String TASK_PATH = "Task_JSON";
-    public static final String USER_PATH = "User_XM";
+    public static final String USER_PATH = "null";
     public static void main(String[] args) {
         final Writer<Project> projectWriter = Writer.<Project>builder()
                 .environmentVariable(PROJECT_PATH)

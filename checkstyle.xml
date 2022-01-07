@@ -33,7 +33,6 @@
            default="checkstyle-suppressions.xml" />
     <property name="optional" value="true"/>
   </module>
-
   <!-- Checks for whitespace                               -->
   <!-- See http://checkstyle.org/config_whitespace.html -->
   <module name="FileTabCharacter">
@@ -45,7 +44,6 @@
     <property name="max" value="100"/>
     <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
   </module>
-
   <module name="TreeWalker">
     <module name="OuterTypeFilename"/>
     <module name="IllegalTokenText">
@@ -134,13 +132,7 @@
     <module name="FallThrough"/>
     <module name="UpperEll"/>
     <module name="ModifierOrder"/>
-    <module name="EmptyLineSeparator">
-      <property name="tokens"
-               value="PACKAGE_DEF, IMPORT, STATIC_IMPORT, CLASS_DEF, INTERFACE_DEF, ENUM_DEF,
-                    STATIC_INIT, INSTANCE_INIT, METHOD_DEF, CTOR_DEF, VARIABLE_DEF, RECORD_DEF,
-                    COMPACT_CTOR_DEF"/>
-      <property name="allowNoEmptyLineBetweenFields" value="true"/>
-    </module>
+
     <module name="SeparatorWrap">
       <property name="id" value="SeparatorWrapDot"/>
       <property name="tokens" value="DOT"/>
@@ -328,20 +320,20 @@
       <property name="allowedAnnotations" value="Override, Test"/>
       <property name="tokens" value="METHOD_DEF, CTOR_DEF, ANNOTATION_FIELD_DEF, COMPACT_CTOR_DEF"/>
     </module>
-    <module name="MissingJavadocMethod">
-      <property name="scope" value="public"/>
-      <property name="minLineCount" value="2"/>
-      <property name="allowedAnnotations" value="Override, Test"/>
-      <property name="tokens" value="METHOD_DEF, CTOR_DEF, ANNOTATION_FIELD_DEF,
-                                   COMPACT_CTOR_DEF"/>
-    </module>
-    <module name="MissingJavadocType">
-      <property name="scope" value="protected"/>
-      <property name="tokens"
-                value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF,
-                      RECORD_DEF, ANNOTATION_DEF"/>
-      <property name="excludeScope" value="nothing"/>
-    </module>
+<!--    <module name="MissingJavadocMethod">-->
+<!--      <property name="scope" value="public"/>-->
+<!--      <property name="minLineCount" value="2"/>-->
+<!--      <property name="allowedAnnotations" value="Override, Test"/>-->
+<!--      <property name="tokens" value="METHOD_DEF, CTOR_DEF, ANNOTATION_FIELD_DEF,-->
+<!--                                   COMPACT_CTOR_DEF"/>-->
+<!--    </module>-->
+<!--    <module name="MissingJavadocType">-->
+<!--      <property name="scope" value="protected"/>-->
+<!--      <property name="tokens"-->
+<!--                value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF,-->
+<!--                      RECORD_DEF, ANNOTATION_DEF"/>-->
+<!--      <property name="excludeScope" value="nothing"/>-->
+<!--    </module>-->
     <module name="MethodName">
       <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>
       <message key="name.invalidPattern"

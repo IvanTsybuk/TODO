@@ -27,8 +27,9 @@ public class WriterBuilder<T> {
     }
     private String getFileConfigurationPath() {
         String configuration = createDefaultFileName(className);
-        if (System.getenv(environmentVariable) != null) {
-            configuration = System.getenv(environmentVariable);
+        final String innerVariable = System.getenv(environmentVariable);
+        if (innerVariable != null) {
+            configuration = innerVariable;
             return configuration;
         }
         return configuration;
@@ -39,6 +40,7 @@ public class WriterBuilder<T> {
                 return new ObjectMapper();
             case "xml":
                 return new XmlMapper();
+            default:
         }
         return new ObjectMapper();
     }
@@ -70,6 +72,7 @@ public class WriterBuilder<T> {
                 case "xml":
                     setFileStructure(defaultFile, FileAppend.XML.getAppendType());
                     break;
+                default:
             }
         }
     }

@@ -1,5 +1,6 @@
 package org.based.input;
 
+import java.util.Scanner;
 import org.based.application.ProjectService;
 import org.based.application.TaskService;
 import org.based.application.UserService;
@@ -7,14 +8,14 @@ import org.based.domain.Project;
 import org.based.domain.Task;
 import org.based.domain.User;
 
-import java.util.Scanner;
-
 public class ConsoleAdapter {
     private final TaskService taskService;
     private final ProjectService projectService;
     private final UserService userService;
     private final Scanner scanner;
-    public ConsoleAdapter(TaskService taskService, ProjectService projectService, UserService userService,
+    public ConsoleAdapter(TaskService taskService,
+                          ProjectService projectService,
+                          UserService userService,
                           Scanner scanner) {
         this.taskService = taskService;
         this.projectService = projectService;
@@ -54,6 +55,8 @@ public class ConsoleAdapter {
                     break;
                 case "0":
                     return;
+                default:
+                    System.out.println("Wrong command");
             }
         }
     }
@@ -90,14 +93,14 @@ public class ConsoleAdapter {
         System.out.println("Insert command's code");
     }
     private void showCommands() {
-        System.out.println("===Select an option:===\n" +
-                "0. Finish programme\n" +
-                "1. Create new User\n" +
-                "2. Show Users\n" +
-                "3. Select User\n" +
-                "4. Create new project\n" +
-                "5. Fill in Task list\n" +
-                "6. Remove task from task list\n" +
-                "0. Exit");
+        System.out.println("===Select an option:===\n"
+                + "0. Finish programme\n"
+                + "1. Create new User\n"
+                + "2. Show Users\n"
+                + "3. Select User\n"
+                + "4. Create new project\n"
+                + "5. Fill in Task list\n"
+                + "6. Remove task from task list\n"
+                + "0. Exit");
     }
 }

@@ -9,7 +9,7 @@ public class Repository<T extends Entity> {
     private final Writer<T> writer;
     public Repository(Writer<T> writer) {
         this.writer = writer;
-        repositoryMap = writer.readFile();
+        this.repositoryMap = writer.readFile();
     }
     public void save(T entity) {
         repositoryMap.put(entity.getName(), entity);
