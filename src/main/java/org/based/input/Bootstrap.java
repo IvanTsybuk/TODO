@@ -13,7 +13,7 @@ import org.based.persistence.Writer;
 public class Bootstrap {
     public static final String PROJECT_PATH = "Project_JSON";
     public static final String TASK_PATH = "Task_JSON";
-    public static final String USER_PATH = "null";
+    public static final String USER_PATH = "User_XML";
     public static void main(String[] args) {
         final Writer<Project> projectWriter = Writer.<Project>builder()
                 .environmentVariable(PROJECT_PATH)
