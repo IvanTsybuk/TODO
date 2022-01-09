@@ -34,7 +34,7 @@ public class ConsoleAdapter {
                     break;
                 case "2":
                     System.out.println("==getAllUsers()===");
-                    System.out.println(userService.getUsers());
+                    System.out.println(userService.findAll());
                     break;
                 case "3":
                     System.out.println("Insert your SurName:");
@@ -70,11 +70,11 @@ public class ConsoleAdapter {
     }
     private void takeAwayTask() {
         System.out.println("Delete task:");
-        System.out.println(taskService.getTasks());
+        System.out.println(taskService.findAll());
         System.out.println("Task to be deleted:");
         String deleteTask = scanner.next();
         taskService.removeByName(deleteTask);
-        System.out.println("AFTER REMOVE:\n" + taskService.getTasks());
+        System.out.println("AFTER REMOVE:\n" + taskService.findAll());
     }
     private void fillInTask() {
         System.out.println("Task:");
@@ -82,7 +82,7 @@ public class ConsoleAdapter {
         System.out.println("Task Description:");
         String taskDescription = scanner.next();
         taskService.createTask(new Task(taskName, taskDescription));
-        System.out.println("Task List:\n" + taskService.getTasks());
+        System.out.println("Task List:\n" + taskService.findAll());
     }
     private void fillUser() {
         System.out.println("=====Create new USer =====\nEnter your name:");
