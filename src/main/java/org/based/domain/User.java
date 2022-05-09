@@ -15,4 +15,6 @@ public class User implements Entity {
         this.name = name;
         this.userSurName = userSurName;
     }
+    public User() {
+    }
 }

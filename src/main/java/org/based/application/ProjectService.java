@@ -3,7 +3,7 @@ package org.based.application;
 import java.util.List;
 import org.based.domain.Project;
 import org.based.persistence.Repository;
-
+@Deprecated
 public class ProjectService {
     private final Repository<Project> repository;
     public ProjectService(final Repository<Project> repository) {

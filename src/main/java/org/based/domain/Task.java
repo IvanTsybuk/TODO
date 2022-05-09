@@ -15,4 +15,6 @@ public class Task implements Entity {
         this.name = name;
         this.description = description;
     }
+    public Task() {
+    }
 }

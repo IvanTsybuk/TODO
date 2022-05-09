@@ -3,7 +3,7 @@ package org.based.application;
 import java.util.List;
 import org.based.domain.User;
 import org.based.persistence.Repository;
-
+@Deprecated
 public class UserService {
     private final Repository<User> repository;
     public UserService(final Repository<User> repository) {

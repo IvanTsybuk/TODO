@@ -10,6 +10,7 @@ import org.based.domain.User;
 import org.based.persistence.Repository;
 import org.based.persistence.Writer;
 
+@Deprecated
 public class Context {
     private final Repository<Project> projectRepository;
     private final Repository<Task> taskRepository;
@@ -25,7 +26,7 @@ public class Context {
         TaskService taskService = new TaskService(taskRepository);
         UserService userService = new UserService(userRepository);
         Scanner scanner = new Scanner(System.in);
-        consoleAdapter = new ConsoleAdapter(taskService, projectService, userService, scanner);
+        consoleAdapter = null;
     }
     public void startApp() {
         consoleAdapter.startApp();

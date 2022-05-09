@@ -15,4 +15,6 @@ public class Project implements Entity {
         this.name = name;
         this.description = description;
     }
+    public Project() {
+    }
 }
