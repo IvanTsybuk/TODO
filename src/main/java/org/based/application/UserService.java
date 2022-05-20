@@ -2,20 +2,20 @@ package org.based.application;
 
 import java.util.List;
 import org.based.domain.User;
-import org.based.persistence.Repository;
-@Deprecated
+import org.based.persistence.RepositoryInterface;
+
 public class UserService {
-    private final Repository<User> repository;
-    public UserService(final Repository<User> repository) {
-        this.repository = repository;
+    private final RepositoryInterface<User> jdbcUserRepository;
+    public UserService(RepositoryInterface<User> jdbcUserRepository) {
+        this.jdbcUserRepository = jdbcUserRepository;
     }
     public void createUser(final User user) {
-        repository.save(user);
+        jdbcUserRepository.save(user);
     }
     public List<User> findAll() {
-        return repository.findAll();
+        return jdbcUserRepository.findAll();
     }
-    public User findUserByName(final String username) {
-        return repository.findByName(username);
+    public User findUser(final String username) {
+        return jdbcUserRepository.findByName(username);
     }
 }

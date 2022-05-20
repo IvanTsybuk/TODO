@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Repository<T extends Entity> {
+public class Repository<T extends Entity> implements RepositoryInterface<T> {
     private final Map<String, T> repositoryMap;
     private final Writer<T> writer;
     public Repository(Writer<T> writer) {
