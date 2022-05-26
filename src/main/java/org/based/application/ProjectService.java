@@ -2,17 +2,17 @@ package org.based.application;
 
 import java.util.List;
 import org.based.domain.Project;
-import org.based.persistence.RepositoryInterface;
+import org.based.persistence.Repository;
 
 public class ProjectService {
-    private final RepositoryInterface<Project> jdbcProjectRepository;
-    public ProjectService(RepositoryInterface<Project> jdbcProjectRepository) {
-        this.jdbcProjectRepository = jdbcProjectRepository;
+    private final Repository<Project> projectRepository;
+    public ProjectService(Repository<Project> projectRepository) {
+        this.projectRepository = projectRepository;
     }
-    public void createProject(final Project project) {
-        jdbcProjectRepository.save(project);
+    public void save(final Project project) {
+        projectRepository.save(project);
     }
     public List<Project> findAll() {
-        return jdbcProjectRepository.findAll();
+        return projectRepository.findAll();
     }
 }

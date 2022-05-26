@@ -2,20 +2,20 @@ package org.based.application;
 
 import java.util.List;
 import org.based.domain.Task;
-import org.based.persistence.RepositoryInterface;
+import org.based.persistence.Repository;
 
 public class TaskService {
-    private final RepositoryInterface<Task> jdbcTaskRepository;
-    public TaskService(RepositoryInterface<Task> jdbcTaskRepository) {
-        this.jdbcTaskRepository = jdbcTaskRepository;
+    private final Repository<Task> taskRepository;
+    public TaskService(Repository<Task> taskRepository) {
+        this.taskRepository = taskRepository;
     }
-    public void createTask(final Task task) {
-        jdbcTaskRepository.save(task);
+    public void save(final Task task) {
+        taskRepository.save(task);
     }
     public List<Task> findAll() {
-        return jdbcTaskRepository.findAll();
+        return taskRepository.findAll();
     }
-    public void deleteTask(String taskName) {
-        jdbcTaskRepository.delete(taskName);
+    public void deleteByName(String taskName) {
+        taskRepository.deleteByName(taskName);
     }
 }

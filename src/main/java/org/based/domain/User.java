@@ -10,11 +10,11 @@ import org.based.persistence.Entity;
 @NoArgsConstructor
 public class User implements Entity {
     private String name;
-    private String userSurName;
+    private String surname;
     @JsonCreator
     public User(@JsonProperty("name") String name,
-                @JsonProperty("userSurName") String userSurName) {
+                @JsonProperty("userSurName") String surname) {
         this.name = name;
-        this.userSurName = userSurName;
+        this.surname = surname;
     }
 }
