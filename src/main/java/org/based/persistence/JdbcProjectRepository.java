@@ -13,6 +13,8 @@ import org.based.domain.Project;
 public class JdbcProjectRepository implements Repository<Project> {
     private static final String insert = "INSERT INTO projects (name, description) VALUES (?,?)";
     private static final String select = "SELECT * FROM projects";
+    private static final String select_by_name = "SELECT * FROM projects WHERE name = ?";
+    private static final String delete = "DELETE FROM projects WHERE name = ?";
     private final DataSource dataSource;
     public JdbcProjectRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -38,8 +40,7 @@ public class JdbcProjectRepository implements Repository<Project> {
              final ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 Project project = new Project();
-                project.setName(resultSet.getString("name"));
-                project.setDescription(resultSet.getString("description"));
+                resultSetToProject(resultSet, project);
                 projectList.add(project);
             }
         } catch (SQLException e) {
@@ -48,11 +49,37 @@ public class JdbcProjectRepository implements Repository<Project> {
         return projectList;
     }
     @Override
+    @SneakyThrows
     public void deleteByName(String name) {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     @Override
     @SneakyThrows
     public Project findByName(String name) {
-        return new Project();
+        Project project = new Project();
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement preparedStatement =
+                     connection.prepareStatement(select_by_name);) {
+            preparedStatement.setString(1, name);
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    resultSetToProject(resultSet, project);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return project;
+    }
+    @SneakyThrows
+    private void resultSetToProject(ResultSet resultSet, Project project) {
+        project.setName(resultSet.getString("name"));
+        project.setDescription(resultSet.getString("description"));
     }
 }

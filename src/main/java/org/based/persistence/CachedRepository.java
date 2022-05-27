@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CacheRepository<T extends Entity> implements FileRepository<T> {
+public class CachedRepository<T extends Entity> implements FileRepository<T> {
     private final Map<String, T> repositoryMap;
     private final Writer<T> writer;
-    public CacheRepository(Writer<T> writer) {
+    public CachedRepository(Writer<T> writer) {
         this.writer = writer;
         this.repositoryMap = writer.readFile();
     }

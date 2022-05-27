@@ -40,8 +40,7 @@ public class JdbcTaskRepository implements Repository<Task> {
              final ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 Task task = new Task();
-                task.setName(resultSet.getString("name"));
-                task.setDescription(resultSet.getString("description"));
+                resultSetToTask(task, resultSet);
                 taskList.add(task);
             }
         } catch (SQLException e) {
@@ -70,13 +69,17 @@ public class JdbcTaskRepository implements Repository<Task> {
             preparedStatement.setString(1, name);
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    task.setName(resultSet.getString("name"));
-                    task.setDescription(resultSet.getString("description"));
+                    resultSetToTask(task, resultSet);
                 }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
             return task;
         }
+    }
+    @SneakyThrows
+    private void resultSetToTask(Task task, ResultSet resultSet) {
+        task.setName(resultSet.getString("name"));
+        task.setDescription(resultSet.getString("description"));
     }
 }

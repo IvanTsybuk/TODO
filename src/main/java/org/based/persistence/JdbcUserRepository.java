@@ -13,6 +13,7 @@ import org.based.domain.User;
 public class JdbcUserRepository implements Repository<User> {
     private static final String select = "SELECT * FROM users";
     private static final String select_by_name = "SELECT * FROM users WHERE name = ?";
+    private static final String delete = "DELETE FROM users WHERE name = ?";
     private static final String insert = "INSERT INTO users (name, surname) VALUES (?, ?)";
     private final DataSource dataSource;
     public JdbcUserRepository(DataSource dataSource) {
@@ -40,8 +41,7 @@ public class JdbcUserRepository implements Repository<User> {
              final ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 User user = new User();
-                user.setName(resultSet.getString("name"));
-                user.setSurname(resultSet.getString("surname"));
+                resultSetToUser(user, resultSet);
                 userList.add(user);
             }
         } catch (SQLException e) {
@@ -50,7 +50,15 @@ public class JdbcUserRepository implements Repository<User> {
         return userList;
     }
     @Override
+    @SneakyThrows
     public void deleteByName(String name) {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     @Override
     @SneakyThrows
@@ -62,13 +70,17 @@ public class JdbcUserRepository implements Repository<User> {
             preparedStatement.setString(1, name);
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    user.setName(resultSet.getString("name"));
-                    user.setSurname(resultSet.getString("surname"));
+                    resultSetToUser(user, resultSet);
                 }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return user;
+    }
+    @SneakyThrows
+    private void resultSetToUser(User user, ResultSet resultSet) {
+        user.setName(resultSet.getString("name"));
+        user.setSurname(resultSet.getString("surname"));
     }
 }

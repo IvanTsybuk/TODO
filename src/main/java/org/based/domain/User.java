@@ -13,7 +13,7 @@ public class User implements Entity {
     private String surname;
     @JsonCreator
     public User(@JsonProperty("name") String name,
-                @JsonProperty("userSurName") String surname) {
+                @JsonProperty("surname") String surname) {
         this.name = name;
         this.surname = surname;
     }
