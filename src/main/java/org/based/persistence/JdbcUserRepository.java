@@ -39,10 +39,10 @@ public class JdbcUserRepository implements Repository<User> {
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(select);
              final ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                User user = new User();
-                resultSetToUser(user, resultSet);
-                userList.add(user);
+            if (resultSet.next()) {
+                do {
+                    userList.add(resultSetToUser(resultSet));
+                } while (resultSet.next());
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -69,8 +69,10 @@ public class JdbcUserRepository implements Repository<User> {
                      connection.prepareStatement(select_by_name)) {
             preparedStatement.setString(1, name);
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    resultSetToUser(user, resultSet);
+                if (resultSet.next()) {
+                    do {
+                        user = resultSetToUser(resultSet);
+                    } while (resultSet.next());
                 }
             }
         } catch (SQLException e) {
@@ -79,8 +81,10 @@ public class JdbcUserRepository implements Repository<User> {
         return user;
     }
     @SneakyThrows
-    private void resultSetToUser(User user, ResultSet resultSet) {
+    private User resultSetToUser(ResultSet resultSet) {
+        final User user = new User();
         user.setName(resultSet.getString("name"));
         user.setSurname(resultSet.getString("surname"));
+        return user;
     }
 }

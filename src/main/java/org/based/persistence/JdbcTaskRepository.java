@@ -38,10 +38,10 @@ public class JdbcTaskRepository implements Repository<Task> {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(select);
              final ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                Task task = new Task();
-                resultSetToTask(task, resultSet);
-                taskList.add(task);
+            if (resultSet.next()) {
+                do {
+                    taskList.add(resultSetToTask(resultSet));
+                } while (resultSet.next());
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -68,8 +68,10 @@ public class JdbcTaskRepository implements Repository<Task> {
                      connection.prepareStatement(select_by_name)) {
             preparedStatement.setString(1, name);
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    resultSetToTask(task, resultSet);
+                if (resultSet.next()) {
+                    do {
+                        task = resultSetToTask(resultSet);
+                    } while (resultSet.next());
                 }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
@@ -78,8 +80,10 @@ public class JdbcTaskRepository implements Repository<Task> {
         }
     }
     @SneakyThrows
-    private void resultSetToTask(Task task, ResultSet resultSet) {
+    private Task resultSetToTask(ResultSet resultSet) {
+        final Task task = new Task();
         task.setName(resultSet.getString("name"));
         task.setDescription(resultSet.getString("description"));
+        return task;
     }
 }

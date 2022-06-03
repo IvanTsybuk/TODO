@@ -38,10 +38,10 @@ public class JdbcProjectRepository implements Repository<Project> {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(select);
              final ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                Project project = new Project();
-                resultSetToProject(resultSet, project);
-                projectList.add(project);
+            if (resultSet.next()) {
+                do {
+                    projectList.add(resultSetToProject(resultSet));
+                } while (resultSet.next());
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -65,11 +65,13 @@ public class JdbcProjectRepository implements Repository<Project> {
         Project project = new Project();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
-                     connection.prepareStatement(select_by_name);) {
+                     connection.prepareStatement(select_by_name)) {
             preparedStatement.setString(1, name);
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    resultSetToProject(resultSet, project);
+                if (resultSet.next()) {
+                    do {
+                        project = resultSetToProject(resultSet);
+                    } while (resultSet.next());
                 }
             }
         } catch (SQLException e) {
@@ -78,8 +80,10 @@ public class JdbcProjectRepository implements Repository<Project> {
         return project;
     }
     @SneakyThrows
-    private void resultSetToProject(ResultSet resultSet, Project project) {
+    private Project resultSetToProject(ResultSet resultSet) {
+        final Project project = new Project();
         project.setName(resultSet.getString("name"));
         project.setDescription(resultSet.getString("description"));
+        return project;
     }
 }

@@ -15,13 +15,10 @@ import org.based.persistence.Repository;
 
 public class Context {
     private final ConsoleAdapter consoleAdapter;
-    private final Repository<Project> projectRepository;
-    private final Repository<Task> taskRepository;
-    private final Repository<User> userRepository;
     public Context(DataSource dataSource) {
-        projectRepository = new JdbcProjectRepository(dataSource);
-        taskRepository = new JdbcTaskRepository(dataSource);
-        userRepository = new JdbcUserRepository(dataSource);
+        Repository<Project> projectRepository = new JdbcProjectRepository(dataSource);
+        Repository<Task> taskRepository = new JdbcTaskRepository(dataSource);
+        Repository<User> userRepository = new JdbcUserRepository(dataSource);
         ProjectService projectService = new ProjectService(projectRepository);
         TaskService taskService = new TaskService(taskRepository);
         UserService userService = new UserService(userRepository);
