@@ -13,7 +13,7 @@ public class Bootstrap {
     private static final String DATABASE_PASSWORD = "PASSWORD";
 
     public static void main(String[] args) {
-        HikariDataSource hikariDataSource = (HikariDataSource) createDataSource();
+        DataSource hikariDataSource = createDataSource();
         Context context = new Context(hikariDataSource);
         context.startApp();
     }
@@ -29,7 +29,7 @@ public class Bootstrap {
     }
     private static String getEnvVariable(String sourceValue, String defaultValue) {
         String environmentVariable = System.getenv(sourceValue);
-        if (environmentVariable == null) {
+        if (environmentVariable.isBlank()) {
             environmentVariable = defaultValue;
         }
         return environmentVariable;
