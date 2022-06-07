@@ -4,7 +4,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 
 public class Bootstrap {
-
     private static final String URL_DEFAULT = "jdbc:postgresql://localhost:5432/todoApp";
     private static final String USER_DEFAULT = "postgres";
     private static final String PASSWORD_DEFAULT = "postgres";
@@ -29,7 +28,7 @@ public class Bootstrap {
     }
     private static String getEnvVariable(String sourceValue, String defaultValue) {
         String environmentVariable = System.getenv(sourceValue);
-        if (environmentVariable.isBlank()) {
+        if (environmentVariable == null || environmentVariable.isBlank()) {
             environmentVariable = defaultValue;
         }
         return environmentVariable;
