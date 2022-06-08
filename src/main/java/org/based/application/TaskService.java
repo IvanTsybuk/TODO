@@ -5,17 +5,17 @@ import org.based.domain.Task;
 import org.based.persistence.Repository;
 
 public class TaskService {
-    private final Repository<Task> repository;
-    public TaskService(final Repository<Task> repository) {
-        this.repository = repository;
+    private final Repository<Task> taskRepository;
+    public TaskService(Repository<Task> taskRepository) {
+        this.taskRepository = taskRepository;
     }
-    public void createTask(final Task task) {
-        repository.save(task);
+    public void save(final Task task) {
+        taskRepository.save(task);
     }
     public List<Task> findAll() {
-        return repository.findAll();
+        return taskRepository.findAll();
     }
-    public void removeByName(String taskName) {
-        repository.delete(taskName);
+    public void deleteByName(String taskName) {
+        taskRepository.deleteByName(taskName);
     }
 }

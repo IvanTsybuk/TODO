@@ -1,29 +1,10 @@
 package org.based.persistence;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class Repository<T extends Entity> {
-    private final Map<String, T> repositoryMap;
-    private final Writer<T> writer;
-    public Repository(Writer<T> writer) {
-        this.writer = writer;
-        this.repositoryMap = writer.readFile();
-    }
-    public void save(T entity) {
-        repositoryMap.put(entity.getName(), entity);
-    }
-    public List<T> findAll() {
-        return new ArrayList<>(repositoryMap.values());
-    }
-    public void delete(String name) {
-        repositoryMap.remove(name);
-    }
-    public T findByName(String name) {
-        return repositoryMap.get(name);
-    }
-    public void saveToFile() {
-        writer.writeToFile(repositoryMap);
-    }
+public interface Repository<T> {
+    void save(T entity);
+    List<T> findAll();
+    void deleteByName(String name);
+    T findByName(String name);
 }

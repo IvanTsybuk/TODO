@@ -1,30 +1,36 @@
 package org.based.input;
 
-import org.based.domain.Project;
-import org.based.domain.Task;
-import org.based.domain.User;
-import org.based.persistence.Writer;
+import com.zaxxer.hikari.HikariDataSource;
+import javax.sql.DataSource;
 
 public class Bootstrap {
-    public static final String PROJECT_PATH = "PROJECT_PATH";
-    public static final String TASK_PATH = "TASK_PATH";
-    public static final String USER_PATH = "USER_PATH";
+    private static final String URL_DEFAULT = "jdbc:postgresql://localhost:5432/todoApp";
+    private static final String USER_DEFAULT = "postgres";
+    private static final String PASSWORD_DEFAULT = "postgres";
+    private static final String DATABASE_URL = "URL";
+    private static final String DATABASE_USER = "USER";
+    private static final String DATABASE_PASSWORD = "PASSWORD";
 
     public static void main(String[] args) {
-        final Writer<Project> projectWriter = Writer.<Project>builder()
-                .environmentVariable(PROJECT_PATH)
-                .useClass(Project.class)
-                .build();
-        final Writer<Task> taskWriter = Writer.<Task>builder()
-                .environmentVariable(TASK_PATH)
-                .useClass(Task.class)
-                .build();
-        final Writer<User> userWriter = Writer.<User>builder()
-                .environmentVariable(USER_PATH)
-                .useClass(User.class)
-                .build();
-        Context context = new Context(projectWriter, userWriter, taskWriter);
+        DataSource hikariDataSource = createDataSource();
+        Context context = new Context(hikariDataSource);
         context.startApp();
-        context.terminate();
+    }
+    public static DataSource createDataSource() {
+        String urlEnvironment = getEnvVariable(DATABASE_URL, URL_DEFAULT);
+        String userEnvironment = getEnvVariable(DATABASE_USER, USER_DEFAULT);
+        String passwordEnvironment = getEnvVariable(DATABASE_PASSWORD, PASSWORD_DEFAULT);
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(urlEnvironment);
+        dataSource.setUsername(userEnvironment);
+        dataSource.setPassword(passwordEnvironment);
+        return dataSource;
+    }
+    private static String getEnvVariable(String sourceValue, String defaultValue) {
+        String environmentVariable = System.getenv(sourceValue);
+        if (environmentVariable == null || environmentVariable.isBlank()) {
+            environmentVariable = defaultValue;
+        }
+        return environmentVariable;
     }
 }

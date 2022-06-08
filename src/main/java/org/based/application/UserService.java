@@ -5,17 +5,17 @@ import org.based.domain.User;
 import org.based.persistence.Repository;
 
 public class UserService {
-    private final Repository<User> repository;
-    public UserService(final Repository<User> repository) {
-        this.repository = repository;
+    private final Repository<User> userRepository;
+    public UserService(Repository<User> userRepository) {
+        this.userRepository = userRepository;
     }
-    public void createUser(final User user) {
-        repository.save(user);
+    public void save(final User user) {
+        userRepository.save(user);
     }
     public List<User> findAll() {
-        return repository.findAll();
+        return userRepository.findAll();
     }
-    public User findUserByName(final String username) {
-        return repository.findByName(username);
+    public User findByName(final String username) {
+        return userRepository.findByName(username);
     }
 }
