@@ -8,7 +8,9 @@ import java.util.List;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.based.domain.Project;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JdbcProjectRepository implements Repository<Project> {
     private static final String insert = "INSERT INTO projects (name, description) VALUES (?,?)";
     private static final String select = "SELECT * FROM projects";

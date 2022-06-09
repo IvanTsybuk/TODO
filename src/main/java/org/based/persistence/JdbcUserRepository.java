@@ -8,7 +8,9 @@ import java.util.List;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.based.domain.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JdbcUserRepository implements Repository<User> {
     private static final String select = "SELECT * FROM users";
     private static final String selectByName = "SELECT * FROM users WHERE name = ?";

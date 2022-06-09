@@ -8,7 +8,9 @@ import java.util.List;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.based.domain.Task;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JdbcTaskRepository implements Repository<Task> {
     private static final String select = "SELECT * FROM tasks";
     private static final String selectByName = "SELECT * FROM tasks WHERE name = ?";
