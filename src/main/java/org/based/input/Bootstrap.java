@@ -1,11 +1,11 @@
 package org.based.input;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class Bootstrap {
     public static void main(String[] args) {
-        ApplicationContext context =
-                new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+        SpringApplication.run(Bootstrap.class);
     }
 }

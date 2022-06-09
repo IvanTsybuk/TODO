@@ -23,6 +23,9 @@ public class CachingRepository<T extends Entity> implements FileRepository<T> {
     public T findByName(String name) {
         return repositoryMap.get(name);
     }
+    public void update(T entity) {
+        repositoryMap.put(entity.getName(), entity);
+    }
     public void saveToFile() {
         writer.writeToFile(repositoryMap);
     }

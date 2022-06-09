@@ -69,6 +69,12 @@ public class JdbcUserRepository implements Repository<User> {
         }
         return user;
     }
+    @Override
+    public void update(User entity) {
+        User userForUpdate = findByName(entity.getName());
+        userForUpdate.setSurname(entity.getSurname());
+        save(userForUpdate);
+    }
     @SneakyThrows
     private User mapToUser(ResultSet resultSet) {
         final User user = new User();

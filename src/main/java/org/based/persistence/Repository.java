@@ -7,4 +7,5 @@ public interface Repository<T> {
     List<T> findAll();
     void deleteByName(String name);
     T findByName(String name);
+    void update(T entity);
 }

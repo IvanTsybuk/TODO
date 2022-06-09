@@ -68,6 +68,11 @@ public class JdbcProjectRepository implements Repository<Project> {
         }
         return project;
     }
+    public void update(Project entity) {
+        Project projectForUpdate = findByName(entity.getName());
+        projectForUpdate.setDescription(entity.getDescription());
+        save(projectForUpdate);
+    }
     @SneakyThrows
     private Project mapToProject(ResultSet resultSet) {
         final Project project = new Project();

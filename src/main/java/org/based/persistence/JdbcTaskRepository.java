@@ -68,6 +68,12 @@ public class JdbcTaskRepository implements Repository<Task> {
             return task;
         }
     }
+    @Override
+    public void update(Task entity) {
+        Task taskForUpdate = findByName(entity.getName());
+        taskForUpdate.setDescription(entity.getDescription());
+        save(taskForUpdate);
+    }
     @SneakyThrows
     private Task mapToTask(ResultSet resultSet) {
         final Task task = new Task();
