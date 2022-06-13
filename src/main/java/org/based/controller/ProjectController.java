@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,7 @@ public class ProjectController {
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
     }
-    @GetMapping("/all")
+    @GetMapping
     public List<Project> findAll() {
         return projectService.findAll();
     }
@@ -29,9 +30,13 @@ public class ProjectController {
     @PostMapping
     public void save(@RequestBody Project project) {
         if (project.getId() != 0) {
-            projectService.update(project);
+            update(project);
         }
         projectService.save(project);
+    }
+    @PutMapping
+    private void update(@RequestBody Project project) {
+        projectService.update(project);
     }
     @DeleteMapping("/{name}")
     public void delete(@PathVariable String name) {

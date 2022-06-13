@@ -61,7 +61,7 @@ public class JdbcProjectRepository implements Repository<Project> {
     public void deleteByName(String name) {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
-            preparedStatement.setString(2, name);
+            preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
         }
     }
