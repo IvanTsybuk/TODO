@@ -16,6 +16,7 @@ public class JdbcUserRepository implements Repository<User> {
     private static final String selectByName = "SELECT * FROM users WHERE name = ?";
     private static final String delete = "DELETE FROM users WHERE name = ?";
     private static final String insert = "INSERT INTO users (name, surname) VALUES (?, ?)";
+    private static final String update = "UPDATE users SET name = ?, surname = ? WHERE id = ?";
     private final DataSource dataSource;
     public JdbcUserRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -27,6 +28,17 @@ public class JdbcUserRepository implements Repository<User> {
              final PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getSurname());
+            preparedStatement.setLong(3, entity.getId());
+            preparedStatement.executeUpdate();
+        }
+    }
+    @Override
+    @SneakyThrows
+    public void update(User entity) {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement preparedStatement = connection.prepareStatement(update)) {
+            preparedStatement.setString(1, entity.getSurname());
+            preparedStatement.setString(2, entity.getName());
             preparedStatement.executeUpdate();
         }
     }
@@ -69,15 +81,10 @@ public class JdbcUserRepository implements Repository<User> {
         }
         return user;
     }
-    @Override
-    public void update(User entity) {
-        User userForUpdate = findByName(entity.getName());
-        userForUpdate.setSurname(entity.getSurname());
-        save(userForUpdate);
-    }
     @SneakyThrows
     private User mapToUser(ResultSet resultSet) {
         final User user = new User();
+        user.setId(resultSet.getLong("id"));
         user.setName(resultSet.getString("name"));
         user.setSurname(resultSet.getString("surname"));
         return user;

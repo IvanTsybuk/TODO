@@ -16,6 +16,7 @@ public class JdbcTaskRepository implements Repository<Task> {
     private static final String selectByName = "SELECT * FROM tasks WHERE name = ?";
     private static final String delete = "DELETE FROM tasks WHERE name = ?";
     private static final String insert = "INSERT INTO tasks (name, description) VALUES (?, ?)";
+    private static final String update = "UPDATE tasks SET name = ?, description = ? WHERE id = ?";
     private final DataSource dataSource;
     public JdbcTaskRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -27,6 +28,17 @@ public class JdbcTaskRepository implements Repository<Task> {
              final PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
+            preparedStatement.executeUpdate();
+        }
+    }
+    @Override
+    @SneakyThrows
+    public void update(Task entity) {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement preparedStatement = connection.prepareStatement(update)) {
+            preparedStatement.setString(1, entity.getName());
+            preparedStatement.setString(2, entity.getDescription());
+            preparedStatement.setLong(3, entity.getId());
             preparedStatement.executeUpdate();
         }
     }
@@ -68,15 +80,10 @@ public class JdbcTaskRepository implements Repository<Task> {
             return task;
         }
     }
-    @Override
-    public void update(Task entity) {
-        Task taskForUpdate = findByName(entity.getName());
-        taskForUpdate.setDescription(entity.getDescription());
-        save(taskForUpdate);
-    }
     @SneakyThrows
     private Task mapToTask(ResultSet resultSet) {
         final Task task = new Task();
+        task.setId(resultSet.getLong("id"));
         task.setName(resultSet.getString("name"));
         task.setDescription(resultSet.getString("description"));
         return task;
