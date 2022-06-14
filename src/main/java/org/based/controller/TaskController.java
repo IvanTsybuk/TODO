@@ -19,7 +19,7 @@ public class TaskController {
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
-    @GetMapping("/all")
+    @GetMapping
     public List<Task> findAll() {
         return taskService.findAll();
     }
@@ -29,9 +29,6 @@ public class TaskController {
     }
     @PostMapping
     public void save(@RequestBody Task task) {
-        if (task.getId() != 0) {
-            update(task);
-        }
         taskService.save(task);
     }
     @PutMapping

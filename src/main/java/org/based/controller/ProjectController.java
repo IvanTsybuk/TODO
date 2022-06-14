@@ -29,9 +29,6 @@ public class ProjectController {
     }
     @PostMapping
     public void save(@RequestBody Project project) {
-        if (project.getId() != 0) {
-            update(project);
-        }
         projectService.save(project);
     }
     @PutMapping

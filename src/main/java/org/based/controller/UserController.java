@@ -20,7 +20,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    @GetMapping("/all")
+    @GetMapping
     public List<User> findAll() {
         return userService.findAll();
     }
@@ -30,9 +30,6 @@ public class UserController {
     }
     @PostMapping
     public void save(@RequestBody User user) {
-        if (user.getId() != 0) {
-            update(user);
-        }
         userService.save(user);
     }
     @PutMapping
