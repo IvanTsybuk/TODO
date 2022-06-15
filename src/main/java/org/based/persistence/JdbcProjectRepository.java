@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.based.domain.Project;
@@ -67,7 +68,7 @@ public class JdbcProjectRepository implements Repository<Project> {
     }
     @Override
     @SneakyThrows
-    public Project findByName(String name) {
+    public Optional<Project> findByName(String name) {
         Project project = new Project();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
@@ -79,7 +80,7 @@ public class JdbcProjectRepository implements Repository<Project> {
                 }
             }
         }
-        return project;
+        return Optional.of(project);
     }
     @SneakyThrows
     private Project mapToProject(ResultSet resultSet) {

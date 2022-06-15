@@ -1,22 +1,19 @@
 package org.based.exceptions;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Data;
+import org.springframework.web.context.request.WebRequest;
 
 @Data
 public class ExceptionResponse {
     private String message;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private String description;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> stackTrace;
+    private WebRequest request;
     private LocalDateTime timestamp;
     public ExceptionResponse() {
     }
-    public ExceptionResponse(String message, LocalDateTime timestamp) {
+    public ExceptionResponse(String message, WebRequest request, LocalDateTime timestamp) {
         this.message = message;
+        this.request = request;
         this.timestamp = timestamp;
     }
 }

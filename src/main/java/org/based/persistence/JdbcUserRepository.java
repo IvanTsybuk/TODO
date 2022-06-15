@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.based.domain.User;
@@ -67,7 +68,7 @@ public class JdbcUserRepository implements Repository<User> {
     }
     @Override
     @SneakyThrows
-    public User findByName(String name) {
+    public Optional<User> findByName(String name) {
         User user = new User();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
@@ -79,7 +80,7 @@ public class JdbcUserRepository implements Repository<User> {
                 }
             }
         }
-        return user;
+        return Optional.of(user);
     }
     @SneakyThrows
     private User mapToUser(ResultSet resultSet) {

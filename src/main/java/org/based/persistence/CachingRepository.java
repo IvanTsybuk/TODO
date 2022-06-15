@@ -3,6 +3,7 @@ package org.based.persistence;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class CachingRepository<T extends Entity> implements FileRepository<T> {
     private final Map<String, T> repositoryMap;
@@ -20,8 +21,8 @@ public class CachingRepository<T extends Entity> implements FileRepository<T> {
     public void deleteByName(String name) {
         repositoryMap.remove(name);
     }
-    public T findByName(String name) {
-        return repositoryMap.get(name);
+    public Optional<T> findByName(String name) {
+        return Optional.ofNullable(repositoryMap.get(name));
     }
     public void update(T entity) {
         repositoryMap.put(entity.getName(), entity);

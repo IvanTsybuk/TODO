@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.based.domain.Task;
@@ -66,7 +67,7 @@ public class JdbcTaskRepository implements Repository<Task> {
     }
     @Override
     @SneakyThrows
-    public Task findByName(String name) {
+    public Optional<Task> findByName(String name) {
         Task task = new Task();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
@@ -77,8 +78,8 @@ public class JdbcTaskRepository implements Repository<Task> {
                     task = mapToTask(resultSet);
                 }
             }
-            return task;
         }
+        return Optional.of(task);
     }
     @SneakyThrows
     private Task mapToTask(ResultSet resultSet) {
