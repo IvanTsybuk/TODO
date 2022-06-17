@@ -68,18 +68,19 @@ public class JdbcTaskRepository implements Repository<Task> {
     @Override
     @SneakyThrows
     public Optional<Task> findByName(String name) {
-        Task task = new Task();
+        Optional<Task> optionalTask = Optional.empty();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
             preparedStatement.setString(1, name);
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    task = mapToTask(resultSet);
+                    Task task = mapToTask(resultSet);
+                    return Optional.of(task);
                 }
             }
         }
-        return Optional.of(task);
+        return optionalTask;
     }
     @SneakyThrows
     private Task mapToTask(ResultSet resultSet) {

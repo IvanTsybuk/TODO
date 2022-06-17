@@ -1,4 +1,4 @@
-package org.based.input;
+package org.based;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -2,25 +2,26 @@ package org.based.application;
 
 import java.util.List;
 import org.based.domain.User;
-import org.based.exceptions.EntityConstraintException;
+import org.based.exceptions.EntityAlreadyExistsException;
 import org.based.exceptions.EntityNotFoundException;
 import org.based.persistence.Repository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private static final String CONSTRAINT_VIOLATION = "User with name - %s, is already exist";
+    private static final String ALREADY_EXIST = "User with name - %s, is already exist";
     private static final String ENTITY_NOT_FOUND = "User with name - %s, is not found";
     private final Repository<User> userRepository;
     public UserService(Repository<User> userRepository) {
         this.userRepository = userRepository;
     }
     public void save(final User user) {
-        if (userRepository.findByName(user.getName()).isPresent()) {
-            throw new EntityConstraintException(
-                    String.format(CONSTRAINT_VIOLATION, user.getName()));
-        }
-        userRepository.save(user);
+        userRepository.findByName(user.getName())
+                .ifPresentOrElse(a -> throwException(a.getName()),
+                        () -> userRepository.save(user));
+    }
+    private void throwException(String entityName) {
+        throw new EntityAlreadyExistsException(String.format(ALREADY_EXIST, entityName));
     }
     public List<User> findAll() {
         return userRepository.findAll();

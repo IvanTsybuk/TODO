@@ -69,18 +69,19 @@ public class JdbcUserRepository implements Repository<User> {
     @Override
     @SneakyThrows
     public Optional<User> findByName(String name) {
-        User user = new User();
+        Optional<User> userOptional = Optional.empty();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
             preparedStatement.setString(1, name);
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    user = mapToUser(resultSet);
+                    User user = mapToUser(resultSet);
+                    return Optional.of(user);
                 }
             }
         }
-        return Optional.of(user);
+        return userOptional;
     }
     @SneakyThrows
     private User mapToUser(ResultSet resultSet) {

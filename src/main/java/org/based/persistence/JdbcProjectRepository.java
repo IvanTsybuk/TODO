@@ -69,18 +69,19 @@ public class JdbcProjectRepository implements Repository<Project> {
     @Override
     @SneakyThrows
     public Optional<Project> findByName(String name) {
-        Project project = new Project();
+        Optional<Project> optionalProject = Optional.empty();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
             preparedStatement.setString(1, name);
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    project = mapToProject(resultSet);
+                    Project project = mapToProject(resultSet);
+                    return Optional.of(project);
                 }
             }
         }
-        return Optional.of(project);
+        return optionalProject;
     }
     @SneakyThrows
     private Project mapToProject(ResultSet resultSet) {
