@@ -1,5 +1,4 @@
 package org.based.application;
-
 import java.util.List;
 import org.based.domain.Task;
 import org.based.exceptions.EntityAlreadyExistsException;
@@ -17,11 +16,11 @@ public class TaskService {
     }
     public void save(final Task task) {
         taskRepository.findByName(task.getName())
-                .ifPresentOrElse(a -> throwException(a.getName()),
-                        () -> taskRepository.save(task));
-    }
-    private void throwException(String entityName) {
-        throw new EntityAlreadyExistsException(String.format(ALREADY_EXIST, entityName));
+                .ifPresent(a -> {
+                    throw new EntityAlreadyExistsException(
+                            String.format(ALREADY_EXIST, a.getName()));
+                });
+        taskRepository.save(task);
     }
     public List<Task> findAll() {
         return taskRepository.findAll();
@@ -34,6 +33,9 @@ public class TaskService {
                 () -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, name)));
     }
     public void update(Task task) {
+        taskRepository.findByName(task.getName()).orElseThrow(
+                () -> new EntityNotFoundException(
+                        String.format(ENTITY_NOT_FOUND, task.getName())));
         taskRepository.update(task);
     }
 }

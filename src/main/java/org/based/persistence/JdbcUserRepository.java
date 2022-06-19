@@ -69,7 +69,6 @@ public class JdbcUserRepository implements Repository<User> {
     @Override
     @SneakyThrows
     public Optional<User> findByName(String name) {
-        Optional<User> userOptional = Optional.empty();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
@@ -81,7 +80,7 @@ public class JdbcUserRepository implements Repository<User> {
                 }
             }
         }
-        return userOptional;
+        return Optional.empty();
     }
     @SneakyThrows
     private User mapToUser(ResultSet resultSet) {

@@ -68,7 +68,6 @@ public class JdbcTaskRepository implements Repository<Task> {
     @Override
     @SneakyThrows
     public Optional<Task> findByName(String name) {
-        Optional<Task> optionalTask = Optional.empty();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
@@ -80,7 +79,7 @@ public class JdbcTaskRepository implements Repository<Task> {
                 }
             }
         }
-        return optionalTask;
+        return Optional.empty();
     }
     @SneakyThrows
     private Task mapToTask(ResultSet resultSet) {

@@ -69,7 +69,6 @@ public class JdbcProjectRepository implements Repository<Project> {
     @Override
     @SneakyThrows
     public Optional<Project> findByName(String name) {
-        Optional<Project> optionalProject = Optional.empty();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
@@ -81,7 +80,7 @@ public class JdbcProjectRepository implements Repository<Project> {
                 }
             }
         }
-        return optionalProject;
+        return Optional.empty();
     }
     @SneakyThrows
     private Project mapToProject(ResultSet resultSet) {

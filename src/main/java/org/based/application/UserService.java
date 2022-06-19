@@ -17,8 +17,11 @@ public class UserService {
     }
     public void save(final User user) {
         userRepository.findByName(user.getName())
-                .ifPresentOrElse(a -> throwException(a.getName()),
-                        () -> userRepository.save(user));
+                .ifPresent(a -> {
+                    throw new EntityAlreadyExistsException(
+                            String.format(ALREADY_EXIST, a.getName()));
+                });
+        userRepository.save(user);
     }
     private void throwException(String entityName) {
         throw new EntityAlreadyExistsException(String.format(ALREADY_EXIST, entityName));
@@ -34,6 +37,9 @@ public class UserService {
         userRepository.deleteByName(name);
     }
     public void update(User user) {
+        userRepository.findByName(user.getName()).orElseThrow(
+                () -> new EntityNotFoundException(
+                        String.format(ENTITY_NOT_FOUND, user.getName())));
         userRepository.update(user);
     }
 }

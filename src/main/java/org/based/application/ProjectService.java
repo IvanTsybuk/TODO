@@ -17,11 +17,11 @@ public class ProjectService {
     }
     public void save(final Project project) {
         projectRepository.findByName(project.getName())
-                .ifPresentOrElse(a -> throwException(a.getName()),
-                        () -> projectRepository.save(project));
-    }
-    private void throwException(String entityName) {
-        throw new EntityAlreadyExistsException(String.format(ALREADY_EXIST, entityName));
+                .ifPresent(a -> {
+                    throw new EntityAlreadyExistsException(
+                            String.format(ALREADY_EXIST, a.getName()));
+                });
+        projectRepository.save(project);
     }
     public List<Project> findAll() {
         return projectRepository.findAll();
@@ -34,6 +34,9 @@ public class ProjectService {
                 () -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, name)));
     }
     public void update(Project project) {
+        projectRepository.findByName(project.getName()).orElseThrow(
+                () -> new EntityNotFoundException(
+                        String.format(ENTITY_NOT_FOUND, project.getName())));
         projectRepository.update(project);
     }
 }
