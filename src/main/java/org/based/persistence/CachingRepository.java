@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 public class CachingRepository<T extends Entity> implements FileRepository<T> {
     private final Map<String, T> repositoryMap;
@@ -12,19 +13,19 @@ public class CachingRepository<T extends Entity> implements FileRepository<T> {
         this.writer = writer;
         this.repositoryMap = writer.readFile();
     }
-    public void save(T entity) {
+    public void save(@NotNull T entity) {
         repositoryMap.put(entity.getName(), entity);
     }
     public List<T> findAll() {
         return new ArrayList<>(repositoryMap.values());
     }
-    public void deleteByName(String name) {
+    public void deleteByName(@NotNull String name) {
         repositoryMap.remove(name);
     }
-    public Optional<T> findByName(String name) {
+    public Optional<T> findByName(@NotNull String name) {
         return Optional.ofNullable(repositoryMap.get(name));
     }
-    public void update(T entity) {
+    public void update(@NotNull T entity) {
         repositoryMap.put(entity.getName(), entity);
     }
     public void saveToFile() {

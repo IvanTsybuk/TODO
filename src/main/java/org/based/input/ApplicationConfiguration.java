@@ -2,10 +2,12 @@ package org.based.input;
 
 import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Log4j2
 public class ApplicationConfiguration {
     private static final String URL_DEFAULT = "jdbc:postgresql://localhost:5432/todoApp";
     private static final String USER_DEFAULT = "postgres";
@@ -15,6 +17,7 @@ public class ApplicationConfiguration {
     private static final String DATABASE_PASSWORD = "PASSWORD";
     @Bean
     public DataSource createDataSource() {
+        log.info("Creating data source");
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(getEnvVariable(DATABASE_URL, URL_DEFAULT));
         dataSource.setUsername(getEnvVariable(DATABASE_USER, USER_DEFAULT));

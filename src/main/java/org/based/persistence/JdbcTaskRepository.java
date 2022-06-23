@@ -4,14 +4,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import org.based.domain.Task;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 @Component
+@Log4j2
 public class JdbcTaskRepository implements Repository<Task> {
     private static final String select = "SELECT * FROM tasks";
     private static final String selectByName = "SELECT * FROM tasks WHERE name = ?";
@@ -20,31 +25,35 @@ public class JdbcTaskRepository implements Repository<Task> {
     private static final String update = "UPDATE tasks SET name = ?, description = ? WHERE id = ?";
     private final DataSource dataSource;
     public JdbcTaskRepository(DataSource dataSource) {
+        log.info("JdbcTaskRepository initialization");
         this.dataSource = dataSource;
     }
     @Override
     @SneakyThrows
-    public void save(Task entity) {
+    public void save(@NotNull Task entity) {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
             preparedStatement.executeUpdate();
+            log.info("Saving task in repository");
         }
     }
     @Override
     @SneakyThrows
-    public void update(Task entity) {
+    public void update(@NotNull Task entity) {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(update)) {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
             preparedStatement.setLong(3, entity.getId());
             preparedStatement.executeUpdate();
+            log.info("Updating task in repository");
         }
     }
     @Override
     @SneakyThrows
+    @Nullable
     public List<Task> findAll() {
         List<Task> taskList = new ArrayList<>();
         try (final Connection connection = dataSource.getConnection();
@@ -54,20 +63,25 @@ public class JdbcTaskRepository implements Repository<Task> {
                 taskList.add(mapToTask(resultSet));
             }
         }
+        if (taskList.isEmpty()) {
+            return Collections.emptyList();
+        }
+        log.info("Selecting all tasks from repository");
         return taskList;
     }
     @Override
     @SneakyThrows
-    public void deleteByName(String name) {
+    public void deleteByName(@NotNull String name) {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
             preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
+            log.info("Deleting a task from repository");
         }
     }
     @Override
     @SneakyThrows
-    public Optional<Task> findByName(String name) {
+    public Optional<Task> findByName(@NotNull String name) {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
@@ -75,6 +89,7 @@ public class JdbcTaskRepository implements Repository<Task> {
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Task task = mapToTask(resultSet);
+                    log.info("Selecting a task from repository");
                     return Optional.of(task);
                 }
             }
@@ -82,7 +97,7 @@ public class JdbcTaskRepository implements Repository<Task> {
         return Optional.empty();
     }
     @SneakyThrows
-    private Task mapToTask(ResultSet resultSet) {
+    private Task mapToTask(@NotNull ResultSet resultSet) {
         final Task task = new Task();
         task.setId(resultSet.getLong("id"));
         task.setName(resultSet.getString("name"));

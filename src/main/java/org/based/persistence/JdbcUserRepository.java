@@ -4,14 +4,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.sql.DataSource;
+import lombok.NonNull;
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import org.based.domain.User;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 @Component
+@Log4j2
 public class JdbcUserRepository implements Repository<User> {
     private static final String select = "SELECT * FROM users";
     private static final String selectByName = "SELECT * FROM users WHERE name = ?";
@@ -20,31 +26,35 @@ public class JdbcUserRepository implements Repository<User> {
     private static final String update = "UPDATE users SET name = ?, surname = ? WHERE id = ?";
     private final DataSource dataSource;
     public JdbcUserRepository(DataSource dataSource) {
+        log.info("JdbcUserRepository initialization");
         this.dataSource = dataSource;
     }
     @Override
     @SneakyThrows
-    public void save(User entity) {
+    public void save(@NonNull User entity) {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getSurname());
             preparedStatement.setLong(3, entity.getId());
             preparedStatement.executeUpdate();
+            log.info("Saving user in repository");
         }
     }
     @Override
     @SneakyThrows
-    public void update(User entity) {
+    public void update(@NonNull User entity) {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(update)) {
             preparedStatement.setString(1, entity.getSurname());
             preparedStatement.setString(2, entity.getName());
             preparedStatement.executeUpdate();
+            log.info("Updating user in repository");
         }
     }
     @Override
     @SneakyThrows
+    @Nullable
     public List<User> findAll() {
         List<User> userList = new ArrayList<>();
         try (final Connection connection = dataSource.getConnection();
@@ -55,20 +65,25 @@ public class JdbcUserRepository implements Repository<User> {
                 userList.add(mapToUser(resultSet));
             }
         }
+        if (userList.isEmpty()) {
+            return Collections.emptyList();
+        }
+        log.info("Selecting all users from repository");
         return userList;
     }
     @Override
     @SneakyThrows
-    public void deleteByName(String name) {
+    public void deleteByName(@NotNull String name) {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
             preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
+            log.info("Deleting a user from repository");
         }
     }
     @Override
     @SneakyThrows
-    public Optional<User> findByName(String name) {
+    public Optional<User> findByName(@NotNull String name) {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
@@ -76,6 +91,7 @@ public class JdbcUserRepository implements Repository<User> {
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     User user = mapToUser(resultSet);
+                    log.info("Selecting a user from repository");
                     return Optional.of(user);
                 }
             }
@@ -83,7 +99,7 @@ public class JdbcUserRepository implements Repository<User> {
         return Optional.empty();
     }
     @SneakyThrows
-    private User mapToUser(ResultSet resultSet) {
+    private User mapToUser(@NonNull ResultSet resultSet) {
         final User user = new User();
         user.setId(resultSet.getLong("id"));
         user.setName(resultSet.getString("name"));
