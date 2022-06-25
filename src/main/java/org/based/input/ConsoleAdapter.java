@@ -7,16 +7,17 @@ import org.based.application.UserService;
 import org.based.domain.Project;
 import org.based.domain.Task;
 import org.based.domain.User;
+import org.jetbrains.annotations.NotNull;
 
 public class ConsoleAdapter {
     private final TaskService taskService;
     private final UserService userService;
     private final ProjectService projectService;
     private final Scanner scanner;
-    public ConsoleAdapter(TaskService taskService,
-                          ProjectService projectService,
-                          UserService userService,
-                          Scanner scanner) {
+    public ConsoleAdapter(@NotNull TaskService taskService,
+                          @NotNull ProjectService projectService,
+                          @NotNull UserService userService,
+                          @NotNull Scanner scanner) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.userService = userService;
