@@ -17,17 +17,18 @@ public class WriterBuilder<T> {
     private Class<T> clazz;
     public WriterBuilder() {
     }
-    public @NotNull WriterBuilder<T> environmentVariable(@Nullable String environmentVariable) {
+    @NotNull
+    public WriterBuilder<T> environmentVariable(@Nullable final String environmentVariable) {
         this.environmentVariable = environmentVariable;
         return this;
     }
-    public @NotNull WriterBuilder<T> useClass(@NotNull Class<T> clazz) {
+    @NotNull
+    public WriterBuilder<T> useClass(@NotNull final Class<T> clazz) {
         className = clazz.getSimpleName();
         this.clazz = clazz;
         return this;
     }
     public @NotNull Writer<T> build() {
-        log.info("WriterBuilder: JacksonWriter created");
         log.debug(String.format("Writer:%s, File:%s, Class:%s",
                 getWriter().getClass().getName(),
                 getFile().getName(),
@@ -41,7 +42,6 @@ public class WriterBuilder<T> {
             configuration = innerVariable;
             return configuration;
         }
-        log.debug(String.format("WriterBuilder: file configuration is set-%s", configuration));
         return configuration;
     }
     private ObjectMapper getWriter() {
@@ -54,11 +54,11 @@ public class WriterBuilder<T> {
         }
         return new ObjectMapper();
     }
-    private @NotNull String createDefaultFileName(@NotNull String className) {
+    private @NotNull String createDefaultFileName(@NotNull final String className) {
         String nameTemple = "%s.json";
         return String.format(nameTemple, className);
     }
-    private @NotNull String getFileExtension(@NotNull String fileName) {
+    private @NotNull String getFileExtension(@NotNull final String fileName) {
         return Files.getFileExtension(fileName);
     }
     @SneakyThrows
@@ -69,14 +69,12 @@ public class WriterBuilder<T> {
             final File defaultFile = new File(getFileConfigurationPath());
             defaultFile.createNewFile();
             verifyFileStructure(defaultFile);
-            log.debug("WriterBuilder: default File created and configured");
             return defaultFile;
         }
         return file;
     }
     private void verifyFileStructure(@NotNull File defaultFile) {
         if (defaultFile.length() == 0) {
-            log.debug("WriterBuilder: file is empty. Configured");
             switch (getFileExtension(getFileConfigurationPath())) {
                 case "json":
                     setFileStructure(defaultFile, FileAppend.JSON.getAppendType());
@@ -89,7 +87,7 @@ public class WriterBuilder<T> {
         }
     }
     @SneakyThrows
-    private void setFileStructure(@NotNull File defaultFile, @NotNull String defaultTag) {
+    private void setFileStructure(@NotNull File defaultFile, @NotNull final String defaultTag) {
         FileWriter writer = new FileWriter(defaultFile);
         writer.append(defaultTag);
         writer.flush();

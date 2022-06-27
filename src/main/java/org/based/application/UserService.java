@@ -21,35 +21,38 @@ public class UserService {
         this.userRepository = userRepository;
     }
     public void save(@NotNull final User user) {
-        log.debug("UserService: Save new user");
+        log.debug(String.format("Save new user:%s", user));
         userRepository.findByName(user.getName())
                 .ifPresent(a -> {
-                    log.error("UserService Exception: save new User. ALREADY_EXIST");
+                    log.error(String.format("Save Exception-user:%s. ALREADY_EXIST", user));
                     throw new EntityAlreadyExistsException(
                             String.format(ALREADY_EXIST, a.getName()));
                 });
         userRepository.save(user);
     }
-    public @NotNull List<User> findAll() {
-        log.debug("UserService: Find all tasks");
+    @NotNull
+    public List<User> findAll() {
+        log.debug("Find all tasks");
         return userRepository.findAll();
     }
-    public @NotNull User findByName(@NotNull final String name) {
+    @NotNull
+    public User findByName(@NotNull final String name) {
+        log.debug(String.format("find user by name: %s", name));
         return userRepository.findByName(name).orElseThrow(
                 () -> {
-                    log.error(String.format("UserService Exception: NOT_FOUND-%s", name));
+                    log.error(String.format("FindByName Exception: NOT_FOUND user name: %s", name));
                     throw  new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, name));
                 });
     }
-    public void deleteByName(@NotNull String name) {
-        log.debug(String.format("UserService: Delete user by name - %s", name));
+    public void deleteByName(@NotNull final String name) {
+        log.debug(String.format("delete user by name: %s", name));
         userRepository.deleteByName(name);
     }
-    public void update(@NotNull User user) {
-        log.debug(String.format("UserService: Updating a task - %s", user.getName()));
+    public void update(@NotNull final User user) {
+        log.debug(String.format("Update task: %s", user));
         userRepository.findByName(user.getName()).orElseThrow(
                 () -> {
-                    log.error(String.format("UserService Exception: NOT_FOUND-%s",
+                    log.error(String.format("Update Exception: NOT_FOUND-user name: %s",
                             user.getName()));
                     throw new EntityNotFoundException(
                             String.format(ENTITY_NOT_FOUND, user.getName()));

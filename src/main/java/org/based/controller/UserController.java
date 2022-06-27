@@ -20,34 +20,36 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 public class UserController {
     @NotNull
-    UserService userService;
+    private final UserService userService;
     public UserController(@NotNull UserService userService) {
         log.info("TaskController initialization");
         this.userService = userService;
     }
     @GetMapping
-    public @NotNull List<User> findAll() {
-        log.info("GetMapping: find all users");
+    @NotNull
+    public List<User> findAll() {
+        log.info("find all users");
         return userService.findAll();
     }
     @GetMapping("/{name}")
-    public void findByName(@PathVariable @NotNull String name) {
-        log.info(String.format("GetMapping: find a user by name - %s", name));
-        userService.findByName(name);
+    @NotNull
+    public User findByName(@PathVariable @NotNull final String name) {
+        log.info(String.format("find user by name: %s", name));
+        return userService.findByName(name);
     }
     @PostMapping
-    public void save(@RequestBody @NotNull User user) {
-        log.info("PostMapping: save new user");
+    public void save(@RequestBody @NotNull final User user) {
+        log.info(String.format("save new user: %s", user));
         userService.save(user);
     }
     @PutMapping
-    private void update(@RequestBody @NotNull User user) {
-        log.info(String.format("PutMapping: update user - %s", user.getName()));
+    private void update(@RequestBody @NotNull final User user) {
+        log.info(String.format("update user: %s", user));
         userService.update(user);
     }
     @DeleteMapping("/{name}")
-    public void delete(@RequestParam @NotNull String name) {
-        log.info(String.format("DeleteMapping: delete user by name - %s", name));
+    public void delete(@RequestParam @NotNull final String name) {
+        log.info(String.format("delete user by name: %s", name));
         userService.deleteByName(name);
     }
 }

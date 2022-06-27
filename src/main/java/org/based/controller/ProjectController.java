@@ -19,34 +19,36 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 public class ProjectController {
     @NotNull
-    ProjectService projectService;
+    private final ProjectService projectService;
     public ProjectController(@NotNull ProjectService projectService) {
         log.info("ProjectController initialization");
         this.projectService = projectService;
     }
     @GetMapping
-    public @NotNull List<Project> findAll() {
-        log.info("GetMapping: find all projects");
+    @NotNull
+    public List<Project> findAll() {
+        log.info("find all projects");
         return projectService.findAll();
     }
     @GetMapping("/{name}")
-    public Project findByName(@PathVariable @NotNull String name) {
-        log.info(String.format("GetMapping: find project by name-%s", name));
+    @NotNull
+    public Project findByName(@PathVariable @NotNull final String name) {
+        log.info(String.format("find project by name: %s", name));
         return projectService.findByName(name);
     }
     @PostMapping
-    public void save(@RequestBody @NotNull Project project) {
-        log.info("PostMapping: save new project-%s");
+    public void save(@RequestBody @NotNull final Project project) {
+        log.info(String.format("save new project: %s", project));
         projectService.save(project);
     }
     @PutMapping
-    private void update(@RequestBody @NotNull Project project) {
-        log.info(String.format("PutMapping: update project-%s", project.getName()));
+    private void update(@RequestBody @NotNull final Project project) {
+        log.info(String.format("update project: %s", project));
         projectService.update(project);
     }
     @DeleteMapping("/{name}")
-    public void delete(@PathVariable @NotNull String name) {
-        log.info(String.format("DeleteMapping: delete project by name-%s", name));
+    public void delete(@PathVariable @NotNull final String name) {
+        log.info(String.format("delete project by name: %s", name));
         projectService.deleteByName(name);
     }
 }

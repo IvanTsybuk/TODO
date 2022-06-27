@@ -31,59 +31,60 @@ public class JdbcProjectRepository implements Repository<Project> {
     }
     @Override
     @SneakyThrows
-    public void save(@NotNull Project entity) {
+    public void save(@NotNull final Project entity) {
+        log.debug(String.format("Save new project: %s", entity));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
             preparedStatement.executeUpdate();
-            log.debug(String.format("JdbcProjectRepository: Save project - %s", entity.getName()));
         }
     }
     @Override
     @SneakyThrows
-    public void update(@NotNull Project entity) {
+    public void update(@NotNull final Project entity) {
+        log.debug(String.format("Update project: %s", entity));
         try (final Connection connection  = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(update)) {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
             preparedStatement.setLong(3, entity.getId());
             preparedStatement.executeUpdate();
-            log.debug(String.format("JdbcProjectRepository: Update project - %s",
-                    entity.getName()));
         }
     }
     @Override
     @SneakyThrows
-    public @NotNull List<Project> findAll() {
+    @NotNull
+    public List<Project> findAll() {
+        log.debug("Select all projects");
         List<Project> projectList = new ArrayList<>();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(select);
              final ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 projectList.add(mapToProject(resultSet));
-                log.debug("JdbcProjectRepository: Select all projects");
             }
         }
         if (projectList.isEmpty()) {
-            log.debug("JdbcProjectRepository: Empty project list is provided");
             return Collections.emptyList();
         }
         return projectList;
     }
     @Override
     @SneakyThrows
-    public void deleteByName(@NotNull String name) {
+    public void deleteByName(@NotNull final String name) {
+        log.debug(String.format("delete project by name: %s", name));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
             preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
-            log.debug(String.format("JdbcProjectRepository: Delete a project- %s", name));
         }
     }
     @Override
     @SneakyThrows
-    public @NotNull Optional<Project> findByName(@NotNull String name) {
+    @NotNull
+    public Optional<Project> findByName(@NotNull final String name) {
+        log.debug(String.format("find project by name: %s", name));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
@@ -91,7 +92,6 @@ public class JdbcProjectRepository implements Repository<Project> {
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Project project = mapToProject(resultSet);
-                    log.debug(String.format("JdbcProjectRepository: Select a project- %s", name));
                     return Optional.of(project);
                 }
             }
@@ -99,12 +99,13 @@ public class JdbcProjectRepository implements Repository<Project> {
         return Optional.empty();
     }
     @SneakyThrows
-    private @NotNull Project mapToProject(@NotNull ResultSet resultSet) {
+    @NotNull
+    private Project mapToProject(@NotNull final ResultSet resultSet) {
+        log.debug(String.format("Project mapped from resultSet: %s", resultSet));
         final Project project = new Project();
         project.setId(resultSet.getLong("id"));
         project.setName(resultSet.getString("name"));
         project.setDescription(resultSet.getString("description"));
-        log.debug(String.format("JdbcTaskRepository: Project mapped from resultSet-%s", project));
         return project;
     }
 }

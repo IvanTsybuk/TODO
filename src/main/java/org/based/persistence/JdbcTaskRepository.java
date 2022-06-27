@@ -30,30 +30,32 @@ public class JdbcTaskRepository implements Repository<Task> {
     }
     @Override
     @SneakyThrows
-    public void save(@NotNull Task entity) {
+    public void save(@NotNull final Task entity) {
+        log.debug(String.format("Save new task: %s", entity));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
             preparedStatement.executeUpdate();
-            log.debug(String.format("JdbcTaskRepository: Save task- %s", entity.getName()));
         }
     }
     @Override
     @SneakyThrows
-    public void update(@NotNull Task entity) {
+    public void update(@NotNull final Task entity) {
+        log.debug(String.format("Update task: %s", entity));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(update)) {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getDescription());
             preparedStatement.setLong(3, entity.getId());
             preparedStatement.executeUpdate();
-            log.debug(String.format("JdbcTaskRepository: Update task - %s", entity.getName()));
         }
     }
     @Override
     @SneakyThrows
-    public @NotNull List<Task> findAll() {
+    @NotNull
+    public List<Task> findAll() {
+        log.debug("Select all tasks");
         List<Task> taskList = new ArrayList<>();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(select);
@@ -63,25 +65,25 @@ public class JdbcTaskRepository implements Repository<Task> {
             }
         }
         if (taskList.isEmpty()) {
-            log.warn("JdbcTaskRepository: Empty task list is provided");
             return Collections.emptyList();
         }
-        log.debug("JdbcTaskRepository: Select all tasks");
         return taskList;
     }
     @Override
     @SneakyThrows
-    public void deleteByName(@NotNull String name) {
+    public void deleteByName(@NotNull final String name) {
+        log.debug(String.format("delete task by name: %s", name));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
             preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
-            log.debug(String.format("JdbcTaskRepository: Delete a task- %s", name));
         }
     }
     @Override
     @SneakyThrows
-    public @NotNull Optional<Task> findByName(@NotNull String name) {
+    @NotNull
+    public Optional<Task> findByName(@NotNull final String name) {
+        log.debug(String.format("find task by task: %s", name));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
@@ -89,7 +91,6 @@ public class JdbcTaskRepository implements Repository<Task> {
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Task task = mapToTask(resultSet);
-                    log.debug(String.format("JdbcTaskRepository: Select a task- %s", name));
                     return Optional.of(task);
                 }
             }
@@ -97,12 +98,13 @@ public class JdbcTaskRepository implements Repository<Task> {
         return Optional.empty();
     }
     @SneakyThrows
-    private @NotNull Task mapToTask(@NotNull ResultSet resultSet) {
+    @NotNull
+    private Task mapToTask(@NotNull final ResultSet resultSet) {
+        log.debug(String.format("Task mapped from resultSet-%s", resultSet));
         final Task task = new Task();
         task.setId(resultSet.getLong("id"));
         task.setName(resultSet.getString("name"));
         task.setDescription(resultSet.getString("description"));
-        log.debug(String.format("JdbcTaskRepository: Task mapped from resultSet-%s", task));
         return task;
     }
 }

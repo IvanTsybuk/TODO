@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.based.exceptions.EntityAlreadyExistsException;
 import org.based.exceptions.EntityNotFoundException;
 import org.based.exceptions.ExceptionResponse;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,14 +15,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Log4j2
 public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> notFoundException(EntityNotFoundException e) {
-        log.debug("GlobalExceptionHandler: notFoundException");
+    @NotNull
+    public ResponseEntity<ExceptionResponse> notFoundException(
+            @NotNull EntityNotFoundException e) {
+        log.debug(String.format("notFoundException. Message: %s, status: %s",
+                e.getMessage(), HttpStatus.NOT_FOUND));
         return new ResponseEntity<>(new ExceptionResponse(e.getMessage(),
                 LocalDateTime.now()), HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(EntityAlreadyExistsException.class)
-    public ResponseEntity<ExceptionResponse> conflictException(EntityAlreadyExistsException e) {
-        log.debug("GlobalExceptionHandler: conflictException");
+    @NotNull
+    public ResponseEntity<ExceptionResponse> conflictException(
+            @NotNull EntityAlreadyExistsException e) {
+        log.debug(String.format("conflictException. Message: %s, status: %s",
+                e.getMessage(), HttpStatus.CONFLICT));
         return new ResponseEntity<>(new ExceptionResponse(e.getMessage(),
                 LocalDateTime.now()), HttpStatus.CONFLICT);
     }

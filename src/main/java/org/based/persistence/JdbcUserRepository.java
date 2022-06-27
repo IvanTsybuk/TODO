@@ -30,31 +30,32 @@ public class JdbcUserRepository implements Repository<User> {
     }
     @Override
     @SneakyThrows
-    public void save(@NotNull User entity) {
+    public void save(@NotNull final User entity) {
+        log.debug(String.format("Save new user: %s", entity));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getSurname());
             preparedStatement.setLong(3, entity.getId());
             preparedStatement.executeUpdate();
-            log.debug(String.format("JdbcUserRepository: Save new user- %s in repository",
-                    entity.getName()));
         }
     }
     @Override
     @SneakyThrows
-    public void update(@NotNull User entity) {
+    public void update(@NotNull final User entity) {
+        log.debug(String.format("update user: %s", entity));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(update)) {
             preparedStatement.setString(1, entity.getSurname());
             preparedStatement.setString(2, entity.getName());
             preparedStatement.executeUpdate();
-            log.debug(String.format("JdbcUserRepository: Updating user- %s", entity.getName()));
         }
     }
     @Override
     @SneakyThrows
-    public @NotNull List<User> findAll() {
+    @NotNull
+    public List<User> findAll() {
+        log.debug("Select all users");
         List<User> userList = new ArrayList<>();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
@@ -65,25 +66,25 @@ public class JdbcUserRepository implements Repository<User> {
             }
         }
         if (userList.isEmpty()) {
-            log.debug("JdbcUserRepository: Empty user list is provided");
             return Collections.emptyList();
         }
-        log.debug("JdbcUserRepository: Select all users");
         return userList;
     }
     @Override
     @SneakyThrows
-    public void deleteByName(@NotNull String name) {
+    public void deleteByName(@NotNull final String name) {
+        log.debug(String.format("delete user by name: %s", name));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
             preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
-            log.debug(String.format("JdbcUserRepository: Delete user - %s", name));
         }
     }
     @Override
     @SneakyThrows
-    public @NotNull Optional<User> findByName(@NotNull String name) {
+    @NotNull
+    public Optional<User> findByName(@NotNull final String name) {
+        log.debug(String.format("find user by name: %s", name));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
@@ -91,7 +92,6 @@ public class JdbcUserRepository implements Repository<User> {
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     User user = mapToUser(resultSet);
-                    log.debug(String.format("JdbcUserRepository: Select user- %s", name));
                     return Optional.of(user);
                 }
             }
@@ -99,12 +99,13 @@ public class JdbcUserRepository implements Repository<User> {
         return Optional.empty();
     }
     @SneakyThrows
-    private @NotNull User mapToUser(@NotNull ResultSet resultSet) {
+    @NotNull
+    private User mapToUser(@NotNull final ResultSet resultSet) {
+        log.debug(String.format("User mapped from resultSet: %s", resultSet));
         final User user = new User();
         user.setId(resultSet.getLong("id"));
         user.setName(resultSet.getString("name"));
         user.setSurname(resultSet.getString("surname"));
-        log.debug(String.format("JdbcUserRepository: User mapped from resultSet-%s", user));
         return user;
     }
 }

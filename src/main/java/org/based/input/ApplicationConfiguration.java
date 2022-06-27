@@ -19,21 +19,17 @@ public class ApplicationConfiguration {
     private static final String DATABASE_PASSWORD = "PASSWORD";
     @Bean
     public DataSource createDataSource() {
-        log.info("Creating data source");
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(getEnvVariable(DATABASE_URL, URL_DEFAULT));
-        log.debug(String.format("Jdbc Url:%s", dataSource.getJdbcUrl()));
         dataSource.setUsername(getEnvVariable(DATABASE_USER, USER_DEFAULT));
-        log.debug(String.format("Jdbc username:%s", dataSource.getJdbcUrl()));
         dataSource.setPassword(getEnvVariable(DATABASE_PASSWORD, PASSWORD_DEFAULT));
-        log.debug("data source password is set");
         return dataSource;
     }
-    private @NotNull String getEnvVariable(@Nullable String sourceValue,
-                                           @NotNull String defaultValue) {
+    @NotNull
+    private String getEnvVariable(@Nullable final String sourceValue,
+                                  @NotNull final String defaultValue) {
         String environmentVariable = System.getenv(sourceValue);
         if (environmentVariable == null || environmentVariable.isBlank()) {
-            log.warn("Default settings for datasource are set");
             environmentVariable = defaultValue;
         }
         return environmentVariable;

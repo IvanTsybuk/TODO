@@ -18,28 +18,29 @@ public class CachingRepository<T extends Entity> implements FileRepository<T> {
         this.writer = writer;
         this.repositoryMap = writer.readFile();
     }
-    public void save(@NotNull T entity) {
-        log.debug("CachingRepository: save new entity");
+    public void save(@NotNull final T entity) {
+        log.debug(String.format("save new entity: %s", entity));
         repositoryMap.put(entity.getName(), entity);
     }
-    public @NotNull List<T> findAll() {
-        log.debug("CachingRepository: find all");
+    @NotNull
+    public List<T> findAll() {
+        log.debug("find all");
         return new ArrayList<>(repositoryMap.values());
     }
-    public void deleteByName(@NotNull String name) {
-        log.debug(String.format("CachingRepository: delete by name-%s", name));
+    public void deleteByName(@NotNull final String name) {
+        log.debug(String.format("delete by name: %s", name));
         repositoryMap.remove(name);
     }
-    public @NotNull Optional<T> findByName(@NotNull String name) {
-        log.debug(String.format("CachingRepository: find by name-%s", name));
+    @NotNull
+    public Optional<T> findByName(@NotNull final String name) {
+        log.debug(String.format("find by name: %s", name));
         return Optional.ofNullable(repositoryMap.get(name));
     }
-    public void update(@NotNull T entity) {
-        log.debug(String.format("CachingRepository: update by name-%s", entity.getName()));
+    public void update(@NotNull final T entity) {
+        log.debug(String.format("update by name: %s", entity.getName()));
         repositoryMap.put(entity.getName(), entity);
     }
     public void saveToFile() {
-        log.debug("CachingRepository: save to file");
         writer.writeToFile(repositoryMap);
     }
 }

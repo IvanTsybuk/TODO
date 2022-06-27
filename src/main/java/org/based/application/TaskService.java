@@ -21,36 +21,38 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
     public void save(@NotNull final Task task) {
-        log.debug("TaskService: Save new task");
+        log.debug(String.format("Save new task: %s", task));
         taskRepository.findByName(task.getName())
                 .ifPresent(a -> {
-                    log.error("TaskService Exception: save new Task. ALREADY_EXIST");
+                    log.error(String.format("Save Exception-task:%s. ALREADY_EXIST", task));
                     throw new EntityAlreadyExistsException(
                             String.format(ALREADY_EXIST, a.getName()));
                 });
         taskRepository.save(task);
     }
-    public @NotNull List<Task> findAll() {
-        log.debug("TaskService: Find all tasks");
+    @NotNull
+    public List<Task> findAll() {
+        log.debug("Find all tasks");
         return taskRepository.findAll();
     }
-    public void deleteByName(@NotNull String taskName) {
-        log.debug("TaskService: Delete a task");
+    public void deleteByName(@NotNull final String taskName) {
+        log.debug(String.format("delete task by name:%s", taskName));
         taskRepository.deleteByName(taskName);
     }
-    public @NotNull Task findByName(@NotNull String name) {
-        log.debug(String.format("TaskService: Finding a task by name-%s", name));
+    @NotNull
+    public Task findByName(@NotNull final String name) {
+        log.debug(String.format("find task by name: %s", name));
         return taskRepository.findByName(name).orElseThrow(
                 () -> {
-                    log.error(String.format("TaskService Exception: NOT_FOUND-%s", name));
+                    log.error(String.format("findByName Exception. NOT_FOUND task name: %s", name));
                     throw  new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, name));
                 });
     }
-    public void update(@NotNull Task task) {
-        log.debug(String.format("TaskService: Update a task-%s", task.getName()));
+    public void update(@NotNull final Task task) {
+        log.debug(String.format("Update task: %s", task));
         taskRepository.findByName(task.getName()).orElseThrow(
                 () -> {
-                    log.error(String.format("TaskService Exception: NOT_FOUND-%s",
+                    log.error(String.format("update Exception. NOT_FOUND task name:%s",
                             task.getName()));
                     throw new EntityNotFoundException(
                             String.format(ENTITY_NOT_FOUND, task.getName()));

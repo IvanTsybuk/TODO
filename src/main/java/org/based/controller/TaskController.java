@@ -19,34 +19,36 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 public class TaskController {
     @NotNull
-    TaskService taskService;
+    private final TaskService taskService;
     public TaskController(@NotNull TaskService taskService) {
         log.info("TaskController initialization");
         this.taskService = taskService;
     }
     @GetMapping
-    public @NotNull List<Task> findAll() {
-        log.info("GetMapping: find all tasks");
+    @NotNull
+    public List<Task> findAll() {
+        log.info("find all tasks");
         return taskService.findAll();
     }
     @GetMapping("/{name}")
-    public @NotNull Task findByName(@NotNull String name) {
-        log.info(String.format("GetMapping: find a task by name- %s", name));
+    @NotNull
+    public Task findByName(@NotNull final String name) {
+        log.info(String.format("find task by name: %s", name));
         return taskService.findByName(name);
     }
     @PostMapping
-    public void save(@RequestBody @NotNull Task task) {
-        log.info("PostMapping: save new task");
+    public void save(@RequestBody @NotNull final Task task) {
+        log.info(String.format("save new task: %s", task));
         taskService.save(task);
     }
     @PutMapping
-    private void update(@RequestBody @NotNull Task task) {
-        log.info(String.format("PutMapping: update task- %s", task.getName()));
+    private void update(@RequestBody @NotNull final Task task) {
+        log.info(String.format("update task: %s", task));
         taskService.update(task);
     }
     @DeleteMapping("/{name}")
-    public void delete(@PathVariable @NotNull String name) {
-        log.info(String.format("DeleteMapping: delete task by name- %s", name));
+    public void delete(@PathVariable @NotNull final String name) {
+        log.info(String.format("delete task by name: %s", name));
         taskService.deleteByName(name);
     }
 }
