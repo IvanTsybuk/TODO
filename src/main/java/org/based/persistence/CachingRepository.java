@@ -14,30 +14,30 @@ public class CachingRepository<T extends Entity> implements FileRepository<T> {
     @NotNull
     private final Writer<T> writer;
     public CachingRepository(@NotNull Writer<T> writer) {
-        log.info("CachingRepository initialization");
+        log.debug("CachingRepository initialization");
         this.writer = writer;
         this.repositoryMap = writer.readFile();
     }
     public void save(@NotNull final T entity) {
-        log.debug(String.format("save new entity: %s", entity));
+        log.debug(String.format("Method save was called with argument entity: %s", entity));
         repositoryMap.put(entity.getName(), entity);
     }
     @NotNull
     public List<T> findAll() {
-        log.debug("find all");
+        log.debug("Method findAll was called");
         return new ArrayList<>(repositoryMap.values());
     }
     public void deleteByName(@NotNull final String name) {
-        log.debug(String.format("delete by name: %s", name));
+        log.debug(String.format("Method deleteByName was called with argument name: %s", name));
         repositoryMap.remove(name);
     }
     @NotNull
     public Optional<T> findByName(@NotNull final String name) {
-        log.debug(String.format("find by name: %s", name));
+        log.debug(String.format("Method findByName was called with argument name: %s", name));
         return Optional.ofNullable(repositoryMap.get(name));
     }
     public void update(@NotNull final T entity) {
-        log.debug(String.format("update by name: %s", entity.getName()));
+        log.debug(String.format("Method update was called with argument entity: %s", entity));
         repositoryMap.put(entity.getName(), entity);
     }
     public void saveToFile() {

@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     @NotNull
     public ResponseEntity<ExceptionResponse> notFoundException(
             @NotNull EntityNotFoundException e) {
-        log.debug(String.format("notFoundException. Message: %s, status: %s",
+        log.debug(String.format("NotFoundException. Message: %s, status: %s",
                 e.getMessage(), HttpStatus.NOT_FOUND));
         return new ResponseEntity<>(new ExceptionResponse(e.getMessage(),
                 LocalDateTime.now()), HttpStatus.NOT_FOUND);
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     @NotNull
     public ResponseEntity<ExceptionResponse> conflictException(
             @NotNull EntityAlreadyExistsException e) {
-        log.debug(String.format("conflictException. Message: %s, status: %s",
+        log.debug(String.format("ConflictException. Message: %s, status: %s",
                 e.getMessage(), HttpStatus.CONFLICT));
         return new ResponseEntity<>(new ExceptionResponse(e.getMessage(),
                 LocalDateTime.now()), HttpStatus.CONFLICT);

@@ -28,28 +28,28 @@ public class UserController {
     @GetMapping
     @NotNull
     public List<User> findAll() {
-        log.info("find all users");
+        log.info("Method findAll tasks was called");
         return userService.findAll();
     }
     @GetMapping("/{name}")
     @NotNull
     public User findByName(@PathVariable @NotNull final String name) {
-        log.info(String.format("find user by name: %s", name));
+        log.info(String.format("Method findByName was called with argument name: %s", name));
         return userService.findByName(name);
     }
     @PostMapping
     public void save(@RequestBody @NotNull final User user) {
-        log.info(String.format("save new user: %s", user));
+        log.info(String.format("Method save was called with argument project: %s", user));
         userService.save(user);
     }
     @PutMapping
     private void update(@RequestBody @NotNull final User user) {
-        log.info(String.format("update user: %s", user));
+        log.info(String.format("Method update was called with argument project: %s", user));
         userService.update(user);
     }
     @DeleteMapping("/{name}")
     public void delete(@RequestParam @NotNull final String name) {
-        log.info(String.format("delete user by name: %s", name));
+        log.info(String.format("Method delete was called with argument name: %s", name));
         userService.deleteByName(name);
     }
 }

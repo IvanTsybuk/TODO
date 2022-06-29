@@ -19,7 +19,7 @@ public class JacksonWriter<T> implements Writer<T> {
     public JacksonWriter(@NotNull ObjectMapper jacksonMapper,
                          @NotNull File configuredFile,
                          @NotNull Class<T> type) {
-        log.info("JacksonWriter initialization");
+        log.debug("JacksonWriter initialization");
         this.jacksonMapper = jacksonMapper;
         this.configuredFile = configuredFile;
         this.typeClass = type;
@@ -27,17 +27,18 @@ public class JacksonWriter<T> implements Writer<T> {
     @Override
     @SneakyThrows
     public void writeToFile(@NotNull final Map<String, T> map) {
-        log.debug(String.format("save to file-%s", configuredFile.getName()));
+        log.debug(String.format("Method writeToFile was called with argument-%s. "
+                + "File for saving- %s", map, configuredFile));
         jacksonMapper.writeValue(configuredFile, map);
     }
     @Override
     @SneakyThrows
     @NotNull
     public Map<String, T> readFile() {
-        log.debug(String.format("read file: %s", configuredFile.getName()));
+        log.debug(String.format("Method readFile was called with file for reading: %s",
+                configuredFile.getName()));
         final MapType mapType = jacksonMapper.getTypeFactory().constructMapType(Map.class,
                 String.class, typeClass);
-        log.debug(String.format("mapType set: %s", mapType));
         return jacksonMapper.readValue(configuredFile, mapType);
     }
 }

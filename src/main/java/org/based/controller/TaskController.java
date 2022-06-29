@@ -27,28 +27,28 @@ public class TaskController {
     @GetMapping
     @NotNull
     public List<Task> findAll() {
-        log.info("find all tasks");
+        log.info("Method findAll tasks was called");
         return taskService.findAll();
     }
     @GetMapping("/{name}")
     @NotNull
     public Task findByName(@NotNull final String name) {
-        log.info(String.format("find task by name: %s", name));
+        log.info(String.format("Method findByName was called with argument name: %s", name));
         return taskService.findByName(name);
     }
     @PostMapping
     public void save(@RequestBody @NotNull final Task task) {
-        log.info(String.format("save new task: %s", task));
+        log.info(String.format("Method save was called with argument project: %s", task));
         taskService.save(task);
     }
     @PutMapping
     private void update(@RequestBody @NotNull final Task task) {
-        log.info(String.format("update task: %s", task));
+        log.info(String.format("Method update was called with argument project: %s", task));
         taskService.update(task);
     }
     @DeleteMapping("/{name}")
     public void delete(@PathVariable @NotNull final String name) {
-        log.info(String.format("delete task by name: %s", name));
+        log.info(String.format("Method delete was called with argument name: %s", name));
         taskService.deleteByName(name);
     }
 }

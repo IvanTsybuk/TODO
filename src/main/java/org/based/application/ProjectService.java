@@ -17,14 +17,14 @@ public class ProjectService {
     @NotNull
     private final Repository<Project> projectRepository;
     public ProjectService(@NotNull Repository<Project> projectRepository) {
-        log.info("ProjectService initialization");
+        log.debug("ProjectService initialization");
         this.projectRepository = projectRepository;
     }
     public void save(@NotNull final Project project) {
-        log.debug(String.format("Save new project: %s", project));
+        log.debug(String.format("Method save was called with argument project: %s", project));
         projectRepository.findByName(project.getName())
                 .ifPresent(a -> {
-                    log.error(String.format("Save Exception-project: %s. ALREADY_EXIST", project));
+                    log.error(String.format("Project - %s , is already exist", project));
                     throw new EntityAlreadyExistsException(
                             String.format(ALREADY_EXIST, a.getName()));
                 });
@@ -32,28 +32,27 @@ public class ProjectService {
     }
     @NotNull
     public List<Project> findAll() {
-        log.debug("Find all projects");
+        log.debug("Method findAll projects was called");
         return projectRepository.findAll();
     }
     public void deleteByName(@NotNull final String name) {
-        log.debug(String.format("delete project by name: %s", name));
+        log.debug(String.format("Method deleteByName was called with argument name: %s", name));
         projectRepository.deleteByName(name);
     }
     @NotNull
     public Project findByName(@NotNull final String name) {
-        log.debug(String.format("find project by name: %s", name));
+        log.debug(String.format("Method findByName was called with argument name: %s", name));
         return projectRepository.findByName(name).orElseThrow(
                 () -> {
-                    log.error(String.format("FindByName Exception: NOT_FOUND- project name: %s",
-                            name));
+                    log.error(String.format("Project with name %s  not found", name));
                     throw  new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, name));
                 });
     }
     public void update(@NotNull final Project project) {
-        log.debug(String.format("Update project: %s", project));
+        log.debug(String.format("Method update was called with argument project: %s", project));
         projectRepository.findByName(project.getName()).orElseThrow(
                 () -> {
-                    log.error(String.format("Update Exception: NOT_FOUND- project name: %s",
+                    log.error(String.format("Project with name %s not found",
                             project.getName()));
                     throw new EntityNotFoundException(
                         String.format(ENTITY_NOT_FOUND, project.getName()));

@@ -29,10 +29,6 @@ public class WriterBuilder<T> {
         return this;
     }
     public @NotNull Writer<T> build() {
-        log.debug(String.format("Writer:%s, File:%s, Class:%s",
-                getWriter().getClass().getName(),
-                getFile().getName(),
-                className));
         return new JacksonWriter<>(getWriter(), getFile(), clazz);
     }
     private String getFileConfigurationPath() {

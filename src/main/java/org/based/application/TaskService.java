@@ -17,14 +17,14 @@ public class TaskService {
     @NotNull
     private final Repository<Task> taskRepository;
     public TaskService(@NotNull Repository<Task> taskRepository) {
-        log.info("TaskService initialization");
+        log.debug("TaskService initialization");
         this.taskRepository = taskRepository;
     }
     public void save(@NotNull final Task task) {
-        log.debug(String.format("Save new task: %s", task));
+        log.debug(String.format("Method save was called with argument task: %s", task));
         taskRepository.findByName(task.getName())
                 .ifPresent(a -> {
-                    log.error(String.format("Save Exception-task:%s. ALREADY_EXIST", task));
+                    log.error(String.format("Task - %s , is already exist", task));
                     throw new EntityAlreadyExistsException(
                             String.format(ALREADY_EXIST, a.getName()));
                 });
@@ -32,28 +32,27 @@ public class TaskService {
     }
     @NotNull
     public List<Task> findAll() {
-        log.debug("Find all tasks");
+        log.debug("Method findAll tasks was called");
         return taskRepository.findAll();
     }
-    public void deleteByName(@NotNull final String taskName) {
-        log.debug(String.format("delete task by name:%s", taskName));
-        taskRepository.deleteByName(taskName);
+    public void deleteByName(@NotNull final String name) {
+        log.debug(String.format("Method deleteByName was called with argument name: %s", name));
+        taskRepository.deleteByName(name);
     }
     @NotNull
     public Task findByName(@NotNull final String name) {
-        log.debug(String.format("find task by name: %s", name));
+        log.debug(String.format("Method findByName was called with argument name: %s", name));
         return taskRepository.findByName(name).orElseThrow(
                 () -> {
-                    log.error(String.format("findByName Exception. NOT_FOUND task name: %s", name));
+                    log.error(String.format("Task with name %s not found", name));
                     throw  new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, name));
                 });
     }
     public void update(@NotNull final Task task) {
-        log.debug(String.format("Update task: %s", task));
+        log.debug(String.format("Method update was called with argument task: %s", task));
         taskRepository.findByName(task.getName()).orElseThrow(
                 () -> {
-                    log.error(String.format("update Exception. NOT_FOUND task name:%s",
-                            task.getName()));
+                    log.error(String.format("Task with name %s not found", task.getName()));
                     throw new EntityNotFoundException(
                             String.format(ENTITY_NOT_FOUND, task.getName()));
                 });

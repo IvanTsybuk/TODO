@@ -25,13 +25,13 @@ public class JdbcUserRepository implements Repository<User> {
     @NotNull
     private final DataSource dataSource;
     public JdbcUserRepository(@NotNull DataSource dataSource) {
-        log.info("JdbcUserRepository initialization");
+        log.debug("JdbcUserRepository initialization");
         this.dataSource = dataSource;
     }
     @Override
     @SneakyThrows
     public void save(@NotNull final User entity) {
-        log.debug(String.format("Save new user: %s", entity));
+        log.debug(String.format("Method save was called with argument entity: %s", entity));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
             preparedStatement.setString(1, entity.getName());
@@ -43,7 +43,7 @@ public class JdbcUserRepository implements Repository<User> {
     @Override
     @SneakyThrows
     public void update(@NotNull final User entity) {
-        log.debug(String.format("update user: %s", entity));
+        log.debug(String.format("Method update was called with argument entity: %s", entity));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(update)) {
             preparedStatement.setString(1, entity.getSurname());
@@ -55,7 +55,7 @@ public class JdbcUserRepository implements Repository<User> {
     @SneakyThrows
     @NotNull
     public List<User> findAll() {
-        log.debug("Select all users");
+        log.debug("Method findAll users was called");
         List<User> userList = new ArrayList<>();
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
@@ -73,7 +73,7 @@ public class JdbcUserRepository implements Repository<User> {
     @Override
     @SneakyThrows
     public void deleteByName(@NotNull final String name) {
-        log.debug(String.format("delete user by name: %s", name));
+        log.debug(String.format("Method deleteByName was called with argument name: %s", name));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
             preparedStatement.setString(1, name);
@@ -84,7 +84,7 @@ public class JdbcUserRepository implements Repository<User> {
     @SneakyThrows
     @NotNull
     public Optional<User> findByName(@NotNull final String name) {
-        log.debug(String.format("find user by name: %s", name));
+        log.debug(String.format("Method findByName was called with argument name: %s", name));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
@@ -101,7 +101,8 @@ public class JdbcUserRepository implements Repository<User> {
     @SneakyThrows
     @NotNull
     private User mapToUser(@NotNull final ResultSet resultSet) {
-        log.debug(String.format("User mapped from resultSet: %s", resultSet));
+        log.debug(String.format(
+                "Method mapToUser was called with argument - resultSet: %s", resultSet));
         final User user = new User();
         user.setId(resultSet.getLong("id"));
         user.setName(resultSet.getString("name"));

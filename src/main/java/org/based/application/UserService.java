@@ -17,14 +17,14 @@ public class UserService {
     @NotNull
     private final Repository<User> userRepository;
     public UserService(@NotNull Repository<User> userRepository) {
-        log.info("UserService initialization");
+        log.debug("UserService initialization");
         this.userRepository = userRepository;
     }
     public void save(@NotNull final User user) {
-        log.debug(String.format("Save new user:%s", user));
+        log.debug(String.format("Method save was called with argument user: %s", user));
         userRepository.findByName(user.getName())
                 .ifPresent(a -> {
-                    log.error(String.format("Save Exception-user:%s. ALREADY_EXIST", user));
+                    log.error(String.format("User - %s , is already exist", user));
                     throw new EntityAlreadyExistsException(
                             String.format(ALREADY_EXIST, a.getName()));
                 });
@@ -32,28 +32,27 @@ public class UserService {
     }
     @NotNull
     public List<User> findAll() {
-        log.debug("Find all tasks");
+        log.debug("Method findAll users was called");
         return userRepository.findAll();
     }
     @NotNull
     public User findByName(@NotNull final String name) {
-        log.debug(String.format("find user by name: %s", name));
+        log.debug(String.format("Method findByName was called with argument name: %s", name));
         return userRepository.findByName(name).orElseThrow(
                 () -> {
-                    log.error(String.format("FindByName Exception: NOT_FOUND user name: %s", name));
+                    log.error(String.format("User with name %s not found", name));
                     throw  new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, name));
                 });
     }
     public void deleteByName(@NotNull final String name) {
-        log.debug(String.format("delete user by name: %s", name));
+        log.debug(String.format("Method deleteByName was called with argument name: %s", name));
         userRepository.deleteByName(name);
     }
     public void update(@NotNull final User user) {
-        log.debug(String.format("Update task: %s", user));
+        log.debug(String.format("Method update was called with argument user: %s", user));
         userRepository.findByName(user.getName()).orElseThrow(
                 () -> {
-                    log.error(String.format("Update Exception: NOT_FOUND-user name: %s",
-                            user.getName()));
+                    log.error(String.format("User with name %s not found", user.getName()));
                     throw new EntityNotFoundException(
                             String.format(ENTITY_NOT_FOUND, user.getName()));
                 });
