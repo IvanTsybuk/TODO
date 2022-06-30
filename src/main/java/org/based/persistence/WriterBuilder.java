@@ -6,6 +6,8 @@ import com.google.common.io.Files;
 import java.io.File;
 import java.io.FileWriter;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class WriterBuilder<T> {
     private String environmentVariable;
@@ -13,16 +15,18 @@ public class WriterBuilder<T> {
     private Class<T> clazz;
     public WriterBuilder() {
     }
-    public WriterBuilder<T> environmentVariable(String environmentVariable) {
+    @NotNull
+    public WriterBuilder<T> environmentVariable(@Nullable final String environmentVariable) {
         this.environmentVariable = environmentVariable;
         return this;
     }
-    public WriterBuilder<T> useClass(Class<T> clazz) {
+    @NotNull
+    public WriterBuilder<T> useClass(@NotNull final Class<T> clazz) {
         className = clazz.getSimpleName();
         this.clazz = clazz;
         return this;
     }
-    public Writer<T> build() {
+    public @NotNull Writer<T> build() {
         return new JacksonWriter<>(getWriter(), getFile(), clazz);
     }
     private String getFileConfigurationPath() {
@@ -44,15 +48,15 @@ public class WriterBuilder<T> {
         }
         return new ObjectMapper();
     }
-    private String createDefaultFileName(String className) {
+    private @NotNull String createDefaultFileName(@NotNull final String className) {
         String nameTemple = "%s.json";
         return String.format(nameTemple, className);
     }
-    private String getFileExtension(String fileName) {
+    private @NotNull String getFileExtension(@NotNull final String fileName) {
         return Files.getFileExtension(fileName);
     }
     @SneakyThrows
-    private File getFile() {
+    private @NotNull File getFile() {
         File file = new File(getFileConfigurationPath());
         verifyFileStructure(file);
         if (!file.exists()) {
@@ -63,7 +67,7 @@ public class WriterBuilder<T> {
         }
         return file;
     }
-    private void verifyFileStructure(File defaultFile) {
+    private void verifyFileStructure(@NotNull File defaultFile) {
         if (defaultFile.length() == 0) {
             switch (getFileExtension(getFileConfigurationPath())) {
                 case "json":
@@ -77,7 +81,7 @@ public class WriterBuilder<T> {
         }
     }
     @SneakyThrows
-    private void setFileStructure(File defaultFile, String defaultTag) {
+    private void setFileStructure(@NotNull File defaultFile, @NotNull final String defaultTag) {
         FileWriter writer = new FileWriter(defaultFile);
         writer.append(defaultTag);
         writer.flush();
