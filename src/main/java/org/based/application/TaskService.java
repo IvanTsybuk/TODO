@@ -21,10 +21,10 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
     public void save(@NotNull final Task task) {
-        log.debug(String.format("Method save was called with argument task: %s", task));
+        log.debug(String.format("Method save was called with arguments: arg1 - %s", task));
         taskRepository.findByName(task.getName())
                 .ifPresent(a -> {
-                    log.error(String.format("Task - %s , already exists", task));
+                    log.error(String.format("Task - %s already exists", task));
                     throw new EntityAlreadyExistsException(
                             String.format(ALREADY_EXIST, a.getName()));
                 });
@@ -36,12 +36,12 @@ public class TaskService {
         return taskRepository.findAll();
     }
     public void deleteByName(@NotNull final String name) {
-        log.debug(String.format("Method deleteByName was called with argument name: %s", name));
+        log.debug(String.format("Method deleteByName was called with arguments: arg1 - %s", name));
         taskRepository.deleteByName(name);
     }
     @NotNull
     public Task findByName(@NotNull final String name) {
-        log.debug(String.format("Method findByName was called with argument name: %s", name));
+        log.debug(String.format("Method findByName was called with arguments: arg1 - %s", name));
         return taskRepository.findByName(name).orElseThrow(
                 () -> {
                     log.error(String.format("Task with name %s not found", name));
@@ -49,7 +49,7 @@ public class TaskService {
                 });
     }
     public void update(@NotNull final Task task) {
-        log.debug(String.format("Method update was called with argument task: %s", task));
+        log.debug(String.format("Method update was called with with arguments: arg1 - %s", task));
         taskRepository.findByName(task.getName()).orElseThrow(
                 () -> {
                     log.error(String.format("Task with name %s not found", task.getName()));

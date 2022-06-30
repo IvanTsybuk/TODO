@@ -21,10 +21,10 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
     public void save(@NotNull final Project project) {
-        log.debug(String.format("Method save was called with argument project: %s", project));
+        log.debug(String.format("Method save was called with arguments: arg1 - %s", project));
         projectRepository.findByName(project.getName())
                 .ifPresent(a -> {
-                    log.error(String.format("Project - %s , already exists", project));
+                    log.error(String.format("Project - %s already exists", project));
                     throw new EntityAlreadyExistsException(
                             String.format(ALREADY_EXIST, a.getName()));
                 });
@@ -36,12 +36,12 @@ public class ProjectService {
         return projectRepository.findAll();
     }
     public void deleteByName(@NotNull final String name) {
-        log.debug(String.format("Method deleteByName was called with argument name: %s", name));
+        log.debug(String.format("Method deleteByName was called with arguments: arg1 - %s", name));
         projectRepository.deleteByName(name);
     }
     @NotNull
     public Project findByName(@NotNull final String name) {
-        log.debug(String.format("Method findByName was called with argument name: %s", name));
+        log.debug(String.format("Method findByName was called with arguments: arg1 - %s", name));
         return projectRepository.findByName(name).orElseThrow(
                 () -> {
                     log.error(String.format("Project with name %s not found", name));
@@ -49,7 +49,7 @@ public class ProjectService {
                 });
     }
     public void update(@NotNull final Project project) {
-        log.debug(String.format("Method update was called with argument project: %s", project));
+        log.debug(String.format("Method update was called with arguments: arg1 - %s", project));
         projectRepository.findByName(project.getName()).orElseThrow(
                 () -> {
                     log.error(String.format("Project with name %s not found",

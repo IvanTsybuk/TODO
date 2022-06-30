@@ -21,10 +21,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
     public void save(@NotNull final User user) {
-        log.debug(String.format("Method save was called with argument user: %s", user));
+        log.debug(String.format("Method save was called with arguments: arg1 - %s", user));
         userRepository.findByName(user.getName())
                 .ifPresent(a -> {
-                    log.error(String.format("User - %s , already exists", user));
+                    log.error(String.format("User - %s already exists", user));
                     throw new EntityAlreadyExistsException(
                             String.format(ALREADY_EXIST, a.getName()));
                 });
@@ -37,7 +37,7 @@ public class UserService {
     }
     @NotNull
     public User findByName(@NotNull final String name) {
-        log.debug(String.format("Method findByName was called with argument name: %s", name));
+        log.debug(String.format("Method findByName was called with arguments: arg1 - %s", name));
         return userRepository.findByName(name).orElseThrow(
                 () -> {
                     log.error(String.format("User with name %s not found", name));
@@ -45,11 +45,11 @@ public class UserService {
                 });
     }
     public void deleteByName(@NotNull final String name) {
-        log.debug(String.format("Method deleteByName was called with argument name: %s", name));
+        log.debug(String.format("Method deleteByName was called with arguments: arg1 - %s", name));
         userRepository.deleteByName(name);
     }
     public void update(@NotNull final User user) {
-        log.debug(String.format("Method update was called with argument user: %s", user));
+        log.debug(String.format("Method update was called with arguments: arg1 - %s", user));
         userRepository.findByName(user.getName()).orElseThrow(
                 () -> {
                     log.error(String.format("User with name %s not found", user.getName()));

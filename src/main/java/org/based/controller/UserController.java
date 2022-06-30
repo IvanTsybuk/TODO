@@ -34,22 +34,22 @@ public class UserController {
     @GetMapping("/{name}")
     @NotNull
     public User findByName(@PathVariable @NotNull final String name) {
-        log.info(String.format("Method findByName was called with argument name: %s", name));
+        log.info(String.format("Method findByName was called with arguments: arg1 - %s", name));
         return userService.findByName(name);
     }
     @PostMapping
     public void save(@RequestBody @NotNull final User user) {
-        log.info(String.format("Method save was called with argument project: %s", user));
+        log.info(String.format("Method save was called with arguments: arg1 - %s", user));
         userService.save(user);
     }
     @PutMapping
     private void update(@RequestBody @NotNull final User user) {
-        log.info(String.format("Method update was called with argument project: %s", user));
+        log.info(String.format("Method update was called with arguments: arg1 - %s", user));
         userService.update(user);
     }
     @DeleteMapping("/{name}")
     public void delete(@RequestParam @NotNull final String name) {
-        log.info(String.format("Method delete was called with argument name: %s", name));
+        log.info(String.format("Method delete was called with arguments: arg1 - %s", name));
         userService.deleteByName(name);
     }
 }

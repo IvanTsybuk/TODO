@@ -33,22 +33,22 @@ public class TaskController {
     @GetMapping("/{name}")
     @NotNull
     public Task findByName(@NotNull final String name) {
-        log.info(String.format("Method findByName was called with argument name: %s", name));
+        log.info(String.format("Method findByName was called with arguments: arg1 - %s", name));
         return taskService.findByName(name);
     }
     @PostMapping
     public void save(@RequestBody @NotNull final Task task) {
-        log.info(String.format("Method save was called with argument project: %s", task));
+        log.info(String.format("Method save was called with arguments: arg1 - %s", task));
         taskService.save(task);
     }
     @PutMapping
     private void update(@RequestBody @NotNull final Task task) {
-        log.info(String.format("Method update was called with argument project: %s", task));
+        log.info(String.format("Method update was called with arguments: arg1 - %s", task));
         taskService.update(task);
     }
     @DeleteMapping("/{name}")
     public void delete(@PathVariable @NotNull final String name) {
-        log.info(String.format("Method delete was called with argument name: %s", name));
+        log.info(String.format("Method delete was called with arguments: arg1 - %s", name));
         taskService.deleteByName(name);
     }
 }

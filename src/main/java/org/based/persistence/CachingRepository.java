@@ -19,7 +19,7 @@ public class CachingRepository<T extends Entity> implements FileRepository<T> {
         this.repositoryMap = writer.readFile();
     }
     public void save(@NotNull final T entity) {
-        log.debug(String.format("Method save was called with argument entity: %s", entity));
+        log.debug(String.format("Method save was called with arguments: arg1 - %s", entity));
         repositoryMap.put(entity.getName(), entity);
     }
     @NotNull
@@ -28,16 +28,16 @@ public class CachingRepository<T extends Entity> implements FileRepository<T> {
         return new ArrayList<>(repositoryMap.values());
     }
     public void deleteByName(@NotNull final String name) {
-        log.debug(String.format("Method deleteByName was called with argument name: %s", name));
+        log.debug(String.format("Method deleteByName was called with arguments: arg1 - %s", name));
         repositoryMap.remove(name);
     }
     @NotNull
     public Optional<T> findByName(@NotNull final String name) {
-        log.debug(String.format("Method findByName was called with argument name: %s", name));
+        log.debug(String.format("Method findByName was called with arguments: arg1 - %s", name));
         return Optional.ofNullable(repositoryMap.get(name));
     }
     public void update(@NotNull final T entity) {
-        log.debug(String.format("Method update was called with argument entity: %s", entity));
+        log.debug(String.format("Method update was called with arguments: arg1 - %s", entity));
         repositoryMap.put(entity.getName(), entity);
     }
     public void saveToFile() {

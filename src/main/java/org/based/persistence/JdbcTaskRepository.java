@@ -31,7 +31,7 @@ public class JdbcTaskRepository implements Repository<Task> {
     @Override
     @SneakyThrows
     public void save(@NotNull final Task entity) {
-        log.debug(String.format("Method save was called with argument entity: %s", entity));
+        log.debug(String.format("Method save was called with arguments: arg1 - %s", entity));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
             preparedStatement.setString(1, entity.getName());
@@ -42,7 +42,7 @@ public class JdbcTaskRepository implements Repository<Task> {
     @Override
     @SneakyThrows
     public void update(@NotNull final Task entity) {
-        log.debug(String.format("Method update was called with argument entity: %s", entity));
+        log.debug(String.format("Method update was called with arguments: arg1 - %s", entity));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(update)) {
             preparedStatement.setString(1, entity.getName());
@@ -72,7 +72,7 @@ public class JdbcTaskRepository implements Repository<Task> {
     @Override
     @SneakyThrows
     public void deleteByName(@NotNull final String name) {
-        log.debug(String.format("Method deleteByName was called with argument name: %s", name));
+        log.debug(String.format("Method deleteByName was called with arguments: arg1 - %s", name));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
             preparedStatement.setString(1, name);
@@ -83,7 +83,7 @@ public class JdbcTaskRepository implements Repository<Task> {
     @SneakyThrows
     @NotNull
     public Optional<Task> findByName(@NotNull final String name) {
-        log.debug(String.format("Method findByName was called with argument name: %s", name));
+        log.debug(String.format("Method findByName was called with arguments: arg1 - %s", name));
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement preparedStatement =
                      connection.prepareStatement(selectByName)) {
@@ -101,7 +101,7 @@ public class JdbcTaskRepository implements Repository<Task> {
     @NotNull
     private Task mapToTask(@NotNull final ResultSet resultSet) {
         log.debug(String.format(
-                "Method mapToTask was called with argument - resultSet: %s", resultSet));
+                "Method mapToTask was called with arguments: arg1 - %s", resultSet));
         final Task task = new Task();
         task.setId(resultSet.getLong("id"));
         task.setName(resultSet.getString("name"));

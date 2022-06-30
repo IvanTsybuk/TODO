@@ -27,7 +27,7 @@ public class JacksonWriter<T> implements Writer<T> {
     @Override
     @SneakyThrows
     public void writeToFile(@NotNull final Map<String, T> map) {
-        log.debug(String.format("Method writeToFile was called with argument-%s. "
+        log.debug(String.format("Method writeToFile was called with arguments: arg1 - %s. "
                 + "File for saving- %s", map, configuredFile));
         jacksonMapper.writeValue(configuredFile, map);
     }

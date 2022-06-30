@@ -33,22 +33,22 @@ public class ProjectController {
     @GetMapping("/{name}")
     @NotNull
     public Project findByName(@PathVariable @NotNull final String name) {
-        log.info(String.format("Method findByName was called with argument name: %s", name));
+        log.info(String.format("Method findByName was called with arguments: arg1 - %s", name));
         return projectService.findByName(name);
     }
     @PostMapping
     public void save(@RequestBody @NotNull final Project project) {
-        log.info(String.format("Method save was called with argument project: %s", project));
+        log.info(String.format("Method save was called with arguments: arg1 - %s", project));
         projectService.save(project);
     }
     @PutMapping
     private void update(@RequestBody @NotNull final Project project) {
-        log.info(String.format("Method update was called with argument project: %s", project));
+        log.info(String.format("Method update was called with arguments: arg1 - %s", project));
         projectService.update(project);
     }
     @DeleteMapping("/{name}")
     public void delete(@PathVariable @NotNull final String name) {
-        log.info(String.format("Method delete was called with argument name: %s", name));
+        log.info(String.format("Method delete was called with arguments: arg1 - %s", name));
         projectService.deleteByName(name);
     }
 }
