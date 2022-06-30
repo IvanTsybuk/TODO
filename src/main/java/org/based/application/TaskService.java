@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Log4j2
 public class TaskService {
-    private static final String ALREADY_EXIST = "Task with name - %s, is already exist";
-    private static final String ENTITY_NOT_FOUND = "Task with name - %s, is not found";
+    private static final String ALREADY_EXIST = "Task with name - %s, already exists";
+    private static final String ENTITY_NOT_FOUND = "Task with name - %s, not found";
     @NotNull
     private final Repository<Task> taskRepository;
     public TaskService(@NotNull Repository<Task> taskRepository) {
@@ -24,7 +24,7 @@ public class TaskService {
         log.debug(String.format("Method save was called with argument task: %s", task));
         taskRepository.findByName(task.getName())
                 .ifPresent(a -> {
-                    log.error(String.format("Task - %s , is already exist", task));
+                    log.error(String.format("Task - %s , already exists", task));
                     throw new EntityAlreadyExistsException(
                             String.format(ALREADY_EXIST, a.getName()));
                 });

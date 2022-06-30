@@ -6,11 +6,9 @@ import com.google.common.io.Files;
 import java.io.File;
 import java.io.FileWriter;
 import lombok.SneakyThrows;
-import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@Log4j2
 public class WriterBuilder<T> {
     private String environmentVariable;
     private String className;

@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Log4j2
 public class UserService {
-    private static final String ALREADY_EXIST = "User with name - %s, is already exist";
-    private static final String ENTITY_NOT_FOUND = "User with name - %s, is not found";
+    private static final String ALREADY_EXIST = "User with name - %s, exists";
+    private static final String ENTITY_NOT_FOUND = "User with name - %s, not found";
     @NotNull
     private final Repository<User> userRepository;
     public UserService(@NotNull Repository<User> userRepository) {
@@ -24,7 +24,7 @@ public class UserService {
         log.debug(String.format("Method save was called with argument user: %s", user));
         userRepository.findByName(user.getName())
                 .ifPresent(a -> {
-                    log.error(String.format("User - %s , is already exist", user));
+                    log.error(String.format("User - %s , already exists", user));
                     throw new EntityAlreadyExistsException(
                             String.format(ALREADY_EXIST, a.getName()));
                 });
