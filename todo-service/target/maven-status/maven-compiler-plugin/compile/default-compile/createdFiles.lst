@@ -1,3 +1,4 @@
+org\based\input\InputConfiguration.class
 org\based\controller\ProjectController.class
 org\based\TodoServiceApplication.class
 org\based\persistence\Writer.class
@@ -14,7 +15,6 @@ org\based\persistence\JdbcTaskRepository.class
 org\based\controller\GlobalExceptionHandler.class
 org\based\persistence\Repository.class
 org\based\persistence\CachingRepository.class
-org\based\input\ApplicationConfiguration.class
 org\based\application\UserService.class
 org\based\persistence\FileRepository.class
 org\based\application\TaskService.class
